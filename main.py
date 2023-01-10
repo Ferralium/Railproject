@@ -10,6 +10,7 @@
     Attempts to solve heuristic problem with train stations.
 """
 
+import random
 from station import Station
 
 class Railsolver():
@@ -17,6 +18,10 @@ class Railsolver():
     # Initializes the stations dictionary for the railsolver
     def __init__(self):
         self.stations = {}
+        self.statnames = []
+
+        # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
+        self.traincount = 1
 
     def load_stations(self):
         """Loads the stations with distances from the CSV.
@@ -31,7 +36,12 @@ class Railsolver():
                 templine = line
                 templine = templine.strip().split(',')
 
-                # Samenvoegen in enkele for loop, die zowel source als destination station checkt?
+                # Adds unique station names to list to select random point later
+                for i in range(2):
+                    if templine[i] not in self.statnames:
+                        self.statnames.append(templine[i])
+
+                # !!!Samenvoegen in enkele for loop, die zowel source als destination station checkt?!!!
 
                 # Checks if station already exists, if so adds connection
                 if templine[0] in self.stations:
@@ -51,9 +61,12 @@ class Railsolver():
                     self.stations[templine[1]].add_station(templine[0], templine[2])      
                 
     def routecalc(self):
-        pass
+        # Determine start point and from there make route
+        startpoint = random.choice(self.statnames)
+        print(self.stations[startpoint].connections)
                 
 
 if __name__ == '__main__':
     wisselstoring = Railsolver()
     wisselstoring.load_stations()
+    wisselstoring.routecalc()
