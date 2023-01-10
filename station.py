@@ -13,3 +13,6 @@ class Station:
 
     def stationvisit(self, connection):
         self.connection_visited[connection] = True
+    
+    def __str__(self):
+        return f'{self.name}'
