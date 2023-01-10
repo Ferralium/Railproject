@@ -31,8 +31,7 @@ class Railsolver():
                 templine = line
                 templine = templine.strip().split(',')
 
-                # For loop schrijven die voor zowel source als destination station inlaadt en zo beide connecties toevoegd
-                # Belangrijk is voor beide de check of station al bestaat of niet, daarom for loop
+                # Samenvoegen in enkele for loop, die zowel source als destination station checkt?
 
                 # Checks if station already exists, if so adds connection
                 if templine[0] in self.stations:
@@ -46,8 +45,13 @@ class Railsolver():
                 # Checks whether the connection already exists in the stations and adds it if this is not the case
                 if templine[1] not in self.stations:
                     self.stations[templine[1]] = Station(templine[1])
-                    self.stations[templine[1]].add_station(templine[0], templine[2])        
+                    self.stations[templine[1]].add_station(templine[0], templine[2])  
+
+                elif templine[1] in self.stations:
+                    self.stations[templine[1]].add_station(templine[0], templine[2])      
                 
+    def routecalc(self):
+        pass
                 
 
 if __name__ == '__main__':
