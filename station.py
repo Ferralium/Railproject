@@ -14,8 +14,8 @@ class Station:
     def stationvisit(self, connection):
         self.connection_visited[connection] = True
     
-    def is_visited(self, connection):
-        return self.connection_visited[connection]
+    def is_visited(self, next_connection):
+        return self.connection_visited[next_connection]
     
     def __str__(self):
         return f'{self.name}'

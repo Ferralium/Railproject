@@ -68,30 +68,32 @@ class Railsolver():
         starting_point = random.choice(self.statnames)
         current_station = self.stations.get(starting_point)
 
-        while time < 120:
+        while time < 120: # moet een andere while statement - totdat alle connecties zijn geweest
             print(current_station)
 
-            # sets the station as visited
-            current_station.stationvisit(current_station)
-    
             # Checks next possible stations
             possible_connections = current_station.connections
             print(current_station.connections)
 
             # Moves to next random connection that has not been visited yet
             next_station = random.choice(list(current_station.connections))
-            print(next_station)
 
             # wat als de connectie nog een keer gebruikt moet worden?
-            while current_station.is_visited(next_station) is True or current_station == next_station:
+            while current_station.is_visited(next_station) is True:
                 next_station = random.choice(list(current_station.connection_visited))
+                
 
             time = time + current_station.connections.get(next_station)
+
+             # sets the station as visited
+            current_station.stationvisit(next_station)
+    
             current_station = self.stations.get(next_station)
             
             print(current_station)
             print(time)
-            # bewegen naar nieuw station lukt, alleen pakt hij niet current_Station als True
+            print(" ")
+            print("next connection")
 
             # NIET relevant!!!!!!
             # searches for the conenction with the lowest time travel
