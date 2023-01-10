@@ -9,6 +9,7 @@
 
     Attempts to solve heuristic problem with train stations.
 """
+# TYPEHINTS!!! DOCSTRINGS!! COMMENTS!!!
 
 import random
 from station import Station
@@ -68,37 +69,34 @@ class Railsolver():
         current_station = self.stations.get(starting_point)
         print(current_station)
 
-        while time < 120:
-            # sets the station as visited
-            current_station.stationvisit(current_station)
-            
-            # Checks next possible stations
-            possible_connections = current_station.connections
-            print(possible_connections)
+        # while time < 120:
 
-            # Moves to next random connection that has not been visited yet
-            next_station = self.stations.get(random.choice(list(current_station.connections)))
-            while current_station.connection_visited(next_station) is False and current_station == next_station:
-                next_station = random.choice(list(current_station.connection_visited))
-            
-            # keeps track of the time
-            # time += int(current_station.connections.get(next_station))
+        # sets the station as visited
+        current_station.stationvisit(current_station)
+   
+        # Checks next possible stations
+        possible_connections = current_station.connections
+        print(possible_connections)
 
-            current_station = next_station
-            
-            print(current_station)
-            print(time)
-
-            # nog niet echt relevant
-            # searches for the conenction with the lowest time travel
-            # for station in current_station.connection_visited:
-            #     distance = int(current_station.connections.get(station))
-            #     distance_score = distance
-            #     if distance <= distance_score:
-            #         next_station = station
-            #         distance_score = distance
+        # Moves to next random connection that has not been visited yet
+        next_station = random.choice(list(current_station.connections))
+        while current_station.connection_visited.get(next_station) is False and current_station == next_station:
+            next_station = random.choice(list(current_station.connection_visited))
+           
+        time += int(current_station.connections.get(next_station))
+        current_station = next_station
         
-            # Checks the score of the journey
+        print(current_station)
+        print(time)
+
+        # NIET relevant!!!!!!
+        # searches for the conenction with the lowest time travel
+        # for station in current_station.connection_visited:
+        #     distance = int(current_station.connections.get(station))
+        #     distance_score = distance
+        #     if distance <= distance_score:
+        #         next_station = station
+        #         distance_score = distance
 
 
 if __name__ == '__main__':
