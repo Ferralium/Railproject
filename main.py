@@ -2,7 +2,7 @@
     railsolver.py
 
     Door:
-        Chiara Schut - 
+        Chiara Schut - 2955520
         Berber Siersma - 
         Jeroen Steenhof - 12709425
     Minor Programmeren - Algoritmen en Heuristieken
@@ -12,6 +12,7 @@
 
 import random
 from station import Station
+from train import Train
 
 class Railsolver():
     
@@ -63,8 +64,33 @@ class Railsolver():
     def routecalc(self):
         # Determine start point and from there make route
         startpoint = random.choice(self.statnames)
-        print(self.stations[startpoint].connections)
-                
+        # print(self.stations[startpoint].connections)
+        # print(startpoint)
+        
+
+        # Checks next possible stations
+        current_station = self.stations.get(startpoint)
+        # print(current_station)
+        # print(current_station.connection_visited)
+
+        distance_score = 0
+        for station in current_station.connection_visited:
+            distance = int(current_station.connections.get(station))
+            print(distance)
+            if distance >= distance_score:
+                next_station = station
+                distance_score = distance
+            print(next_station)
+            print(distance_score)
+
+        # Checks the score of the journey
+
+        # sets the station as visited
+        current_station.stationvisit(current_station)
+
+        # moves to the next station
+
+
 
 if __name__ == '__main__':
     wisselstoring = Railsolver()
