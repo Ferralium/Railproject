@@ -67,24 +67,28 @@ class Railsolver():
         # Determine start point and from there make route
         starting_point = random.choice(self.statnames)
         current_station = self.stations.get(starting_point)
+        print(current_station)
 
+        # makes sure the starting trajectory is new
+        check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+        print(check_startingpoint)
+        if check_startingpoint is True:
+            while check_startingpoint is True:
+                starting_point = random.choice(self.statnames)
+                current_station = self.stations.get(starting_point)
+                check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+                print(current_station)
+                print(check_startingpoint)
+        
         while True: # moet een andere while statement - totdat alle connecties zijn geweest
             print(current_station)
 
             # Checks next possible stations
-            possible_connections = current_station.connections
+            # possible_connections = current_station.connections
             print(current_station.connections)
 
             # Moves to next random connection that has not been visited yet
             next_station = random.choice(list(current_station.connections))
-
-            # wat als de connectie nog een keer gebruikt moet worden?
-            # for station in list(current_station.connections):
-            #     next_station = random.choice(list(current_station.connections))
-            #     if current_station.is_visited(next_station) is True:
-            #         next_station = random.choice(list(current_station.connection_visited))
-            #     else:
-            #         continue
 
             check_stations = all(station is True for station in current_station.connection_visited.values())
             print(check_stations)
@@ -95,7 +99,6 @@ class Railsolver():
                 while current_station.is_visited(next_station) is True:
                     next_station = random.choice(list(current_station.connection_visited))
                 
-
             time = time + current_station.connections.get(next_station)
 
             # stops if time is more than 2 hours
@@ -106,15 +109,6 @@ class Railsolver():
             current_station.stationvisit(next_station)
     
             current_station = self.stations.get(next_station)
-
-            # for station in dictionary_berber:
-                # if False:
-                #     ga verder met de while loop
-                #     break uit de while loop en check de tijd
-                #     # kost veel tijd om dit elke ronde te checken... meot sneller kunnen
-                # else:
-                #     continue
-
             
             print(current_station)
             print(time)
