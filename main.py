@@ -104,10 +104,6 @@ class Railsolver():
 
             # sets the station as visited
             current_station.stationvisit(next_station)
-<<<<<<< HEAD
-=======
-
->>>>>>> b58d287ace112b8069087abba9d64cdbc2cef69a
             current_station = self.stations.get(next_station)
 
             print(current_station)
