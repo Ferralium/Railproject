@@ -7,6 +7,8 @@ from PIL import Image, ImageDraw
 from matplotlib import image
 from matplotlib import pyplot as plt
 
+import matplotlib
+
 # Rework data to useable format
 # TODO: Has to come after calculating scale to get correct coordinates at once
 correctcoords = []
@@ -55,13 +57,10 @@ class Mapdrawer():
         self.coordlist = []
         for d in self.gps_data:
             templist = []
-            new_xcoords = d[0] - 50.730
-            new_xcoords = new_xcoords * self.heightpixelscale
-            new_ycoords = d[1] - 7.295
-            new_ycoords = abs(new_ycoords)
-            new_ycoords = new_ycoords * self.widthpixelscale
-            templist.append(new_xcoords)
-            templist.append(new_ycoords)
+            x_pixel = (d[0] - 53.491) / (50.730 - 53.491) * self.pixelwidth
+            y_pixel = (d[1] - 3.279) / ( 7.295 - 3.279) * self.pixelheight
+            templist.append(x_pixel)
+            templist.append(y_pixel)
             self.coordlist.append(templist)
             
     def print_to_image(self):
@@ -72,6 +71,7 @@ class Mapdrawer():
             plt.plot(self.coordlist[i][0], self.coordlist[i][1], marker = '.')
 
         plt.imshow(data)
+        plt.set_size_inches(8.19, 7.34)
         plt.savefig('puntopkaart.png', bbox_inches='tight', pad_inches=0, transparent=True)
         
 
