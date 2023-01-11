@@ -4,6 +4,9 @@ import matplotlib.pyplot as plt
 from matplotlib import pyplot as plt
 from PIL import Image, ImageDraw
 
+from matplotlib import image
+from matplotlib import pyplot as plt
+
 # Rework data to useable format
 # TODO: Has to come after calculating scale to get correct coordinates at once
 correctcoords = []
@@ -49,23 +52,32 @@ class Mapdrawer():
 
     def scale_to_image(self):
         """Aims to rescale coordinates to pixel scale on the map .png"""
+        self.coordlist = []
         for d in self.gps_data:
+            templist = []
             new_xcoords = d[0] - 50.730
             new_xcoords = new_xcoords * self.heightpixelscale
             new_ycoords = d[1] - 7.295
             new_ycoords = abs(new_ycoords)
             new_ycoords = new_ycoords * self.widthpixelscale
-            print(new_ycoords)
+            templist.append(new_xcoords)
+            templist.append(new_ycoords)
+            self.coordlist.append(templist)
+            
+    def print_to_image(self):
+        """Prints the coordinates to the map image as dots"""
+        data = image.imread('data/KaartScreenshot.png')
+
+        for i in range(len(self.coordlist)):
+            plt.plot(self.coordlist[i][0], self.coordlist[i][1], marker = '.')
+
+        plt.imshow(data)
+        plt.savefig('puntopkaart.png', bbox_inches='tight', pad_inches=0, transparent=True)
+        
 
 mappings = Mapdrawer()
 mappings.scale_to_image()
+mappings.print_to_image()
 
 # TODO: Implementeer dit in de image functie, haal overige code weg
 # Plotten op een afbeelding via matplotlib, werkt op de coordinaten
-# from matplotlib import image
-# from matplotlib import pyplot as plt
-
-# data = image.imread('data/KaartScreenshot.png')
-# plt.plot(200, 350, marker='.')
-# plt.imshow(data)
-# plt.savefig('puntopkaart.png', bbox_inches='tight', pad_inches=0, transparent=True)
