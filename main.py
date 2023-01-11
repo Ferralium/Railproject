@@ -104,6 +104,10 @@ class Railsolver():
 
             # sets the station as visited
             current_station.stationvisit(next_station)
+<<<<<<< HEAD
+=======
+
+>>>>>>> 3195d428605d626b05aeb6b730ad41e91da25c55
             current_station = self.stations.get(next_station)
 
             print(current_station)
@@ -113,6 +117,32 @@ class Railsolver():
 
             # K = p*10000 - (T*100 + Min)
 
+    def fraction_calc(self) -> float:
+        """ Functie berekent hoeveel procent van de connecties is gehaald """
+
+        print("Bereken de fractie van bezochte connecties")
+        print()
+        connected = 0
+        total = 0
+
+        for station_naam in self.stations:
+
+            tijdelijk_station = self.stations[station_naam]
+
+            # print(station_naam, tijdelijk_station.connection_visited)
+            aantal_connecties = len(tijdelijk_station.connection_visited)
+            # print(f'aantal connecties: {aantal_connecties}')
+            total += aantal_connecties
+
+            for connecties in tijdelijk_station.connection_visited:
+
+                if tijdelijk_station.connection_visited[connecties] == True:
+                    connected += 1
+
+        print(f' Connected: {connected}, Total: {total}')
+        fractie: float = round(connected / total, 2)
+        return fractie
+
 
 if __name__ == '__main__':
     wisselstoring = Railsolver()
@@ -121,3 +151,7 @@ if __name__ == '__main__':
         print(" ")
         print("new trajectory")
         wisselstoring.routecalc()
+
+    # bereken de fractie van verbindingen:
+    proportion = wisselstoring.fraction_calc()
+    print(f' Fractie routes bereikt: {proportion}')
