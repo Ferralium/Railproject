@@ -82,9 +82,6 @@ class Railsolver():
         
         while True: # moet een andere while statement - totdat alle connecties zijn geweest
             print(current_station)
-
-            # Checks next possible stations
-            # possible_connections = current_station.connections
             print(current_station.connections)
 
             # Moves to next random connection that has not been visited yet
@@ -107,7 +104,6 @@ class Railsolver():
 
             # sets the station as visited
             current_station.stationvisit(next_station)
-    
             current_station = self.stations.get(next_station)
             
             print(current_station)
@@ -115,14 +111,7 @@ class Railsolver():
             print(" ")
             print("next connection")
 
-            # NIET relevant!!!!!!
-            # searches for the conenction with the lowest time travel
-            # for station in current_station.connection_visited:
-            #     distance = int(current_station.connections.get(station))
-            #     distance_score = distance
-            #     if distance <= distance_score:
-            #         next_station = station
-            #         distance_score = distance
+            # K = p*10000 - (T*100 + Min)
 
 
 if __name__ == '__main__':
