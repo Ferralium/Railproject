@@ -79,8 +79,7 @@ class Railsolver():
         # print(current_station.connection_visited.keys())
 
         # checks if the station has 1 connection
-        if check_startingpoint is False or current_station.connection_count != 1: #hier gaat die fout met het != 1
-            # begint niet de eerste twee keer bij dordrecht of den helder
+        if check_startingpoint is False or current_station.connection_count != 1:
             while current_station.connection_count != 1:
                 starting_point = random.choice(self.statnames)
                 current_station = self.stations.get(starting_point)
