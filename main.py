@@ -80,13 +80,14 @@ class Railsolver():
 
         # checks if the station has 1 connection
         if check_startingpoint is False or current_station.connection_count != 1: #hier gaat die fout met het != 1
+            # begint niet de eerste twee keer bij dordrecht of den helder
             while current_station.connection_count != 1:
                 starting_point = random.choice(self.statnames)
                 current_station = self.stations.get(starting_point)
                 check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-            if check_startingpoint is True and current_station.connection_count == 1:
-                starting_point = random.choice(self.statnames)
-                current_station = self.stations.get(starting_point)
+                if check_startingpoint is True and current_station.connection_count == 1:
+                    starting_point = random.choice(self.statnames)
+                    current_station = self.stations.get(starting_point)
                 # while check_startingpoint is True:
                 #     # in deze loop gaat t fout
                 #     starting_point = random.choice(self.statnames)
@@ -164,6 +165,9 @@ class Railsolver():
                 if temporary_station.connection_visited[connecties] == True:
                     connected += 1
 
+        # final_total = round(total / 2)
+        # final_connected = round(total / 2)
+
         print(f' Connected: {connected}, Total: {total}')
         fraction: float = round(connected / total, 2)
         return fraction
@@ -176,7 +180,7 @@ if __name__ == '__main__':
         print(" ")
         print("new trajectory")
         wisselstoring.routecalc()
-    wisselstoring.fraction_calc()   
+    print(wisselstoring.fraction_calc())
     # while all_connections != 56:
     #     for route in range(7):
     #         print(" ")
