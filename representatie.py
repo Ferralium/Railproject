@@ -3,9 +3,7 @@ import numpy as np
 import matplotlib.pyplot as plt
 from matplotlib import pyplot as plt
 from PIL import Image, ImageDraw
-
 from matplotlib import image
-from matplotlib import pyplot as plt
 
 import matplotlib
 
@@ -33,24 +31,10 @@ class Mapdrawer():
 
         self.gps_data = tuple(zip(data['LATITUDE'].values, data['LONGITUDE'].values))
 
-        image = Image.open('data/KaartScreenshot.png', 'r') # Load map image.
-        img_points = []
-
-        # for d in gps_data:
-        #     x1, y1 = plt.scale_to_img(d, (image.size[0], image.size[1]))
-        #     img_points.append((x1, y1))
-
-        tempheightscale = 53.491 - 50.730
-        tempwidthscale = 3.279 - 7.295
-
-        self.heightscale = abs(tempheightscale)
-        self.widthscale = abs(tempwidthscale)
 
         self.pixelheight = 734
         self.pixelwidth = 819
 
-        self.heightpixelscale = self.pixelheight / self.heightscale
-        self.widthpixelscale = self.pixelwidth / self.widthscale
 
     def scale_to_image(self):
         """Aims to rescale coordinates to pixel scale on the map .png"""
@@ -71,7 +55,6 @@ class Mapdrawer():
             plt.plot(self.coordlist[i][0], self.coordlist[i][1], marker = '.')
 
         plt.imshow(data)
-        plt.set_size_inches(8.19, 7.34)
         plt.savefig('puntopkaart.png', bbox_inches='tight', pad_inches=0, transparent=True)
         
 
