@@ -14,6 +14,8 @@
 import random
 from station import Station
 from train import Train
+import csv
+# from csv import DictWriter
 
 class Railsolver():
 
@@ -62,18 +64,21 @@ class Railsolver():
                 elif templine[1] in self.stations:
                     self.stations[templine[1]].add_station(templine[0], int(templine[2]))
 
-    def routecalc(self):
+    def routecalc(self, train_stations):
         time = 0
         # Determine start point and from there make route
         starting_point = random.choice(self.statnames)
         current_station = self.stations.get(starting_point)
         print(f' Startpunt: {current_station}')
 
+        # voeg de current station toe aan de lijst
+        train_stations.append(current_station)
+
         # ideas for algorithm:
         # Starting point: makes sure the starting trajectory is a station with only 1 connection (dordrecht + den helder)
         # starting point: starting with the stations with the least connections (omgekeerde van greedy)
 
-        # makes sure the starting trajectory is new 
+        # makes sure the starting trajectory is new
         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
         print(check_startingpoint)
         # print(current_station.connection_visited.keys())
@@ -108,7 +113,7 @@ class Railsolver():
             #         print(current_station)
             #         print(check_startingpoint)
 
-        while True: 
+        while True:
 
             # Moves to next random connection that has not been visited yet
             possible_next_station = random.choice(list(current_station.connections))
@@ -128,12 +133,16 @@ class Railsolver():
 
             # stops if time is more than 2 hours
             if time > 120:
-                break
-            
+                return train_stations
+
             print(f' Current Station: {current_station}')
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
             current_station = self.stations.get(str(next_station))
+
+            # voeg current_station toe aan de lijst
+            train_stations.append(current_station)
+            # print("treinstation toegevoegd")
 
             print(f' Next Station: {current_station}')
             print(time)
@@ -172,17 +181,91 @@ class Railsolver():
         return fraction
 
 
+    def table_of_trains(self, train_number, list_of_stations):
+        """ Function that keeps track of all the train routes that have been made """
+
+        # maak er eerst een dictionary van:
+        train_dictionary: dict[str, list[station]] = {}
+        train_dictionary[train_number] = list_of_stations
+        print(f'train_dictionary: {train_dictionary}')
+        print(list_of_stations)
+
+        # open een csv bestand:
+        f = open('tabel.csv', 'w')
+
+        header = ['train','stations']
+
+        # create the csv writer
+        writer = csv.writer(f)
+
+        writer.writerow(header)
+        # write a row to the csv file
+        # writer.writerow(train_number)
+        # writer.writerow(list_of_stations)
+
+        if train_number != 'train_7':
+            writer.writerow(train_dictionary)
+
+        else:
+            writer.writerow("trein 7")
+        # close the file
+        f.close()
+
+        ## OPTIE 2
+
+        # with open('CSVFILE.csv', 'a', newline='') as f_object:
+        #     # Pass the CSV  file object to the Dictwriter() function
+        #     # Result - a DictWriter object
+        #     dictwriter_object = DictWriter(f_object, fieldnames=train_dictionary)
+        #     # Pass the data in the dictionary as an argument into the writerow() function
+        #     dictwriter_object.writerow(dict)
+        #     # Close the file object
+        #     f_object.close()
+
+        # close the file
+        # f.close()
+
+
+
+# CHECKPOINT
 if __name__ == '__main__':
     wisselstoring = Railsolver()
     wisselstoring.load_stations()
+
+    # maak een csv bestand met header
+    # f = open('tabel.csv', 'w')
+    #
+    # header = ['train','stations']
+    # # create the csv writer
+    # writer = csv.writer(f)
+    #
+    # # write a row to the csv file
+    # writer.writerow(header)
+
+    # close the file
+    # f.close()
+
     for route in range(7):
+
+        # maak de treinnaam
+        train_number = "train_" + str(route + 1)
+
+        # maak een lege lijst voor de stations:
+        train_stations: list[str] = []
+
         print(" ")
         print("new trajectory")
-        wisselstoring.routecalc()
+
+        list_of_stations = wisselstoring.routecalc(train_stations)
+        # print(list_of_stations)
+
+        # voeg dit toe aan de tabel van treinen
+        wisselstoring.table_of_trains(train_number, list_of_stations)
+
     print(wisselstoring.fraction_calc())
     # while all_connections != 56:
     #     for route in range(7):
     #         print(" ")
     #         print("new trajectory")
     #         wisselstoring.routecalc()
-    #     all_connections = wisselstoring.fraction_calc() 
+    #     all_connections = wisselstoring.fraction_calc()
