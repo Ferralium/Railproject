@@ -67,81 +67,103 @@ class Railsolver():
         # Determine start point and from there make route
         starting_point = random.choice(self.statnames)
         current_station = self.stations.get(starting_point)
-        print(current_station)
+        print(f' Startpunt: {current_station}')
 
-        # makes sure the starting trajectory is new
+        # ideas for algorithm:
+        # Starting point: makes sure the starting trajectory is a station with only 1 connection (dordrecht + den helder)
+        # starting point: starting with the stations with the least connections (omgekeerde van greedy)
+
+        # makes sure the starting trajectory is new 
         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-        print(check_startingpoint)
-        if check_startingpoint is True:
-            while check_startingpoint is True:
+        # print(check_startingpoint)
+        # print(current_station.connection_visited.keys())
+
+        # checks if the station has 1 connection
+        if check_startingpoint is False or current_station.connection_count != 1:
+            while current_station.connection_count != 1:
                 starting_point = random.choice(self.statnames)
                 current_station = self.stations.get(starting_point)
                 check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-                print(current_station)
-                print(check_startingpoint)
+            if check_startingpoint is True and current_station.connection_count == 1:
+                while check_startingpoint is True:
+                    starting_point = random.choice(self.statnames)
+                    current_station = self.stations.get(starting_point)
+                    check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+                    print(current_station)
+                    print(check_startingpoint)
+        elif check_startingpoint is True:
+            starting_point = random.choice(self.statnames)
+            current_station = self.stations.get(starting_point)
+            # if current_station.connection_count == 1:
+            #     starting_point = random.choice(self.statnames)
+            #     current_station = self.stations.get(starting_point)
+            # else:
+            #     while check_startingpoint is Tru:
+            #         starting_point = random.choice(self.statnames)
+            #         current_station = self.stations.get(starting_point)
+            #         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+            #         print(current_station)
+            #         print(check_startingpoint)
 
-        while True: # moet een andere while statement - totdat alle connecties zijn geweest
-            print(current_station)
-            print(current_station.connections)
+        while True: 
 
             # Moves to next random connection that has not been visited yet
-            next_station = random.choice(list(current_station.connections))
+            possible_next_station = random.choice(list(current_station.connections))
+            next_station = self.stations.get(possible_next_station)
 
             check_stations = all(station is True for station in current_station.connection_visited.values())
-            print(check_stations)
 
             if check_stations is True:
-                next_station = random.choice(list(current_station.connections))
+                possible_next_station = random.choice(list(current_station.connections))
+                next_station = self.stations.get(possible_next_station)
             else:
-                while current_station.is_visited(next_station) is True:
-                    next_station = random.choice(list(current_station.connection_visited))
+                while current_station.is_visited(str(next_station)) is True:
+                    possible_next_station = random.choice(list(current_station.connection_visited))
+                    next_station = self.stations.get(possible_next_station)
 
-            time = time + current_station.connections.get(next_station)
+            time = time + current_station.connections.get(str(next_station))
 
             # stops if time is more than 2 hours
             if time > 120:
                 break
+            
+            print(f' Current Station: {current_station}')
+            current_station.stationvisit(str(next_station))
+            next_station.stationvisit(str(current_station))
+            current_station = self.stations.get(str(next_station))
 
-            # sets the station as visited
-            current_station.stationvisit(next_station)
-<<<<<<< HEAD
-=======
-
->>>>>>> 3195d428605d626b05aeb6b730ad41e91da25c55
-            current_station = self.stations.get(next_station)
-
-            print(current_station)
+            print(f' Next Station: {current_station}')
             print(time)
             print(" ")
-            print("next connection")
 
             # K = p*10000 - (T*100 + Min)
 
     def fraction_calc(self) -> float:
-        """ Functie berekent hoeveel procent van de connecties is gehaald """
+        """ Function calculates percentage of used connections """
 
-        print("Bereken de fractie van bezochte connecties")
+        print("Calculate franction of used connections")
         print()
         connected = 0
         total = 0
 
-        for station_naam in self.stations:
+        for station_name in self.stations:
 
-            tijdelijk_station = self.stations[station_naam]
+            temporary_station = self.stations[station_name]
 
-            # print(station_naam, tijdelijk_station.connection_visited)
-            aantal_connecties = len(tijdelijk_station.connection_visited)
-            # print(f'aantal connecties: {aantal_connecties}')
-            total += aantal_connecties
+            # print(station_name, temporary_station.connection_visited)
+            # number_of_connections = len(temporary_station.connection_visited)
+            number_of_connections = len(temporary_station.connections)
+            # print(f'aantal connecties: {number_of_connections}')
+            total += number_of_connections
 
-            for connecties in tijdelijk_station.connection_visited:
+            for connecties in temporary_station.connection_visited:
 
-                if tijdelijk_station.connection_visited[connecties] == True:
+                if temporary_station.connection_visited[connecties] == True:
                     connected += 1
 
         print(f' Connected: {connected}, Total: {total}')
-        fractie: float = round(connected / total, 2)
-        return fractie
+        fraction: float = round(connected / total, 2)
+        return fraction
 
 
 if __name__ == '__main__':
@@ -151,7 +173,10 @@ if __name__ == '__main__':
         print(" ")
         print("new trajectory")
         wisselstoring.routecalc()
-
-    # bereken de fractie van verbindingen:
-    proportion = wisselstoring.fraction_calc()
-    print(f' Fractie routes bereikt: {proportion}')
+    wisselstoring.fraction_calc()   
+    # while all_connections != 56:
+    #     for route in range(7):
+    #         print(" ")
+    #         print("new trajectory")
+    #         wisselstoring.routecalc()
+    #     all_connections = wisselstoring.fraction_calc() 
