@@ -75,22 +75,25 @@ class Railsolver():
 
         # makes sure the starting trajectory is new 
         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-        # print(check_startingpoint)
+        print(check_startingpoint)
         # print(current_station.connection_visited.keys())
 
         # checks if the station has 1 connection
-        if check_startingpoint is False or current_station.connection_count != 1:
+        if check_startingpoint is False or current_station.connection_count != 1: #hier gaat die fout met het != 1
             while current_station.connection_count != 1:
                 starting_point = random.choice(self.statnames)
                 current_station = self.stations.get(starting_point)
                 check_startingpoint = all(station is True for station in current_station.connection_visited.values())
             if check_startingpoint is True and current_station.connection_count == 1:
-                while check_startingpoint is True:
-                    starting_point = random.choice(self.statnames)
-                    current_station = self.stations.get(starting_point)
-                    check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-                    print(current_station)
-                    print(check_startingpoint)
+                starting_point = random.choice(self.statnames)
+                current_station = self.stations.get(starting_point)
+                # while check_startingpoint is True:
+                #     # in deze loop gaat t fout
+                #     starting_point = random.choice(self.statnames)
+                #     current_station = self.stations.get(starting_point)
+                #     check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+                #     print(current_station)
+                #     print(check_startingpoint)
         elif check_startingpoint is True:
             starting_point = random.choice(self.statnames)
             current_station = self.stations.get(starting_point)
