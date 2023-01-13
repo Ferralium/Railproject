@@ -66,16 +66,6 @@ class Railsolver():
 
     def routecalc(self, train_stations):
         time = 0
-
-        # Determine start point and from there make route
-        # starting_point = random.choice(self.statnames)
-        # current_station = self.stations.get(starting_point)
-        # print(f' Startpunt: {current_station}')
-        
-        # # makes sure the starting trajectory is new
-        # check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-        # print(check_startingpoint)
-
         lowest_unused_connections = 100
         all_stations_true = 0
 
@@ -84,15 +74,11 @@ class Railsolver():
             check_connections = self.stations.get(station)
             check_startingpoint = all(station is True for station in check_connections.connection_visited.values())
             possible_current_station = self.stations.get(str(check_connections))
-            # print(check_startingpoint)
 
             if check_startingpoint is True:
                 all_stations_true += 1
            
             if check_connections.connection_count == 1:
-                    # possible_current_station = self.stations.get(str(check_connections))
-                    # check_startingpoint = all(station is True for station in possible_current_station.connection_visited.values())
-                    # print(check_startingpoint)
                     if check_startingpoint is False:
                         current_station = self.stations.get(str(possible_current_station))
                         break
@@ -106,25 +92,13 @@ class Railsolver():
                 print(unused_connections)
                 if unused_connections < lowest_unused_connections and unused_connections != 0:
                     lowest_used_connections = unused_connections
-                    # print(lowest_used_connections)
                     current_station = self.stations.get(str(possible_current_station))
-        
-
-                #     current_station = self.stations.get(str(possible_current_station))
-                #     # possible_current_station = self.stations.get(str(connections))
-
-                    # print(check_connections, check_connections.connection_count)
-                    # break
-        
-        # current_station = self.stations.get(str(possible_current_station))
+    
         print(len(self.stations))
         print(all_stations_true)
         if all_stations_true is len(self.stations):
             starting_point = random.choice(self.statnames)
             current_station = self.stations.get(starting_point)
-
-        # print(current_station)
-
 
         # oude algoritme!!!!
         # checks if the station has 1 connection
@@ -151,7 +125,6 @@ class Railsolver():
 
         # voeg de current station toe aan de lijst
         train_stations.append(current_station)
-
 
         while True:
 
