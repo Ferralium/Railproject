@@ -266,7 +266,7 @@ if __name__ == '__main__':
         train_number = "train_" + str(route + 1)
 
         # maak een lege lijst voor de stations:
-        train_stations: list[str] = []
+        train_stations = []
 
         print(" ")
         print("new trajectory")
