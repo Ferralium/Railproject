@@ -75,10 +75,42 @@ class Mapdrawer():
 
     def print_driven_routes(self, routes):
         """Takes the trainroutes and prints them on the map with colors for each different route"""
+        # TODO: Map routes via dictionary met als values de coordinaten en lijnen tussen de punten, op kleur per route
+        trainnames = routes.keys()
+        for trains in trainnames:
+            tempstations = routes[trains]
+
+            # Iterates over stations until the second to last station to plot the driven routes
+            for i in range(1, len(tempstations) - 1, 1):
+                stat1 = []
+                stat2 = []
+
+                # Sets the stations as source and destination
+                source_station = tempstations[i]
+                desintation_station = tempstations[i + 1]
+
+                x_coords1, y_coords1 = float(self.correctcoords[source_station][0]), float(self.correctcoords[source_station][1])
+                xpt1, ypt1 = self.m(y_coords1, x_coords1)
+                stat1.append(xpt1)
+                stat2.append(ypt1)
+
+                x_coords2, y_coords2 = float(self.correctcoords[desintation_station][0]), float(self.correctcoords[desintation_station][1])
+                xpt2, ypt2 = self.m(y_coords2, x_coords2)
+                stat1.append(xpt2)
+                stat2.append(ypt2)
+                
+                # TODO: Implement color generation module to pick a random color, ensuring it is unique amongst its peers
+                self.m.plot(stat1, stat2, color ='RANGENCOLOR', linewidth = 1)
+
         # Take train routes and load them into a list/dict
         # Generate random colors based on the amount of trains, make sure no repeat of colors
         # Extract station names per train
         # Draw driven connections between stations using unique colors for each route
+        plt.savefig('routesopkaart.png', bbox_inces = 'tight', pad_inches = 0)
+
+    def statsplot_routes(self):
+        """Plots most visited stations and most succesfull routes in the algorithms
+           Aims to discover patterns in generated data"""
         pass
         
 
@@ -87,5 +119,5 @@ mappings.print_to_image()
 mappings.print_connections()
 
 
-# TODO: Map routes via dictionary met als values de coordinaten en lijnen tussen de punten, op kleur per route
+
 # TODO: Visualisaties van meest bezochte stations in histogram etc
