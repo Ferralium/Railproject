@@ -15,9 +15,7 @@ import random
 from station import Station
 from train import Train
 import pandas as pd
-# import workbook
-# import openpyxl
-# from csv import DictWriter
+
 
 class Railsolver():
 
@@ -214,8 +212,6 @@ class Railsolver():
 
         # save the excel
         data_to_excel.save()
-
-
 
 
 if __name__ == '__main__':
