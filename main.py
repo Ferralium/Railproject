@@ -66,52 +66,92 @@ class Railsolver():
 
     def routecalc(self, train_stations):
         time = 0
+
         # Determine start point and from there make route
-        starting_point = random.choice(self.statnames)
-        current_station = self.stations.get(starting_point)
-        print(f' Startpunt: {current_station}')
+        # starting_point = random.choice(self.statnames)
+        # current_station = self.stations.get(starting_point)
+        # print(f' Startpunt: {current_station}')
+        
+        # # makes sure the starting trajectory is new
+        # check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+        # print(check_startingpoint)
+
+        lowest_unused_connections = 100
+        all_stations_true = 0
+
+        for station in self.stations:
+            print(station)
+            check_connections = self.stations.get(station)
+            check_startingpoint = all(station is True for station in check_connections.connection_visited.values())
+            possible_current_station = self.stations.get(str(check_connections))
+            # print(check_startingpoint)
+
+            if check_startingpoint is True:
+                all_stations_true += 1
+           
+            if check_connections.connection_count == 1:
+                    # possible_current_station = self.stations.get(str(check_connections))
+                    # check_startingpoint = all(station is True for station in possible_current_station.connection_visited.values())
+                    # print(check_startingpoint)
+                    if check_startingpoint is False:
+                        current_station = self.stations.get(str(possible_current_station))
+                        break
+            elif check_connections.connection_count != 1 or check_startingpoint == False:
+                # possible_current_station = self.stations.get(str(check_connections))
+                unused_connections = 0
+                for connections in possible_current_station.connection_visited.values():
+                    # print(connections)
+                    if connections == False:
+                        unused_connections += 1
+                print(unused_connections)
+                if unused_connections < lowest_unused_connections and unused_connections != 0:
+                    lowest_used_connections = unused_connections
+                    # print(lowest_used_connections)
+                    current_station = self.stations.get(str(possible_current_station))
+        
+
+                #     current_station = self.stations.get(str(possible_current_station))
+                #     # possible_current_station = self.stations.get(str(connections))
+
+                    # print(check_connections, check_connections.connection_count)
+                    # break
+        
+        # current_station = self.stations.get(str(possible_current_station))
+        print(len(self.stations))
+        print(all_stations_true)
+        if all_stations_true is len(self.stations):
+            starting_point = random.choice(self.statnames)
+            current_station = self.stations.get(starting_point)
+
+        # print(current_station)
+
+
+        # oude algoritme!!!!
+        # checks if the station has 1 connection
+        # if check_startingpoint is False or current_station.connection_count != 1:
+        #     while current_station.connection_count != 1:
+        #         starting_point = random.choice(self.statnames)
+        #         current_station = self.stations.get(starting_point)
+        #         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+        #         if check_startingpoint is True and current_station.connection_count == 1:
+        #             break
+        #             break 
+        # #             starting_point = random.choice(self.statnames)
+        # #             current_station = self.stations.get(starting_point)
+        # #             break
+        # # elif check_startingpoint is True and current_station.connection_count != 1:
+        # #     while check_startingpoint is True:
+        # #         starting_point = random.choice(self.statnames)
+        # #         current_station = self.stations.get(starting_point)
+        # #         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+        # # elif check_startingpoint is True:
+        # #     starting_point = random.choice(self.statnames)
+        # #     current_station = self.stations.get(starting_point)
+        # #     check_startingpoint = all(station is True for station in current_station.connection_visited.values())
 
         # voeg de current station toe aan de lijst
         train_stations.append(current_station)
 
-        # ideas for algorithm:
-        # Starting point: makes sure the starting trajectory is a station with only 1 connection (dordrecht + den helder)
-        # starting point: starting with the stations with the least connections (omgekeerde van greedy)
-
-        # makes sure the starting trajectory is new
-        check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-        print(check_startingpoint)
-        # print(current_station.connection_visited.keys())
-
-        # checks if the station has 1 connection
-        if check_startingpoint is False or current_station.connection_count != 1:
-            while current_station.connection_count != 1:
-                starting_point = random.choice(self.statnames)
-                current_station = self.stations.get(starting_point)
-                check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-                if check_startingpoint is True and current_station.connection_count == 1:
-                    starting_point = random.choice(self.statnames)
-                    current_station = self.stations.get(starting_point)
-                # while check_startingpoint is True:
-                #     # in deze loop gaat t fout
-                #     starting_point = random.choice(self.statnames)
-                #     current_station = self.stations.get(starting_point)
-                #     check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-                #     print(current_station)
-                #     print(check_startingpoint)
-        elif check_startingpoint is True:
-            starting_point = random.choice(self.statnames)
-            current_station = self.stations.get(starting_point)
-            # if current_station.connection_count == 1:
-            #     starting_point = random.choice(self.statnames)
-            #     current_station = self.stations.get(starting_point)
-            # else:
-            #     while check_startingpoint is Tru:
-            #         starting_point = random.choice(self.statnames)
-            #         current_station = self.stations.get(starting_point)
-            #         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-            #         print(current_station)
-            #         print(check_startingpoint)
 
         while True:
 
@@ -136,6 +176,8 @@ class Railsolver():
                 return train_stations
 
             print(f' Current Station: {current_station}')
+            check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+            print(check_startingpoint)
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
             current_station = self.stations.get(str(next_station))
@@ -185,7 +227,7 @@ class Railsolver():
         """ Function that keeps track of all the train routes that have been made """
 
         # maak er eerst een dictionary van:
-        train_dictionary: dict[str, list[station]] = {}
+        train_dictionary: dict[str, list[Station]] = {}
         train_dictionary[train_number] = list_of_stations
         print(f'train_dictionary: {train_dictionary}')
         print(list_of_stations)
