@@ -64,8 +64,8 @@ class Railsolver():
                 elif templine[1] in self.stations:
                     self.stations[templine[1]].add_station(templine[0], int(templine[2]))
 
-    def routecalc(self, train_stations):
-        time = 0
+
+    def starting_station(self):
         lowest_unused_connections = 100
         all_stations_true = 0
 
@@ -100,6 +100,8 @@ class Railsolver():
             starting_point = random.choice(self.statnames)
             current_station = self.stations.get(starting_point)
 
+        return current_station
+
         # oude algoritme!!!!
         # checks if the station has 1 connection
         # if check_startingpoint is False or current_station.connection_count != 1:
@@ -123,8 +125,13 @@ class Railsolver():
         # #     current_station = self.stations.get(starting_point)
         # #     check_startingpoint = all(station is True for station in current_station.connection_visited.values())
 
+
+    def move(self, current_station, train_stations):
+        time = 0
+
         # voeg de current station toe aan de lijst
         train_stations.append(current_station)
+        print(train_stations)
 
         while True:
 
@@ -162,8 +169,16 @@ class Railsolver():
             print(f' Next Station: {current_station}')
             print(time)
             print(" ")
+    
+    def quality_calc(self, fraction):
+        pass
+        # T = 10
+        # Min = 6
+        # K = fraction*10000 - (T*100 + Min)
 
-            # K = p*10000 - (T*100 + Min)
+        # print(f'Quality: {K} = {fraction}*1000 - ({T}*100 + {Min})')
+
+        
 
     def fraction_calc(self) -> float:
         """ Function calculates percentage of used connections """
@@ -232,16 +247,14 @@ if __name__ == '__main__':
         print(" ")
         print("new trajectory")
 
-        list_of_stations = wisselstoring.routecalc(train_stations)
+        current_station = wisselstoring.starting_station()
+
+        list_of_stations = wisselstoring.move(current_station, train_stations)
         # print(list_of_stations)
 
         # voeg dit toe aan de tabel van treinen
         wisselstoring.table_of_trains(train_number, list_of_stations, train_dictionary)
+    
+    fraction = wisselstoring.fraction_calc()
+    wisselstoring.quality_calc(fraction)
 
-    print(wisselstoring.fraction_calc())
-    # while all_connections != 56:
-    #     for route in range(7):
-    #         print(" ")
-    #         print("new trajectory")
-    #         wisselstoring.routecalc()
-    #     all_connections = wisselstoring.fraction_calc()
