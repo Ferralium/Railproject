@@ -14,8 +14,8 @@
 import random
 from station import Station
 from train import Train
-import csv
-# from csv import DictWriter
+import pandas as pd
+
 
 class Railsolver():
 
@@ -77,7 +77,7 @@ class Railsolver():
 
             if check_startingpoint is True:
                 all_stations_true += 1
-           
+
             if check_connections.connection_count == 1:
                     if check_startingpoint is False:
                         current_station = self.stations.get(str(possible_current_station))
@@ -93,7 +93,7 @@ class Railsolver():
                 if unused_connections < lowest_unused_connections and unused_connections != 0:
                     lowest_used_connections = unused_connections
                     current_station = self.stations.get(str(possible_current_station))
-    
+
         print(len(self.stations))
         print(all_stations_true)
         if all_stations_true is len(self.stations):
@@ -109,7 +109,7 @@ class Railsolver():
         #         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
         #         if check_startingpoint is True and current_station.connection_count == 1:
         #             break
-        #             break 
+        #             break
         # #             starting_point = random.choice(self.statnames)
         # #             current_station = self.stations.get(starting_point)
         # #             break
@@ -196,69 +196,30 @@ class Railsolver():
         return fraction
 
 
-    def table_of_trains(self, train_number, list_of_stations):
+    def table_of_trains(self, train_number, list_of_stations, train_dictionary):
         """ Function that keeps track of all the train routes that have been made """
 
-        # maak er eerst een dictionary van:
-        train_dictionary: dict[str, list[Station]] = {}
+        # voeg de trein en stations toe aan de dictionary
         train_dictionary[train_number] = list_of_stations
-        print(f'train_dictionary: {train_dictionary}')
-        print(list_of_stations)
 
-        # open een csv bestand:
-        f = open('tabel.csv', 'w')
+        train_data = pd.DataFrame.from_dict(train_dictionary, orient='index')
+        print(train_data)
 
-        header = ['train','stations']
+        data_to_excel = pd.ExcelWriter('train_data.xlsx')
 
-        # create the csv writer
-        writer = csv.writer(f)
+        # write DataFrame to excel
+        train_data.to_excel(data_to_excel)
 
-        writer.writerow(header)
-        # write a row to the csv file
-        # writer.writerow(train_number)
-        # writer.writerow(list_of_stations)
-
-        if train_number != 'train_7':
-            writer.writerow(train_dictionary)
-
-        else:
-            writer.writerow("trein 7")
-        # close the file
-        f.close()
-
-        ## OPTIE 2
-
-        # with open('CSVFILE.csv', 'a', newline='') as f_object:
-        #     # Pass the CSV  file object to the Dictwriter() function
-        #     # Result - a DictWriter object
-        #     dictwriter_object = DictWriter(f_object, fieldnames=train_dictionary)
-        #     # Pass the data in the dictionary as an argument into the writerow() function
-        #     dictwriter_object.writerow(dict)
-        #     # Close the file object
-        #     f_object.close()
-
-        # close the file
-        # f.close()
+        # save the excel
+        data_to_excel.save()
 
 
-
-# CHECKPOINT
 if __name__ == '__main__':
     wisselstoring = Railsolver()
     wisselstoring.load_stations()
 
-    # maak een csv bestand met header
-    # f = open('tabel.csv', 'w')
-    #
-    # header = ['train','stations']
-    # # create the csv writer
-    # writer = csv.writer(f)
-    #
-    # # write a row to the csv file
-    # writer.writerow(header)
-
-    # close the file
-    # f.close()
+    # maak een lege dictionary waarin de treinen worden opgeslagen
+    train_dictionary: dict[str, list[Station]] = {}
 
     for route in range(7):
 
@@ -275,7 +236,7 @@ if __name__ == '__main__':
         # print(list_of_stations)
 
         # voeg dit toe aan de tabel van treinen
-        wisselstoring.table_of_trains(train_number, list_of_stations)
+        wisselstoring.table_of_trains(train_number, list_of_stations, train_dictionary)
 
     print(wisselstoring.fraction_calc())
     # while all_connections != 56:
