@@ -6,6 +6,8 @@ import matplotlib.pyplot as plt
 class Mapdrawer():
     def __init__(self):
         """Initializes the mapdrawer, loads in the correct coordinates from the csv"""
+        # Extracts correct coordinates from the CSV. Maps these to the station name as key
+        # TODO: Conversie hier van coordinaten en opslaan zodat niet hoeft te gebeuren bij individuele functies
         self.correctcoords = {}
         with open("data/StationsNationaal.csv") as f:
             next(f)
@@ -16,7 +18,7 @@ class Mapdrawer():
                 tempcoords.append(templine[2])
                 self.correctcoords[templine[0]] = tempcoords
                 
-
+        # Extracts the connections from the CSV
         self.connections = []
         with open('data/ConnectiesNationaal.csv') as c:
             next(c)
@@ -28,6 +30,7 @@ class Mapdrawer():
                 self.connections.append(tempconnect)
             
     def print_to_image(self):
+        """Prints all the stations on a map made with Miller Cylindrical projection and saves the map as .PNG"""
         # Miller cylindrical projection
         self.m = Basemap(projection = 'mill', llcrnrlat = 50.730, llcrnrlon = 3.279, urcrnrlat = 53.491, urcrnrlon = 7.295, resolution = 'h')
         self.m.drawcoastlines()
@@ -49,20 +52,33 @@ class Mapdrawer():
         for i in range(len(self.connections)):
             stat1 = []
             stat2 = []
+
+            # Extracts the names for the first and second station which are connected
             station1, station2 = self.connections[i][0], self.connections[i][1]
+
+            # Extracts the X and Y Geo-coordinates for the first station, converts these and saves them to the coordinate lists
             x_coords1, y_coords1 = float(self.correctcoords[station1][0]), float(self.correctcoords[station1][1])
             xpt1, ypt1 = self.m(y_coords1, x_coords1)
             stat1.append(xpt1)
             stat2.append(ypt1)
+
+            # Extracts the X and Y Geo-coordinates for the second station, converts these and saves them to the coordinate list
             x_coords2, y_coords2 = float(self.correctcoords[station2][0]), float(self.correctcoords[station2][1])
             xpt2, ypt2 = self.m(y_coords2, x_coords2)
             stat1.append(xpt2)
             stat2.append(ypt2)
+
+            # Plots a line between the coordinates of the stations
             self.m.plot(stat1, stat2, color='k', linewidth = 1)
+
         plt.savefig('lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0)
 
     def print_driven_routes(self, routes):
         """Takes the trainroutes and prints them on the map with colors for each different route"""
+        # Take train routes and load them into a list/dict
+        # Generate random colors based on the amount of trains, make sure no repeat of colors
+        # Extract station names per train
+        # Draw driven connections between stations using unique colors for each route
         pass
         
 
