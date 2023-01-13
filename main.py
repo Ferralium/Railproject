@@ -15,6 +15,8 @@ import random
 from station import Station
 from train import Train
 import pandas as pd
+# import workbook
+# import openpyxl
 # from csv import DictWriter
 
 class Railsolver():
@@ -201,11 +203,18 @@ class Railsolver():
 
         # voeg de trein en stations toe aan de dictionary
         train_dictionary[train_number] = list_of_stations
-        # print(f'train_dictionary: {train_dictionary}')
 
-        df = pd.DataFrame.from_dict(train_dictionary, orient='index')
-        print(df)
-        
+        train_data = pd.DataFrame.from_dict(train_dictionary, orient='index')
+        print(train_data)
+
+        data_to_excel = pd.ExcelWriter('train_data.xlsx')
+
+        # write DataFrame to excel
+        train_data.to_excel(data_to_excel)
+
+        # save the excel
+        data_to_excel.save()
+
 
 
 
