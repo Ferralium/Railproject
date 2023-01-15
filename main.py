@@ -149,11 +149,15 @@ class Railsolver():
                     possible_next_station = random.choice(list(current_station.connection_visited))
                     next_station = self.stations.get(possible_next_station)
 
-            time = time + current_station.connections.get(str(next_station))
+            all_time = time + current_station.connections.get(str(next_station))
 
             # stops if time is more than 2 hours
-            if time > 120:
-                return train_stations
+            if all_time > 120:
+                print(f'hi {all_time}')
+                print(f'this will be returned {time}')
+                return train_stations, time
+            else:
+                time = time + current_station.connections.get(str(next_station))
 
             print(f' Current Station: {current_station}')
             check_startingpoint = all(station is True for station in current_station.connection_visited.values())
@@ -170,13 +174,13 @@ class Railsolver():
             print(time)
             print(" ")
     
-    def quality_calc(self, fraction):
-        pass
-        # T = 10
-        # Min = 6
-        # K = fraction*10000 - (T*100 + Min)
 
-        # print(f'Quality: {K} = {fraction}*1000 - ({T}*100 + {Min})')
+    def quality_calc(self, fraction, number_of_routes, total_time_all_trajectories):
+        T = number_of_routes
+        Min = total_time_all_trajectories
+        K = fraction*10000 - (T*100 + Min)
+
+        print(f'Quality: {K} = {fraction}*1000 - ({T}*100 + {Min})')
 
         
 
@@ -203,15 +207,14 @@ class Railsolver():
                 if temporary_station.connection_visited[connecties] == True:
                     connected += 1
 
-        # final_total = round(total / 2)
-        # final_connected = round(total / 2)
 
         print(f' Connected: {connected}, Total: {total}')
         fraction: float = round(connected / total, 2)
+
         return fraction
 
 
-    def table_of_trains(self, train_number, list_of_stations, train_dictionary):
+    def table_of_trains(self, train_number, list_of_stations, time, train_dictionary):
         """ Function that keeps track of all the train routes that have been made """
 
         # voeg de trein en stations toe aan de dictionary
@@ -235,8 +238,12 @@ if __name__ == '__main__':
 
     # maak een lege dictionary waarin de treinen worden opgeslagen
     train_dictionary: dict[str, list[Station]] = {}
+    number_of_routes = 0
+    total_time = 0 
 
     for route in range(7):
+
+        number_of_routes += 1
 
         # maak de treinnaam
         train_number = "train_" + str(route + 1)
@@ -249,12 +256,18 @@ if __name__ == '__main__':
 
         current_station = wisselstoring.starting_station()
 
-        list_of_stations = wisselstoring.move(current_station, train_stations)
-        # print(list_of_stations)
+        list_of_stations_and_time = wisselstoring.move(current_station, train_stations)
 
         # voeg dit toe aan de tabel van treinen
-        wisselstoring.table_of_trains(train_number, list_of_stations, train_dictionary)
+        wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
+
+        time_trajectory = list_of_stations_and_time[1]
+
+        # add total time of all trajectories
+        total_time += time_trajectory
+
+    print(f'total time {total_time}')
     
     fraction = wisselstoring.fraction_calc()
-    wisselstoring.quality_calc(fraction)
+    wisselstoring.quality_calc(fraction, number_of_routes, total_time)
 
