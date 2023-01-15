@@ -1,12 +1,16 @@
 from mpl_toolkits.basemap import Basemap
 import matplotlib.pyplot as plt
+import random
 
 # Rework data to useable format
 
 class Mapdrawer():
     def __init__(self):
         """Initializes the mapdrawer, loads in the correct coordinates from the csv"""
-        
+
+        # Remembers color combinations for use in random color generator
+        self.colormap = []
+
         # Initializes the map projection with the Basemap module
         self.m = Basemap(projection = 'mill', llcrnrlat = 50.730, llcrnrlon = 3.279, urcrnrlat = 53.491, urcrnrlon = 7.295, resolution = 'h')
 
@@ -109,11 +113,25 @@ class Mapdrawer():
         """Plots most visited stations and most succesfull routes in the algorithms
            Aims to discover patterns in generated data"""
         pass
+
+    def color_generator(self):
+        """Generates random number combinations to get unique colors for trainroutes"""
+        while True:
+            colorlist = []
+            for i in range(3):
+                rand_col = random.random()
+                rand_col = round(rand_col, 1)
+                colorlist.append(rand_col) 
+
+            if colorlist not in self.colormap:
+                self.colormap.append(colorlist)
+                return False
         
 
 mappings = Mapdrawer()
 mappings.print_to_image()
 mappings.print_connections()
+mappings.color_generator()
 
 
 
