@@ -6,19 +6,24 @@ import matplotlib.pyplot as plt
 class Mapdrawer():
     def __init__(self):
         """Initializes the mapdrawer, loads in the correct coordinates from the csv"""
+        
+        # Initializes the map projection with the Basemap module
+        self.m = Basemap(projection = 'mill', llcrnrlat = 50.730, llcrnrlon = 3.279, urcrnrlat = 53.491, urcrnrlon = 7.295, resolution = 'h')
+
         # Extracts correct coordinates from the CSV. Maps these to the station name as key
-        # TODO: Conversie hier van coordinaten en opslaan zodat niet hoeft te gebeuren bij individuele functies
         self.correctcoords = {}
         with open("data/StationsNationaal.csv") as f:
             next(f)
             for line in f:
                 tempcoords = []
                 templine = line.strip().split(',')
-                tempcoords.append(templine[1])
-                tempcoords.append(templine[2])
+                xpt, ypt = self.m(float(templine[2]), float(templine[1]))
+                tempcoords.append(xpt)
+                tempcoords.append(ypt)
+
                 self.correctcoords[templine[0]] = tempcoords
-                
-        # Extracts the connections from the CSV
+
+        # Extracts the connections between the stations into a list
         self.connections = []
         with open('data/ConnectiesNationaal.csv') as c:
             next(c)
@@ -32,44 +37,36 @@ class Mapdrawer():
     def print_to_image(self):
         """Prints all the stations on a map made with Miller Cylindrical projection and saves the map as .PNG"""
         # Miller cylindrical projection
-        self.m = Basemap(projection = 'mill', llcrnrlat = 50.730, llcrnrlon = 3.279, urcrnrlat = 53.491, urcrnrlon = 7.295, resolution = 'h')
         self.m.drawcoastlines()
         self.m.drawcountries(linewidth=1)
         self.m.fillcontinents(color = 'coral', lake_color = 'aqua')
 
         # Drawing points on the map
         for station in self.correctcoords:
-            xcord, ycord = float(self.correctcoords[station][0]), float(self.correctcoords[station][1])
-            xpt, ypt = self.m(ycord, xcord)
-            self.m.plot(xpt, ypt, '.', markersize = 10, color = 'b')
+            self.m.plot(self.correctcoords[station][0], self.correctcoords[station][1], '.', markersize = 10, color = 'b')
 
         plt.savefig('puntopkaart.png', bbox_inches='tight', pad_inches=0)
 
     def print_connections(self):
         """Prints all connections between the stations"""
-        # Pakt lijst met connecties
-        # Print tussen de stations de connecties
         for i in range(len(self.connections)):
-            stat1 = []
-            stat2 = []
+            x_points = []
+            y_points = []
 
             # Extracts the names for the first and second station which are connected
             station1, station2 = self.connections[i][0], self.connections[i][1]
+            
+            # Extract coordinates for the first station
+            xpt1, ypt1 = self.correctcoords[station1][0], self.correctcoords[station1][1]
+            x_points.append(xpt1)
+            y_points.append(ypt1)
 
-            # Extracts the X and Y Geo-coordinates for the first station, converts these and saves them to the coordinate lists
-            x_coords1, y_coords1 = float(self.correctcoords[station1][0]), float(self.correctcoords[station1][1])
-            xpt1, ypt1 = self.m(y_coords1, x_coords1)
-            stat1.append(xpt1)
-            stat2.append(ypt1)
+            # Extracts coordinates for the second station
+            xpt2, ypt2 = self.correctcoords[station2][0], self.correctcoords[station2][1]
+            x_points.append(xpt2)
+            y_points.append(ypt2)
 
-            # Extracts the X and Y Geo-coordinates for the second station, converts these and saves them to the coordinate list
-            x_coords2, y_coords2 = float(self.correctcoords[station2][0]), float(self.correctcoords[station2][1])
-            xpt2, ypt2 = self.m(y_coords2, x_coords2)
-            stat1.append(xpt2)
-            stat2.append(ypt2)
-
-            # Plots a line between the coordinates of the stations
-            self.m.plot(stat1, stat2, color='k', linewidth = 1)
+            self.m.plot(x_points, y_points, color = 'k', linewidth = 1)
 
         plt.savefig('lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0)
 
