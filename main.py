@@ -22,13 +22,13 @@ class Railsolver():
 
     # Initializes the stations dictionary for the railsolver
     def __init__(self) -> None:
-        self.stations: dict = {}
-        self.statnames: list = []
+        self.stations: dict[str, Station] = {}
+        self.statnames: list[str] = []
 
         # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
         self.traincount: int = 1
 
-    def load_stations(self):
+    def load_stations(self) -> None:
         """Loads the stations with distances from the CSV.
            Also creates new stations for the connections if they are not already in the dict"""
 
@@ -39,7 +39,8 @@ class Railsolver():
             # For loop iterates over the lines in the csv and modifies them to usable format
             for line in f:
                 templine: str = line
-                templine: list[str] = templine.strip().split(',')
+                # ik denk dat we deze een andere variabele naam moeten geven, anders werkt de typehint niet.
+                templine = templine.strip().split(',')
 
                 # Adds unique station names to list to select random point later
                 for i in range(2):
@@ -127,7 +128,7 @@ class Railsolver():
         # #     check_startingpoint = all(station is True for station in current_station.connection_visited.values())
 
 
-    def move(self, current_station: str, train_stations: list) -> tuple[Station, int]:
+    def move(self, current_station: Station, train_stations: list[str]) -> tuple[Station, int]:
         time = 0
 
         # voeg de current station toe aan de lijst
@@ -250,7 +251,7 @@ if __name__ == '__main__':
         train_number: str = "train_" + str(route + 1)
 
         # maak een lege lijst voor de stations:
-        train_stations: list = []
+        train_stations: list[Station] = []
 
         print(" ")
         print("new trajectory")
