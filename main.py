@@ -178,16 +178,16 @@ class Railsolver():
             print(f' Next Station: {current_station}')
             print(time)
             print(" ")
-    
 
-    def quality_calc(self, fraction: float, number_of_routes: int, total_time_all_trajectories: int) -> None:
-        T: int = number_of_routes
-        Min: int = total_time_all_trajectories
+
+    def quality_calc(self, fraction: float, list_of_numbers) -> None:
+        T: int = list_of_numbers[1]
+        Min: int = list_of_numbers[0]
         K: float = fraction*10000 - (T*100 + Min)
 
         print(f'Quality: {K} = {fraction}*1000 - ({T}*100 + {Min})')
 
-        
+
 
     def fraction_calc(self) -> float:
         """ Function calculates percentage of used connections """
@@ -236,6 +236,44 @@ class Railsolver():
         # save the excel
         data_to_excel.save()
 
+    def take_a_ride(self):
+        """ Function that keeps the order of everything that must be done for the algorithm
+        (less in the main) """
+        total_time: int = 0
+        number_of_routes: int = 0
+
+        for route in range(7):
+
+            number_of_routes += 1
+
+            # maak de treinnaam
+            train_number: str = "train_" + str(route + 1)
+
+            # maak een lege lijst voor de stations:
+            train_stations: list[Station] = []
+
+            print(" ")
+            print("new trajectory")
+
+            current_station: Station = wisselstoring.starting_station()
+
+            list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
+
+            # voeg dit toe aan de tabel van treinen
+            wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
+
+            time_trajectory: int = list_of_stations_and_time[1]
+
+            # add total time of all trajectories
+            total_time += time_trajectory
+
+        list_of_numbers: list[int] = [total_time, number_of_routes]
+        print(f'list of numbers: {list_of_numbers}')
+        return list_of_numbers
+
+
+
+
 
 if __name__ == '__main__':
     wisselstoring = Railsolver()
@@ -243,36 +281,38 @@ if __name__ == '__main__':
 
     # maak een lege dictionary waarin de treinen worden opgeslagen
     train_dictionary: dict[str, list[Station]] = {}
-    number_of_routes: int = 0
-    total_time: int = 0 
+    # number_of_routes: int = 0
+    # total_time: int = 0
 
-    for route in range(7):
+    list_of_numbers = wisselstoring.take_a_ride()
 
-        number_of_routes += 1
+    # dit stuk naar een functie !
+    # for route in range(7):
+    #
+    #     number_of_routes += 1
+    #
+    #     # maak de treinnaam
+    #     train_number: str = "train_" + str(route + 1)
+    #
+    #     # maak een lege lijst voor de stations:
+    #     train_stations: list[Station] = []
+    #
+    #     print(" ")
+    #     print("new trajectory")
+    #
+    #     current_station: Station = wisselstoring.starting_station()
+    #
+    #     list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
+    #
+    #     # voeg dit toe aan de tabel van treinen
+    #     wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
+    #
+    #     time_trajectory: int = list_of_stations_and_time[1]
+    #
+    #     # add total time of all trajectories
+    #     total_time += time_trajectory
+    #
+    # print(f'total time {total_time}')
 
-        # maak de treinnaam
-        train_number: str = "train_" + str(route + 1)
-
-        # maak een lege lijst voor de stations:
-        train_stations: list[Station] = []
-
-        print(" ")
-        print("new trajectory")
-
-        current_station: Station = wisselstoring.starting_station()
-
-        list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
-
-        # voeg dit toe aan de tabel van treinen
-        wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
-
-        time_trajectory: int = list_of_stations_and_time[1]
-
-        # add total time of all trajectories
-        total_time += time_trajectory
-
-    print(f'total time {total_time}')
-    
     fraction: float = wisselstoring.fraction_calc()
-    wisselstoring.quality_calc(fraction, number_of_routes, total_time)
-
+    wisselstoring.quality_calc(fraction, list_of_numbers)
