@@ -16,6 +16,7 @@ from station import Station
 from train import Train
 import pandas as pd
 from typing import Any
+from representatie import Mapdrawer
 
 
 class Railsolver():
@@ -24,6 +25,7 @@ class Railsolver():
     def __init__(self) -> None:
         self.stations: dict[str, Station] = {}
         self.statnames: list[str] = []
+        self.drawmod = Mapdrawer()
 
         # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
         self.traincount: int = 1
@@ -131,7 +133,7 @@ class Railsolver():
         # #     check_startingpoint = all(station is True for station in current_station.connection_visited.values())
 
 
-    def move(self, current_station: Station, train_stations: list[str]) -> tuple[Station, int]:
+    def move(self, current_station, train_stations):
         time = 0
 
         # voeg de current station toe aan de lijst
@@ -271,6 +273,14 @@ class Railsolver():
         print(f'list of numbers: {list_of_numbers}')
         return list_of_numbers
 
+    def visualise(self):
+        """Uses the map visualisation module to create multiple images of the state of the map."""
+        # Prints all stations on a map of the Netherlands
+        self.drawmod.print_to_image()
+
+        # Prints all connections between stations on a map of the Netherlands
+        self.drawmod.print_connections()
+
 
 
 
@@ -316,3 +326,4 @@ if __name__ == '__main__':
 
     fraction: float = wisselstoring.fraction_calc()
     wisselstoring.quality_calc(fraction, list_of_numbers)
+    wisselstoring.visualise()
