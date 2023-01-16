@@ -15,17 +15,18 @@ import random
 from station import Station
 from train import Train
 import pandas as pd
+from typing import Any
 
 
 class Railsolver():
 
     # Initializes the stations dictionary for the railsolver
-    def __init__(self):
-        self.stations = {}
-        self.statnames = []
+    def __init__(self) -> None:
+        self.stations: dict = {}
+        self.statnames: list = []
 
         # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
-        self.traincount = 1
+        self.traincount: int = 1
 
     def load_stations(self):
         """Loads the stations with distances from the CSV.
@@ -37,8 +38,8 @@ class Railsolver():
 
             # For loop iterates over the lines in the csv and modifies them to usable format
             for line in f:
-                templine = line
-                templine = templine.strip().split(',')
+                templine: str = line
+                templine: list[str] = templine.strip().split(',')
 
                 # Adds unique station names to list to select random point later
                 for i in range(2):
@@ -65,39 +66,39 @@ class Railsolver():
                     self.stations[templine[1]].add_station(templine[0], int(templine[2]))
 
 
-    def starting_station(self):
-        lowest_unused_connections = 100
-        all_stations_true = 0
+    def starting_station(self) -> Station:
+        lowest_unused_connections: int = 100
+        all_stations_true: int = 0
 
         for station in self.stations:
             print(station)
-            check_connections = self.stations.get(station)
-            check_startingpoint = all(station is True for station in check_connections.connection_visited.values())
-            possible_current_station = self.stations.get(str(check_connections))
+            check_connections: Station = self.stations.get(station)
+            check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
+            possible_current_station: Station = self.stations.get(str(check_connections))
 
             if check_startingpoint is True:
                 all_stations_true += 1
 
             if check_connections.connection_count == 1:
                     if check_startingpoint is False:
-                        current_station = self.stations.get(str(possible_current_station))
+                        current_station: Station = self.stations.get(str(possible_current_station))
                         break
             elif check_connections.connection_count != 1 or check_startingpoint == False:
                 # possible_current_station = self.stations.get(str(check_connections))
-                unused_connections = 0
+                unused_connections: int = 0
                 for connections in possible_current_station.connection_visited.values():
                     # print(connections)
                     if connections == False:
                         unused_connections += 1
                 print(unused_connections)
                 if unused_connections < lowest_unused_connections and unused_connections != 0:
-                    lowest_used_connections = unused_connections
+                    lowest_unused_connections = unused_connections
                     current_station = self.stations.get(str(possible_current_station))
 
         print(len(self.stations))
         print(all_stations_true)
         if all_stations_true is len(self.stations):
-            starting_point = random.choice(self.statnames)
+            starting_point: str = random.choice(self.statnames)
             current_station = self.stations.get(starting_point)
 
         return current_station
@@ -126,7 +127,7 @@ class Railsolver():
         # #     check_startingpoint = all(station is True for station in current_station.connection_visited.values())
 
 
-    def move(self, current_station, train_stations):
+    def move(self, current_station: str, train_stations: list) -> tuple[Station, int]:
         time = 0
 
         # voeg de current station toe aan de lijst
@@ -136,10 +137,10 @@ class Railsolver():
         while True:
 
             # Moves to next random connection that has not been visited yet
-            possible_next_station = random.choice(list(current_station.connections))
-            next_station = self.stations.get(possible_next_station)
+            possible_next_station: str | Station = random.choice(list(current_station.connections))
+            next_station: Station = self.stations.get(possible_next_station)
 
-            check_stations = all(station is True for station in current_station.connection_visited.values())
+            check_stations: bool = all(station is True for station in current_station.connection_visited.values())
 
             if check_stations is True:
                 possible_next_station = random.choice(list(current_station.connections))
@@ -149,7 +150,7 @@ class Railsolver():
                     possible_next_station = random.choice(list(current_station.connection_visited))
                     next_station = self.stations.get(possible_next_station)
 
-            all_time = time + current_station.connections.get(str(next_station))
+            all_time: int = time + current_station.connections.get(str(next_station))
 
             # stops if time is more than 2 hours
             if all_time > 120:
@@ -160,11 +161,11 @@ class Railsolver():
                 time = time + current_station.connections.get(str(next_station))
 
             print(f' Current Station: {current_station}')
-            check_startingpoint = all(station is True for station in current_station.connection_visited.values())
+            check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
             print(check_startingpoint)
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
-            current_station = self.stations.get(str(next_station))
+            current_station: Station = self.stations.get(str(next_station))
 
             # voeg current_station toe aan de lijst
             train_stations.append(current_station)
@@ -175,10 +176,10 @@ class Railsolver():
             print(" ")
     
 
-    def quality_calc(self, fraction, number_of_routes, total_time_all_trajectories):
-        T = number_of_routes
-        Min = total_time_all_trajectories
-        K = fraction*10000 - (T*100 + Min)
+    def quality_calc(self, fraction: float, number_of_routes: int, total_time_all_trajectories: int) -> None:
+        T: int = number_of_routes
+        Min: int = total_time_all_trajectories
+        K: float = fraction*10000 - (T*100 + Min)
 
         print(f'Quality: {K} = {fraction}*1000 - ({T}*100 + {Min})')
 
@@ -238,36 +239,36 @@ if __name__ == '__main__':
 
     # maak een lege dictionary waarin de treinen worden opgeslagen
     train_dictionary: dict[str, list[Station]] = {}
-    number_of_routes = 0
-    total_time = 0 
+    number_of_routes: int = 0
+    total_time: int = 0 
 
     for route in range(7):
 
         number_of_routes += 1
 
         # maak de treinnaam
-        train_number = "train_" + str(route + 1)
+        train_number: str = "train_" + str(route + 1)
 
         # maak een lege lijst voor de stations:
-        train_stations = []
+        train_stations: list = []
 
         print(" ")
         print("new trajectory")
 
-        current_station = wisselstoring.starting_station()
+        current_station: Station = wisselstoring.starting_station()
 
-        list_of_stations_and_time = wisselstoring.move(current_station, train_stations)
+        list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
 
         # voeg dit toe aan de tabel van treinen
         wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
 
-        time_trajectory = list_of_stations_and_time[1]
+        time_trajectory: int = list_of_stations_and_time[1]
 
         # add total time of all trajectories
         total_time += time_trajectory
 
     print(f'total time {total_time}')
     
-    fraction = wisselstoring.fraction_calc()
+    fraction: float = wisselstoring.fraction_calc()
     wisselstoring.quality_calc(fraction, number_of_routes, total_time)
 
