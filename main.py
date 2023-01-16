@@ -68,7 +68,9 @@ class Railsolver():
 
 
     def starting_station(self) -> Station:
-        lowest_unused_connections: int = 100
+        first_number_connections = list(self.stations.values())[0]
+        highest_unused_connections = first_number_connections.connection_count
+        # highest_unused_connections = station_one.connection_count
         all_stations_true: int = 0
 
         for station in self.stations:
@@ -92,8 +94,9 @@ class Railsolver():
                     if connections == False:
                         unused_connections += 1
                 print(unused_connections)
-                if unused_connections < lowest_unused_connections and unused_connections != 0:
-                    lowest_unused_connections = unused_connections
+                print(highest_unused_connections)
+                if unused_connections < highest_unused_connections and unused_connections != 0:
+                    highest_unused_connections = unused_connections
                     current_station = self.stations.get(str(possible_current_station))
 
         print(len(self.stations))
