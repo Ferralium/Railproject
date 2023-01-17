@@ -34,7 +34,7 @@ class Railsolver():
         """Loads the stations with distances from the CSV.
            Also creates new stations for the connections if they are not already in the dict"""
 
-        with open('data/ConnectiesHollandKlein.csv') as f:
+        with open('data/ConnectiesHolland.csv') as f:
             # Met de next functie wordt de eerste lijn overgeslagen, dit geeft alleen informatie over de inhoud
             next(f)
 
@@ -273,13 +273,16 @@ class Railsolver():
         print(f'list of numbers: {list_of_numbers}')
         return list_of_numbers
 
-    def visualise(self):
+    def visualise(self, routes):
         """Uses the map visualisation module to create multiple images of the state of the map."""
         # Prints all stations on a map of the Netherlands
         self.drawmod.print_to_image()
 
         # Prints all connections between stations on a map of the Netherlands
         self.drawmod.print_connections()
+
+        # Prints the driven routes with unique colors
+        self.drawmod.print_driven_routes(routes)
 
 
 
@@ -290,7 +293,7 @@ if __name__ == '__main__':
     wisselstoring.load_stations()
 
     # maak een lege dictionary waarin de treinen worden opgeslagen
-    train_dictionary: dict[str, list[Station]] = {}
+    train_dictionary = {}
     # number_of_routes: int = 0
     # total_time: int = 0
 
@@ -323,7 +326,7 @@ if __name__ == '__main__':
     #     total_time += time_trajectory
     #
     # print(f'total time {total_time}')
-
+    
     fraction: float = wisselstoring.fraction_calc()
     wisselstoring.quality_calc(fraction, list_of_numbers)
-    wisselstoring.visualise()
+    wisselstoring.visualise(train_dictionary)
