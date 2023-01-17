@@ -34,7 +34,7 @@ class Railsolver():
         """Loads the stations with distances from the CSV.
            Also creates new stations for the connections if they are not already in the dict"""
 
-        with open('data/ConnectiesHolland.csv') as f:
+        with open('data/ConnectiesNationaal.csv') as f:
             # Met de next functie wordt de eerste lijn overgeslagen, dit geeft alleen informatie over de inhoud
             next(f)
 
@@ -53,20 +53,20 @@ class Railsolver():
 
                 # Checks if station already exists, if so adds connection
                 if templine[0] in self.stations:
-                    self.stations[templine[0]].add_station(templine[1], int(templine[2]))
+                    self.stations[templine[0]].add_station(templine[1], float(templine[2]))
 
                 # If the station does not exist initializes the station and adds the connection
                 elif templine[0] not in self.stations:
                     self.stations[templine[0]] = Station(templine[0])
-                    self.stations[templine[0]].add_station(templine[1], int(templine[2]))
+                    self.stations[templine[0]].add_station(templine[1], float(templine[2]))
 
                 # Checks whether the connection already exists in the stations and adds it if this is not the case
                 if templine[1] not in self.stations:
                     self.stations[templine[1]] = Station(templine[1])
-                    self.stations[templine[1]].add_station(templine[0], int(templine[2]))
+                    self.stations[templine[1]].add_station(templine[0], float(templine[2]))
 
                 elif templine[1] in self.stations:
-                    self.stations[templine[1]].add_station(templine[0], int(templine[2]))
+                    self.stations[templine[1]].add_station(templine[0], float(templine[2]))
 
 
     def starting_station(self) -> Station:
@@ -158,8 +158,8 @@ class Railsolver():
 
             all_time: int = time + current_station.connections.get(str(next_station))
 
-            # stops if time is more than 2 hours
-            if all_time > 120:
+            # stops if time is more than 3 hours
+            if all_time > 180:
                 print(f'hi {all_time}')
                 print(f'this will be returned {time}')
                 return train_stations, time
@@ -244,7 +244,7 @@ class Railsolver():
         total_time: int = 0
         number_of_routes: int = 0
 
-        for route in range(7):
+        for route in range(20):
 
             number_of_routes += 1
 
