@@ -82,7 +82,7 @@ class Mapdrawer():
         # Loads in and loops over all trains with individual routes
         for trains in trainroutes:
             self.color_generator()
-            colorcounter += 1
+            
             tempstations = routes[trains]
 
             # Iterates over stations until the second to last station to plot the driven routes
@@ -104,14 +104,13 @@ class Mapdrawer():
                 x_coords.append(xpt2)
                 y_coords.append(ypt2)
                 
-                self.m.plot(x_coords, y_coords, color = self.colormap[colorcounter], linewidth = 1)
+                # Plots the connection between the stations on the map, using the generated colors for the particular route number
+                self.m.plot(x_coords, y_coords, color = (self.colormap[colorcounter][0], self.colormap[colorcounter][1], self.colormap[colorcounter][2]), linewidth = 1)
+            
+            # Moves to the next point in the color library to avoid using the same colors
+            colorcounter += 1
 
-        # Take train routes and load them into a list/dict
-        # Generate random colors based on the amount of trains, make sure no repeat of colors
-        # Extract station names per train
-        # Draw driven connections between stations using unique colors for each route
-
-        plt.savefig('routesopkaart.png', bbox_inces = 'tight', pad_inches = 0)
+        plt.savefig('routesopkaart.png', bbox_inches = 'tight', pad_inches = 0)
 
     def statsplot_routes(self):
         """Plots most visited stations and most succesfull routes in the algorithms
@@ -121,9 +120,12 @@ class Mapdrawer():
     def color_generator(self):
         """Generates random number combinations to get unique colors for trainroutes"""
         while True:
+            
             colorlist = []
             for i in range(3):
-                rand_col = random.random()
+                rand_col = 0
+                while rand_col <= 0.1:
+                    rand_col = random.random()
                 rand_col = round(rand_col, 1)
                 colorlist.append(rand_col) 
 
@@ -145,7 +147,7 @@ class ResultStats():
 mappings = Mapdrawer()
 mappings.print_to_image()
 mappings.print_connections()
-mappings.color_generator()
+
 
 
 
