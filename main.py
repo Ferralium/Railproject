@@ -237,7 +237,8 @@ class Railsolver():
 
         # save the excel
         data_to_excel.save()
-
+    
+    
     def take_a_ride(self):
         """ Function that keeps the order of everything that must be done for the algorithm
         (less in the main) """
