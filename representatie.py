@@ -16,7 +16,7 @@ class Mapdrawer():
 
         # Extracts correct coordinates from the CSV. Maps these to the station name as key
         self.correctcoords = {}
-        with open("data/StationsHolland.csv") as f:
+        with open("data/StationsNationaal.csv") as f:
             next(f)
             for line in f:
                 tempcoords = []
@@ -29,7 +29,7 @@ class Mapdrawer():
 
         # Extracts the connections between the stations into a list
         self.connections = []
-        with open('data/ConnectiesHolland.csv') as c:
+        with open('data/ConnectiesNationaal.csv') as c:
             next(c)
             for line in c:
                 tempconnect = []

@@ -15,7 +15,7 @@ import random
 from station import Station
 from train import Train
 import pandas as pd
-from typing import Any
+from typing import Any 
 from representatie import Mapdrawer
 
 
