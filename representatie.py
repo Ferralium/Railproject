@@ -132,6 +132,16 @@ class Mapdrawer():
                 return False
         
 
+class ResultStats():
+    def __init__(self, experi_results):
+        # Initialiseert de module met de uitkomsten van de experimenten
+        self.results = experi_results
+        pass
+
+    def draw_hist(self):
+        """Uses the provided soltuions and draws a histogram to plot the results"""
+        pass
+
 mappings = Mapdrawer()
 mappings.print_to_image()
 mappings.print_connections()
