@@ -76,38 +76,41 @@ class Mapdrawer():
 
     def print_driven_routes(self, routes):
         """Takes the trainroutes and prints them on the map with colors for each different route"""
-        # TODO: Map routes via dictionary met als values de coordinaten en lijnen tussen de punten, op kleur per route
-        trainnames = routes.keys()
-        for trains in trainnames:
+        colorcounter = 0
+        trainroutes = routes
+
+        # Loads in and loops over all trains with individual routes
+        for trains in trainroutes:
+            self.color_generator()
+            
             tempstations = routes[trains]
 
             # Iterates over stations until the second to last station to plot the driven routes
             for i in range(1, len(tempstations) - 1, 1):
-                stat1 = []
-                stat2 = []
+                x_coords = []
+                y_coords = []
 
                 # Sets the stations as source and destination
                 source_station = tempstations[i]
                 desintation_station = tempstations[i + 1]
 
-                x_coords1, y_coords1 = float(self.correctcoords[source_station][0]), float(self.correctcoords[source_station][1])
-                xpt1, ypt1 = self.m(y_coords1, x_coords1)
-                stat1.append(xpt1)
-                stat2.append(ypt1)
+                # Extracts coordinates for the first station
+                xpt1, ypt1 = self.correctcoords[str(source_station)][0], self.correctcoords[str(source_station)][1]
+                x_coords.append(xpt1)
+                y_coords.append(ypt1)
 
-                x_coords2, y_coords2 = float(self.correctcoords[desintation_station][0]), float(self.correctcoords[desintation_station][1])
-                xpt2, ypt2 = self.m(y_coords2, x_coords2)
-                stat1.append(xpt2)
-                stat2.append(ypt2)
+                # Extracts coordinates for the second station
+                xpt2, ypt2 = self.correctcoords[str(desintation_station)][0], self.correctcoords[str(desintation_station)][1]
+                x_coords.append(xpt2)
+                y_coords.append(ypt2)
                 
-                # TODO: Implement color generation module to pick a random color, ensuring it is unique amongst its peers
-                self.m.plot(stat1, stat2, color ='RANGENCOLOR', linewidth = 1)
+                # Plots the connection between the stations on the map, using the generated colors for the particular route number
+                self.m.plot(x_coords, y_coords, color = (self.colormap[colorcounter][0], self.colormap[colorcounter][1], self.colormap[colorcounter][2]), linewidth = 1)
+            
+            # Moves to the next point in the color library to avoid using the same colors
+            colorcounter += 1
 
-        # Take train routes and load them into a list/dict
-        # Generate random colors based on the amount of trains, make sure no repeat of colors
-        # Extract station names per train
-        # Draw driven connections between stations using unique colors for each route
-        plt.savefig('routesopkaart.png', bbox_inces = 'tight', pad_inches = 0)
+        plt.savefig('routesopkaart.png', bbox_inches = 'tight', pad_inches = 0)
 
     def statsplot_routes(self):
         """Plots most visited stations and most succesfull routes in the algorithms
@@ -117,9 +120,12 @@ class Mapdrawer():
     def color_generator(self):
         """Generates random number combinations to get unique colors for trainroutes"""
         while True:
+            
             colorlist = []
             for i in range(3):
-                rand_col = random.random()
+                rand_col = 0
+                while rand_col <= 0.1:
+                    rand_col = random.random()
                 rand_col = round(rand_col, 1)
                 colorlist.append(rand_col) 
 
@@ -128,10 +134,20 @@ class Mapdrawer():
                 return False
         
 
+class ResultStats():
+    def __init__(self, experi_results):
+        # Initialiseert de module met de uitkomsten van de experimenten
+        self.results = experi_results
+        pass
+
+    def draw_hist(self):
+        """Uses the provided soltuions and draws a histogram to plot the results"""
+        pass
+
 mappings = Mapdrawer()
 mappings.print_to_image()
 mappings.print_connections()
-mappings.color_generator()
+
 
 
 

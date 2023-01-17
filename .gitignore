@@ -4,8 +4,13 @@ __pycache__/
 *$py.class
 
 # Local folders
-/data
 /images
+
+# Generated images
+*.png
+
+# Generated Excel files
+*.xlsx
 
 # C extensions
 *.so
