@@ -17,6 +17,7 @@ from train import Train
 import pandas as pd
 from typing import Any
 from representatie import Mapdrawer
+import sys
 
 
 class Railsolver():
@@ -25,7 +26,7 @@ class Railsolver():
     def __init__(self) -> None:
         self.stations: dict[str, Station] = {}
         self.statnames: list[str] = []
-        self.drawmod = Mapdrawer()
+        
 
         # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
         self.traincount: int = 1
@@ -159,9 +160,9 @@ class Railsolver():
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
         T: int = list_of_numbers[1]
         Min: int = list_of_numbers[0]
-        K: float = fraction*10000 - (T*100 + Min)
-
-        print(f'Quality: {K} = {fraction}*1000 - ({T}*100 + {Min})')
+        self.K: float = fraction*10000 - (T*100 + Min)
+        self.quality = f'Quality: {self.K} = {fraction}*1000 - ({T}*100 + {Min})'
+        print(self.quality)
 
 
 
@@ -249,6 +250,9 @@ class Railsolver():
 
     def visualise(self, routes):
         """Uses the map visualisation module to create multiple images of the state of the map."""
+        # Initializes the map
+        self.drawmod = Mapdrawer()
+
         # Prints all stations on a map of the Netherlands
         self.drawmod.print_to_image()
 
@@ -258,49 +262,63 @@ class Railsolver():
         # Prints the driven routes with unique colors
         self.drawmod.print_driven_routes(routes)
 
-
-
-
-
 if __name__ == '__main__':
-    wisselstoring = Railsolver()
-    wisselstoring.load_stations()
+    best_solution = {}
+    best_score = 0
+    best_calc = ''
+    mean_solution = 0
+    num_of_runs = 1
+    numcommand = sys.argv[1]
+    
+    if int(sys.argv[1]) > 1:
+        num_of_runs = int(sys.argv[1])  
 
-    # maak een lege dictionary waarin de treinen worden opgeslagen
-    train_dictionary = {}
-    # number_of_routes: int = 0
-    # total_time: int = 0
+    for i in range(num_of_runs):
+        wisselstoring = Railsolver()
+        wisselstoring.load_stations()
 
-    list_of_numbers = wisselstoring.take_a_ride()
+        # maak een lege dictionary waarin de treinen worden opgeslagen
+        train_dictionary = {}
+        # number_of_routes: int = 0
+        # total_time: int = 0
 
-    # dit stuk naar een functie !
-    # for route in range(7):
-    #
-    #     number_of_routes += 1
-    #
-    #     # maak de treinnaam
-    #     train_number: str = "train_" + str(route + 1)
-    #
-    #     # maak een lege lijst voor de stations:
-    #     train_stations: list[Station] = []
-    #
-    #     print(" ")
-    #     print("new trajectory")
-    #
-    #     current_station: Station = wisselstoring.starting_station()
-    #
-    #     list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
-    #
-    #     # voeg dit toe aan de tabel van treinen
-    #     wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
-    #
-    #     time_trajectory: int = list_of_stations_and_time[1]
-    #
-    #     # add total time of all trajectories
-    #     total_time += time_trajectory
-    #
-    # print(f'total time {total_time}')
+        list_of_numbers = wisselstoring.take_a_ride()
 
-    fraction: float = wisselstoring.fraction_calc()
-    wisselstoring.quality_calc(fraction, list_of_numbers)
-    wisselstoring.visualise(train_dictionary)
+        # dit stuk naar een functie !
+        # for route in range(7):
+        #
+        #     number_of_routes += 1
+        #
+        #     # maak de treinnaam
+        #     train_number: str = "train_" + str(route + 1)
+        #
+        #     # maak een lege lijst voor de stations:
+        #     train_stations: list[Station] = []
+        #
+        #     print(" ")
+        #     print("new trajectory")
+        #
+        #     current_station: Station = wisselstoring.starting_station()
+        #
+        #     list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
+        #
+        #     # voeg dit toe aan de tabel van treinen
+        #     wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
+        #
+        #     time_trajectory: int = list_of_stations_and_time[1]
+        #
+        #     # add total time of all trajectories
+        #     total_time += time_trajectory
+        #
+        # print(f'total time {total_time}')
+
+        fraction: float = wisselstoring.fraction_calc()
+        wisselstoring.quality_calc(fraction, list_of_numbers)
+        mean_solution += wisselstoring.K
+        if wisselstoring.K > best_score:
+            best_score = wisselstoring.K
+            best_solution = train_dictionary
+            best_calc = wisselstoring.quality
+    wisselstoring.visualise(best_solution)
+    print(f'Best solution found: {best_calc}')
+    print(f'Average soluton: {mean_solution / num_of_runs}')

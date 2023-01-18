@@ -133,6 +133,9 @@ class Mapdrawer():
                 self.colormap.append(colorlist)
                 return False
         
+    def map_to_gif(self):
+        """Takes all generated PNG's and creates an animated .gif for visualisation."""
+        pass
 
 class ResultStats():
     def __init__(self, experi_results):
