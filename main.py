@@ -237,7 +237,7 @@ class Railsolver():
             list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
 
             # voeg dit toe aan de tabel van treinen
-            # wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
+            wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
 
             time_trajectory: int = list_of_stations_and_time[1]
 
@@ -268,6 +268,7 @@ if __name__ == '__main__':
     best_calc = ''
     mean_solution = 0
     num_of_runs = 1
+    histoscore = []
 
     file1 = open('results/resultsformula.txt', 'w')
     file1.close()
@@ -326,6 +327,7 @@ if __name__ == '__main__':
         fraction: float = wisselstoring.fraction_calc()
         wisselstoring.quality_calc(fraction, list_of_numbers)
         mean_solution += wisselstoring.K
+        
         if wisselstoring.K > best_score:
             best_score = wisselstoring.K
             best_solution = train_dictionary
@@ -344,6 +346,4 @@ if __name__ == '__main__':
     # wisselstoring.visualise(best_solution)
     print(f'Best solution found: {best_calc}')
     print(f'Average soluton: {mean_solution / num_of_runs}')
-    mean = open('results/score.txt', 'a')
-    mean.write(f'Mean: {mean_solution / num_of_runs}')
-    mean.close()
+    

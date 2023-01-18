@@ -111,6 +111,8 @@ class Mapdrawer():
             colorcounter += 1
 
         plt.savefig('images/routesopkaart.png', bbox_inches = 'tight', pad_inches = 0)
+        # Necessary to prevent map from being drawn into histogram
+        plt.close()
 
     def statsplot_routes(self):
         """Plots most visited stations and most succesfull routes in the algorithms
@@ -141,11 +143,11 @@ class ResultStats():
     def __init__(self, experi_results):
         # Initialiseert de module met de uitkomsten van de experimenten
         self.results = experi_results
-        pass
 
     def draw_hist(self):
         """Uses the provided soltuions and draws a histogram to plot the results"""
-        pass
+        
+        self.results.hist(bins = 10, edgecolor = 'black')
 
 mappings = Mapdrawer()
 mappings.print_to_image()
