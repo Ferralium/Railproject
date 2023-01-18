@@ -49,7 +49,7 @@ class Mapdrawer():
         for station in self.correctcoords:
             self.m.plot(self.correctcoords[station][0], self.correctcoords[station][1], '.', markersize = 10, color = 'b')
 
-        plt.savefig('puntopkaart.png', bbox_inches='tight', pad_inches=0)
+        plt.savefig('images/puntopkaart.png', bbox_inches='tight', pad_inches=0)
 
     def print_connections(self):
         """Prints all connections between the stations"""
@@ -72,7 +72,7 @@ class Mapdrawer():
 
             self.m.plot(x_points, y_points, color = 'k', linewidth = 1)
 
-        plt.savefig('lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0)
+        plt.savefig('images/lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0)
 
     def print_driven_routes(self, routes):
         """Takes the trainroutes and prints them on the map with colors for each different route"""
@@ -110,7 +110,7 @@ class Mapdrawer():
             # Moves to the next point in the color library to avoid using the same colors
             colorcounter += 1
 
-        plt.savefig('routesopkaart.png', bbox_inches = 'tight', pad_inches = 0)
+        plt.savefig('images/routesopkaart.png', bbox_inches = 'tight', pad_inches = 0)
 
     def statsplot_routes(self):
         """Plots most visited stations and most succesfull routes in the algorithms
