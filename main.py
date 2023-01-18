@@ -344,3 +344,6 @@ if __name__ == '__main__':
     # wisselstoring.visualise(best_solution)
     print(f'Best solution found: {best_calc}')
     print(f'Average soluton: {mean_solution / num_of_runs}')
+    mean = open('results/score.txt', 'a')
+    mean.write(f'Mean: {mean_solution / num_of_runs}')
+    mean.close()
