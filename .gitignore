@@ -9,8 +9,9 @@ __pycache__/
 # Generated images
 *.png
 
-# Generated Excel files
+# Generated result files
 *.xlsx
+*.txt
 
 # C extensions
 *.so
