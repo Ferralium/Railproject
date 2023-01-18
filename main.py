@@ -268,10 +268,16 @@ if __name__ == '__main__':
     best_calc = ''
     mean_solution = 0
     num_of_runs = 1
-    numcommand = sys.argv[1]
+
+
     
-    if int(sys.argv[1]) > 1:
-        num_of_runs = int(sys.argv[1])  
+    if len(sys.argv) >= 2:
+        if sys.argv[1].isnumeric() == False:
+            print('Usage: python3 main.py (Optional) n')
+            sys.exit()
+        numcommand = sys.argv[1]
+        if int(sys.argv[1]) > 1:
+            num_of_runs = int(sys.argv[1]) 
 
     for i in range(num_of_runs):
         wisselstoring = Railsolver()
