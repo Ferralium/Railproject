@@ -154,8 +154,4 @@ class Gifgenerator:
 
         frames[0].save('images/animatedroutes.gif', format = 'GIF', append_images=frames[1:], save_all = True, duration = 300, loop = 0)
 
-
-gify = Gifgenerator()
-gify.map_to_gif()
-
 # TODO: Visualisaties van meest bezochte stations in histogram etc

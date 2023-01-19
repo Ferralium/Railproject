@@ -252,7 +252,6 @@ class Railsolver():
         """Uses the map visualisation module to create multiple images of the state of the map."""
         # Initializes the map
         self.drawmod = Mapdrawer()
-        self.gifmod = Gifgenerator()
 
         # Prints all stations on a map of the Netherlands
         self.drawmod.print_to_image()
@@ -262,6 +261,9 @@ class Railsolver():
 
         # Prints the driven routes with unique colors
         self.drawmod.print_driven_routes(routes)
+
+        # Initializes gif generator
+        self.gifmod = Gifgenerator()
 
 if __name__ == '__main__':
     best_solution = {}
