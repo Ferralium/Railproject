@@ -1,4 +1,6 @@
 from mpl_toolkits.basemap import Basemap
+from PIL import Image
+import glob
 import matplotlib.pyplot as plt
 import random
 
@@ -49,7 +51,7 @@ class Mapdrawer():
         for station in self.correctcoords:
             self.m.plot(self.correctcoords[station][0], self.correctcoords[station][1], '.', markersize = 10, color = 'b')
 
-        plt.savefig('images/puntopkaart.png', bbox_inches='tight', pad_inches=0)
+        # plt.savefig('images/puntopkaart.png', bbox_inches='tight', pad_inches=0)
 
     def print_connections(self):
         """Prints all connections between the stations"""
@@ -72,11 +74,12 @@ class Mapdrawer():
 
             self.m.plot(x_points, y_points, color = 'k', linewidth = 1)
 
-        plt.savefig('images/lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0)
+        # plt.savefig('images/lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0)
 
     def print_driven_routes(self, routes):
         """Takes the trainroutes and prints them on the map with colors for each different route"""
         colorcounter = 0
+        piccounter = 1
         trainroutes = routes
 
         # Loads in and loops over all trains with individual routes
@@ -106,11 +109,13 @@ class Mapdrawer():
                 
                 # Plots the connection between the stations on the map, using the generated colors for the particular route number
                 self.m.plot(x_coords, y_coords, color = (self.colormap[colorcounter][0], self.colormap[colorcounter][1], self.colormap[colorcounter][2]), linewidth = 1)
+                plt.savefig(f'gifgen/route{piccounter}.png')
+                piccounter += 1
             
             # Moves to the next point in the color library to avoid using the same colors
             colorcounter += 1
 
-        plt.savefig('images/routesopkaart.png', bbox_inches = 'tight', pad_inches = 0)
+        # plt.savefig('images/routesopkaart.png', bbox_inches = 'tight', pad_inches = 0)
         # Necessary to prevent map from being drawn into histogram
         plt.close()
 
@@ -134,26 +139,23 @@ class Mapdrawer():
             if colorlist not in self.colormap:
                 self.colormap.append(colorlist)
                 return False
-        
-    def map_to_gif(self):
-        """Takes all generated PNG's and creates an animated .gif for visualisation."""
+
+class Gifgenerator:
+    def __init__(self):
         pass
 
-class ResultStats():
-    def __init__(self, experi_results):
-        # Initialiseert de module met de uitkomsten van de experimenten
-        self.results = experi_results
+    def map_to_gif(self):
+        """Takes all generated PNG's and creates an animated .gif for visualisation."""
+        frames = []
+        imgs = glob.glob('gifgen/*.png')
+        for i in imgs:
+            new_frame = Image.open(i)
+            frames.append(new_frame)
 
-    def draw_hist(self):
-        """Uses the provided soltuions and draws a histogram to plot the results"""
-        
-        self.results.hist(bins = 10, edgecolor = 'black')
-
-mappings = Mapdrawer()
-mappings.print_to_image()
-mappings.print_connections()
+        frames[0].save('images/animatedroutes.gif', format = 'GIF', append_images=frames[1:], save_all = True, duration = 300, loop = 0)
 
 
-
+gify = Gifgenerator()
+gify.map_to_gif()
 
 # TODO: Visualisaties van meest bezochte stations in histogram etc

@@ -5,6 +5,7 @@ __pycache__/
 
 # Generated images
 *.png
+*.gif
 
 # Generated result files
 *.xlsx

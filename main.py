@@ -16,7 +16,7 @@ from station import Station
 from train import Train
 import pandas as pd
 from typing import Any
-from representatie import Mapdrawer
+from representatie import Mapdrawer, Gifgenerator
 import sys
 
 
@@ -252,6 +252,7 @@ class Railsolver():
         """Uses the map visualisation module to create multiple images of the state of the map."""
         # Initializes the map
         self.drawmod = Mapdrawer()
+        self.gifmod = Gifgenerator()
 
         # Prints all stations on a map of the Netherlands
         self.drawmod.print_to_image()
@@ -343,7 +344,8 @@ if __name__ == '__main__':
         score.write('\n')
         score.close()
 
-    # wisselstoring.visualise(best_solution)
+    wisselstoring.visualise(best_solution)
+    wisselstoring.gifmod.map_to_gif()
     print(f'Best solution found: {best_calc}')
     print(f'Average soluton: {mean_solution / num_of_runs}')
     
