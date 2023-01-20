@@ -4,7 +4,7 @@ class RandomAlgorithm:
     def __init__(self):
         pass
 
-    def starting_station(self, station_dictionary):
+    def starting_station(self, station_dictionary, statnames):
         """"Picks a purely random starting station from the list of all possible stations"""
         current_station = random.choice(list(station_dictionary.values()))
         print(f'random starting station: {current_station}')

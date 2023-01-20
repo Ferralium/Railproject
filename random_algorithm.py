@@ -19,7 +19,8 @@ import pandas as pd
 from typing import Any
 from representatie import Mapdrawer, Gifgenerator
 import sys
-
+from algorithms.random_algo  import RandomAlgorithm
+from algorithms.smart_algo import SmartAlgorithm
 
 class Railsolver():
 
@@ -77,95 +78,9 @@ class Railsolver():
 
     def algorithm_selection(self):
         if self.algoselector == 1:
-            pass
-        pass
-
-    def starting_station(self) -> Station:
-        # first_number_connections = list(self.stations.values())[0]
-        # highest_unused_connections = first_number_connections.connection_count
-        # # highest_unused_connections = station_one.connection_count
-        # all_stations_true: int = 0
-
-        # voor het baseline algoritme wordt er een random station als beginstation gekozen
-        current_station = random.choice(list(self.stations.values()))
-        print(f'random starting station: {current_station}')
-        return current_station
-
-        # oude algoritme!!!!
-        # checks if the station has 1 connection
-        # if check_startingpoint is False or current_station.connection_count != 1:
-        #     while current_station.connection_count != 1:
-        #         starting_point = random.choice(self.statnames)
-        #         current_station = self.stations.get(starting_point)
-        #         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-        #         if check_startingpoint is True and current_station.connection_count == 1:
-        #             break
-        #             break
-        # #             starting_point = random.choice(self.statnames)
-        # #             current_station = self.stations.get(starting_point)
-        # #             break
-        # # elif check_startingpoint is True and current_station.connection_count != 1:
-        # #     while check_startingpoint is True:
-        # #         starting_point = random.choice(self.statnames)
-        # #         current_station = self.stations.get(starting_point)
-        # #         check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-        # # elif check_startingpoint is True:
-        # #     starting_point = random.choice(self.statnames)
-        # #     current_station = self.stations.get(starting_point)
-        # #     check_startingpoint = all(station is True for station in current_station.connection_visited.values())
-
-
-    def move(self, current_station, train_stations):
-        time = 0
-
-        # voeg de current station toe aan de lijst
-        train_stations.append(current_station)
-        print(train_stations)
-
-        while True:
-
-            # Moves to next random connection that has not been visited yet
-            possible_next_station: str | Station = random.choice(list(current_station.connections))
-            next_station: Station = self.stations.get(possible_next_station)
-
-            # Baseline: volgende station random (ook al is het al bezocht, mag je er heen)
-            # daarom het deel hieronder uitgecommend
-
-            # check_stations: bool = all(station is True for station in current_station.connection_visited.values())
-            #
-            # if check_stations is True:
-            #     possible_next_station = random.choice(list(current_station.connections))
-            #     next_station = self.stations.get(possible_next_station)
-            # else:
-            #     while current_station.is_visited(str(next_station)) is True:
-            #         possible_next_station = random.choice(list(current_station.connection_visited))
-            #         next_station = self.stations.get(possible_next_station)
-
-            all_time: int = time + current_station.connections.get(str(next_station))
-
-            # stops if time is more than 3 hours
-            if all_time > 180:
-                print(f'hi {all_time}')
-                print(f'this will be returned {time}')
-                return train_stations, time
-            else:
-                time = time + current_station.connections.get(str(next_station))
-
-            print(f' Current Station: {current_station}')
-            # check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
-            # print(check_startingpoint)
-            current_station.stationvisit(str(next_station))
-            next_station.stationvisit(str(current_station))
-            current_station: Station = self.stations.get(str(next_station))
-
-            # voeg current_station toe aan de lijst
-            train_stations.append(current_station)
-            # print("treinstation toegevoegd")
-
-            print(f' Next Station: {current_station}')
-            print(time)
-            print(" ")
-
+            self.algo = RandomAlgorithm()
+        elif self.algoselector == 2:
+            self.algo = SmartAlgorithm()
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
         T: int = list_of_numbers[1]
@@ -173,8 +88,6 @@ class Railsolver():
         self.K: float = fraction*10000 - (T*100 + Min)
         self.quality = f'Quality: {self.K} = {fraction}*1000 - ({T}*100 + {Min})'
         print(self.quality)
-
-
 
     def fraction_calc(self) -> float:
         """ Function calculates percentage of used connections """
@@ -199,12 +112,10 @@ class Railsolver():
                 if temporary_station.connection_visited[connecties] == True:
                     connected += 1
 
-
         print(f' Connected: {connected}, Total: {total}')
         fraction: float = round(connected / total, 2)
 
         return fraction
-
 
     def table_of_trains(self, train_number, list_of_stations, time, train_dictionary):
         """ Function that keeps track of all the train routes that have been made """
@@ -242,9 +153,9 @@ class Railsolver():
             print(" ")
             print("new trajectory")
 
-            current_station: Station = wisselstoring.starting_station()
+            current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
-            list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
+            list_of_stations_and_time: tuple[Station, int] = self.algo.move(current_station, train_stations, self.stations)
 
             # voeg dit toe aan de tabel van treinen
             wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
@@ -279,8 +190,9 @@ if __name__ == '__main__':
     start_time = time.time()
     statconnectlib = {}
     statnamelib = []
+    algoselect = 1
 
-    wisselstoring = Railsolver(statconnectlib, statnamelib)
+    wisselstoring = Railsolver(statconnectlib, statnamelib, algoselect)
     statconnectlib, statnamelib = wisselstoring.load_stations()
     best_solution = {}
     best_score = 0
@@ -367,8 +279,8 @@ if __name__ == '__main__':
         score.write('\n')
         score.close()
 
-    wisselstoring.visualise(best_solution)
-    wisselstoring.gifmod.map_to_gif()
+    # wisselstoring.visualise(best_solution)
+    # wisselstoring.gifmod.map_to_gif()
     print(f'Best solution found: {best_calc}')
     print(f'Average soluton: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
