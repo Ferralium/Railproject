@@ -11,6 +11,7 @@
 """
 # TYPEHINTS!!! DOCSTRINGS!! COMMENTS!!!
 
+import time
 import random
 from station import Station
 from train import Train
@@ -23,10 +24,9 @@ import sys
 class Railsolver():
 
     # Initializes the stations dictionary for the railsolver
-    def __init__(self) -> None:
-        self.stations: dict[str, Station] = {}
-        self.statnames: list[str] = []
-        
+    def __init__(self, stations, statnames) -> None:
+        self.stations =  stations
+        self.statnames = statnames
 
         # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
         self.traincount: int = 1
@@ -68,6 +68,8 @@ class Railsolver():
 
                 elif templine[1] in self.stations:
                     self.stations[templine[1]].add_station(templine[0], float(templine[2]))
+
+        return self.stations, self.statnames
 
 
     def starting_station(self) -> Station:
@@ -266,12 +268,19 @@ class Railsolver():
         self.gifmod = Gifgenerator()
 
 if __name__ == '__main__':
+    start_time = time.time()
+    statconnectlib = {}
+    statnamelib = []
+
+    wisselstoring = Railsolver(statconnectlib, statnamelib)
+    statconnectlib, statnamelib = wisselstoring.load_stations()
     best_solution = {}
     best_score = 0
     best_calc = ''
     mean_solution = 0
     num_of_runs = 1
     histoscore = []
+
 
     file1 = open('results/resultsformula.txt', 'w')
     file1.close()
@@ -289,8 +298,7 @@ if __name__ == '__main__':
             num_of_runs = int(sys.argv[1]) 
 
     for i in range(num_of_runs):
-        wisselstoring = Railsolver()
-        wisselstoring.load_stations()
+        wisselstoring = Railsolver(statconnectlib, statnamelib)
 
         # maak een lege dictionary waarin de treinen worden opgeslagen
         train_dictionary = {}
@@ -350,4 +358,4 @@ if __name__ == '__main__':
     wisselstoring.gifmod.map_to_gif()
     print(f'Best solution found: {best_calc}')
     print(f'Average soluton: {mean_solution / num_of_runs}')
-    
+    print(f'Runtime: {time.time() - start_time}')
