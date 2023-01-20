@@ -1,12 +1,12 @@
 import random
 from station import Station
 
-class SmartAlgorithm:
+class LeastConnections:
     def __init__(self):
         pass
 
     def starting_station(self, station_dictionary, statnames):
-        """"Picks a starting station which has the least connections to move from outside to inside of connections"""
+        """Picks a starting station which has the least connections to move from outside to inside of connections"""
         first_number_connections = list(station_dictionary.values())[0]
         highest_unused_connections = first_number_connections.connection_count
         # highest_unused_connections = station_one.connection_count
@@ -46,30 +46,52 @@ class SmartAlgorithm:
 
         return current_station
 
+
     def move(self, current_station, train_stations, stations_dictionary):
         time = 0
-
+        
         # voeg de current station toe aan de lijst
         train_stations.append(current_station)
         print(train_stations)
 
         while True:
+            print(current_station)
 
-            # Moves to next random connection that has not been visited yet
-            possible_next_station: str | Station = random.choice(list(current_station.connections))
-            next_station: Station = stations_dictionary.get(possible_next_station)
+            check_used_connections: bool = all(station is True for station in current_station.connection_visited.values())
 
-            check_stations: bool = all(station is True for station in current_station.connection_visited.values())
+            possible_next_stations = list(current_station.connections)
+            print(possible_next_stations)
 
-            if check_stations is True:
-                possible_next_station = random.choice(list(current_station.connections))
-                next_station = stations_dictionary.get(possible_next_station)
+            if len(possible_next_stations) == 1 and check_used_connections != True:
+                str_next_station = possible_next_stations[0]
+                next_station = stations_dictionary.get(str(str_next_station))
+                # amount_of_connections = len(next_station.connections)
             else:
-                while current_station.is_visited(str(next_station)) is True:
-                    possible_next_station = random.choice(list(current_station.connection_visited))
-                    next_station = stations_dictionary.get(possible_next_station)
+                temp = stations_dictionary.get(possible_next_stations[0])
+                amount_of_connections = len(temp.connections)
+                lowest_unused_connection = 100
+                for possible_station in possible_next_stations:
+                    counting_possible_station = stations_dictionary.get(possible_station)
+                    check_used_connections: bool = all(station is True for station in counting_possible_station.connection_visited.values())
+                    if check_used_connections is False:
+                        unused_connection = 0
+                        for connection in counting_possible_station.connection_visited:
+                            if connection is False:
+                                unused_connection += 1
+                        if unused_connection < lowest_unused_connection:
+                            next_station = stations_dictionary.get(str(possible_station))
+                    # also count the connectiosn that are False!!! those are the ones that count and as long they are not 0
+                    # amount_of_connections_station = len(counting_possible_station.connections)
+                    # if amount_of_connections_station < amount_of_connections:
+                    #     amount_of_connections = amount_of_connections_station
+                    #     next_station = stations_dictionary.get(str(possible_station))
+
+            # print(f'hi {amount_of_connections}')
+            print(next_station)
+            print(f'c {current_station.connections.get(str(next_station))}')
 
             all_time: int = time + current_station.connections.get(str(next_station))
+
 
             # stops if time is more than 3 hours
             if all_time > 180:
@@ -79,9 +101,9 @@ class SmartAlgorithm:
             else:
                 time = time + current_station.connections.get(str(next_station))
 
-            print(f' Current Station: {current_station}')
-            check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
-            print(check_startingpoint)
+            # print(f' Current Station: {current_station}')
+            # check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
+            # print(check_startingpoint)
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
             current_station: Station = stations_dictionary.get(str(next_station))
@@ -93,4 +115,3 @@ class SmartAlgorithm:
             print(f' Next Station: {current_station}')
             print(time)
             print(" ")
-   

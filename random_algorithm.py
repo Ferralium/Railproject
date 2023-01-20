@@ -21,6 +21,7 @@ from representatie import Mapdrawer, Gifgenerator
 import sys
 from algorithms.random_algo  import RandomAlgorithm
 from algorithms.smart_algo import SmartAlgorithm
+from algorithms.least_connections import LeastConnections
 
 class Railsolver():
 
@@ -81,6 +82,8 @@ class Railsolver():
             self.algo = RandomAlgorithm()
         elif self.algoselector == 2:
             self.algo = SmartAlgorithm()
+        elif self.algoselector == 3:
+            self.algo = LeastConnections()
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
         T: int = list_of_numbers[1]
