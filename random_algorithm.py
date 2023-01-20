@@ -24,9 +24,13 @@ import sys
 class Railsolver():
 
     # Initializes the stations dictionary for the railsolver
-    def __init__(self, stations, statnames) -> None:
+    def __init__(self, stations, statnames, algonum) -> None:
         self.stations =  stations
         self.statnames = statnames
+        self.algoselector = algonum
+
+        # Selects and implements the algorithm for the railsolver
+        self.algorithm_selection()
 
         # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
         self.traincount: int = 1
@@ -71,6 +75,10 @@ class Railsolver():
 
         return self.stations, self.statnames
 
+    def algorithm_selection(self):
+        if self.algoselector == 1:
+            pass
+        pass
 
     def starting_station(self) -> Station:
         # first_number_connections = list(self.stations.values())[0]
@@ -293,12 +301,17 @@ if __name__ == '__main__':
         if sys.argv[1].isnumeric() == False:
             print('Usage: python3 main.py (Optional) n')
             sys.exit()
-        numcommand = sys.argv[1]
         if int(sys.argv[1]) > 1:
-            num_of_runs = int(sys.argv[1]) 
+            num_of_runs = int(sys.argv[1])
+        if len(sys.argv) >= 3:
+            if sys.argv[1].isnumeric() == False and sys.argv[2].isnumeric() == False:
+                print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
+            if int(sys.argv[2]) > 1:
+                algoselect = int(sys.argv[2])
+
 
     for i in range(num_of_runs):
-        wisselstoring = Railsolver(statconnectlib, statnamelib)
+        wisselstoring = Railsolver(statconnectlib, statnamelib, algoselect)
 
         # maak een lege dictionary waarin de treinen worden opgeslagen
         train_dictionary = {}
