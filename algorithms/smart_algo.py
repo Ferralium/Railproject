@@ -80,8 +80,8 @@ class SmartAlgorithm:
                 time = time + current_station.connections.get(str(next_station))
 
             print(f' Current Station: {current_station}')
-            check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
-            print(check_startingpoint)
+            # check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
+            # print(check_startingpoint)
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
             current_station: Station = stations_dictionary.get(str(next_station))

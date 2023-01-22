@@ -53,33 +53,52 @@ class LeastConnections:
         # voeg de current station toe aan de lijst
         train_stations.append(current_station)
         print(train_stations)
+        # print(current_station.connection_visited.values())
 
         while True:
             print(current_station)
 
             check_used_connections: bool = all(station is True for station in current_station.connection_visited.values())
 
-            possible_next_stations = list(current_station.connections)
-            print(possible_next_stations)
+            # possible_next_stations = list(current_station.connections)
+            # print(possible_next_stations)
 
-            if len(possible_next_stations) == 1 and check_used_connections != True:
-                str_next_station = possible_next_stations[0]
-                next_station = stations_dictionary.get(str(str_next_station))
-                # amount_of_connections = len(next_station.connections)
-            else:
-                temp = stations_dictionary.get(possible_next_stations[0])
-                amount_of_connections = len(temp.connections)
-                lowest_unused_connection = 100
-                for possible_station in possible_next_stations:
-                    counting_possible_station = stations_dictionary.get(possible_station)
-                    check_used_connections: bool = all(station is True for station in counting_possible_station.connection_visited.values())
-                    if check_used_connections is False:
+            # if len(possible_next_stations) == 2 and check_used_connections != True:
+            #     str_next_station = possible_next_stations[0]
+            #     next_station = stations_dictionary.get(str(str_next_station))
+            #     # amount_of_connections = len(next_station.connections)
+            # else:
+            # temp = stations_dictionary.get(possible_next_stations[0])
+            # amount_of_connections = len(temp.connections)
+            lowest_unused_connection = 100
+            all_connections_used = 0
+
+            for possible_station in current_station.connections:
+                # print("q")
+                counting_possible_station = stations_dictionary.get(possible_station)
+                check_used_connections: bool = all(station is True for station in counting_possible_station.connection_visited.values())
+                if check_used_connections is False:
+                    # print("2")
+                    
+                    for connection in counting_possible_station.connection_visited:
                         unused_connection = 0
-                        for connection in counting_possible_station.connection_visited:
-                            if connection is False:
-                                unused_connection += 1
-                        if unused_connection < lowest_unused_connection:
-                            next_station = stations_dictionary.get(str(possible_station))
+                        # print("3")
+                        if connection is False:
+                            unused_connection += 1
+                    # if unused_connection < lowest_unused_connection:
+                    if unused_connection < lowest_unused_connection and unused_connection != 1:
+                        next_station = stations_dictionary.get(str(possible_station))
+            
+            # name_next_station: str = random.choice(list(current_station.connections))
+            # next_station = stations_dictionary.get(name_next_station)
+                    # all_connections_used += 0
+            
+            # if all_connections_used == len(current_station.connections):
+            #     # print("4")
+            #     name_next_station: str = random.choice(current_station.connections)
+            #     next_station = stations_dictionary.get(name_next_station)
+
+
                     # also count the connectiosn that are False!!! those are the ones that count and as long they are not 0
                     # amount_of_connections_station = len(counting_possible_station.connections)
                     # if amount_of_connections_station < amount_of_connections:
@@ -100,8 +119,9 @@ class LeastConnections:
                 return train_stations, time
             else:
                 time = time + current_station.connections.get(str(next_station))
+            
 
-            # print(f' Current Station: {current_station}')
+            print(f' Current Station: {current_station}')
             # check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
             # print(check_startingpoint)
             current_station.stationvisit(str(next_station))
@@ -110,8 +130,31 @@ class LeastConnections:
 
             # voeg current_station toe aan de lijst
             train_stations.append(current_station)
-            # print("treinstation toegevoegd")
+
+
+            # # WERKT NIET, OM HEM OP VISITED TE ZETTEN
+
+
+            # # print(f' Current Station: {current_station}')
+            # # check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
+            # # print(check_startingpoint)
+            # print(f'1: {next_station}')
+            # print(f'1: {current_station}')
+            # print(current_station.connection_visited.values())
+            # current_station.stationvisit(str(next_station))
+            # # print(current_station.connection_visited.values())
+            # next_station.stationvisit(str(current_station))
+            # # print(current_station.stationvisit(str(next_station)))
+            # # print(next_station.stationvisit(str(current_station)))
+            # current_station: Station = stations_dictionary.get(str(next_station))
+            # print(current_station.connection_visited.values())
+
+            # # voeg current_station toe aan de lijst
+            # train_stations.append(current_station)
+            # # print("treinstation toegevoegd")
 
             print(f' Next Station: {current_station}')
             print(time)
             print(" ")
+
+
