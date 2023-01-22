@@ -19,8 +19,7 @@ class ShortestTimeHeuristic:
                 all_stations_true += 1
             else:
                 #  while current_station.is_visited(str(next_station)) is True:
-                for possible_station in check_connections.connection_visited: # kan weg, rest aanpassen
-
+                for possible_station in check_connections.connection_visited:
                 # for value in check_connections.connections.values():
                     # for station in check_connections.connection_visited:
                         # print(f"wbjdwjedb {check_connections.connection_visited[station]}")
@@ -41,6 +40,7 @@ class ShortestTimeHeuristic:
 
     def move(self, current_station, train_stations, stations_dictionary):
         time = 0
+        all_stations_true = 0
         
         # voeg de current station toe aan de lijst
         train_stations.append(current_station)
@@ -54,9 +54,18 @@ class ShortestTimeHeuristic:
             check_stations: bool = all(station is True for station in current_station.connection_visited.values())
         
             if check_stations is True:
+                for station in stations_dictionary:
+                    check_connections = stations_dictionary.get(station)
+                    check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
+                    # print(check_startingpoint)
+                    if check_startingpoint is True:
+                        all_stations_true += 1
+                if all_stations_true is len(stations_dictionary):
+                    return train_stations, time
+                else:
                     for connections in current_station.connections:
                         check_connections = stations_dictionary.get(connections)
-                        print(check_connections)
+                        # print(check_connections)
                         for value in check_connections.connections.values():
                             if value < shortest_connection:
                                 shortest_connection = value
@@ -94,6 +103,7 @@ class ShortestTimeHeuristic:
                 return train_stations, time
             else:
                 time = time + current_station.connections.get(str(next_station))
+                print(f'current {time}')
 
             print(f' Current Station: {current_station}')
             current_station.stationvisit(str(next_station))
