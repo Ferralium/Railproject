@@ -22,7 +22,8 @@ import sys
 from algorithms.random_algo  import RandomAlgorithm
 from algorithms.smart_algo import SmartAlgorithm
 from algorithms.least_connections import LeastConnections
-from algorithms.time_heuristic import ShortestTimeHeuristic
+from algorithms.ShortestTimeHeuristic import ShortestTimeHeuristic
+from algorithms.LongestTimeHeuristic import LongestTimeHeuristic
 
 class Railsolver():
 
@@ -87,6 +88,8 @@ class Railsolver():
             self.algo = LeastConnections()
         elif self.algoselector == 4:
             self.algo = ShortestTimeHeuristic()
+        elif self.algoselector == 5:
+            self.algo = LongestTimeHeuristic()
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
         T: int = list_of_numbers[1]
