@@ -293,7 +293,7 @@ if __name__ == '__main__':
         score.write('\n')
         score.close()
 
-    # wisselstoring.visualise(best_solution)
+    wisselstoring.visualise(best_solution)
     # wisselstoring.gifmod.map_to_gif()
     print(f'Best solution found: {best_calc}')
     print(f'Average soluton: {mean_solution / num_of_runs}')
