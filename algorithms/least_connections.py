@@ -48,6 +48,7 @@ class LeastConnections:
 
 
     def move(self, current_station, train_stations, stations_dictionary):
+        ## gebruik connection_count in station clas!!!!!
         time = 0
         
         # voeg de current station toe aan de lijst

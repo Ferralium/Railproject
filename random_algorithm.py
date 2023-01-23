@@ -24,7 +24,7 @@ from algorithms.smart_algo import SmartAlgorithm
 from algorithms.least_connections import LeastConnections
 from algorithms.ShortestTimeHeuristic import ShortestTimeHeuristic
 from algorithms.LongestTimeHeuristic import LongestTimeHeuristic
-
+from algorithms.MostConnectionsHeuristic import MostConnectionsHeuristic
 class Railsolver():
 
     # Initializes the stations dictionary for the railsolver
@@ -87,9 +87,14 @@ class Railsolver():
         elif self.algoselector == 3:
             self.algo = LeastConnections()
         elif self.algoselector == 4:
-            self.algo = ShortestTimeHeuristic()
+            self.algo = MostConnectionsHeuristic()
         elif self.algoselector == 5:
+            self.algo = ShortestTimeHeuristic()
+        elif self.algoselector == 6:
             self.algo = LongestTimeHeuristic()
+        elif self.algoselector == 7:
+            self.algo = MostConnectionsHeuristic()
+        
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
         T: int = list_of_numbers[1]

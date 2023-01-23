@@ -1,5 +1,6 @@
 import random 
 
+
 class ShortestTimeHeuristic:
 
     def __init__(self):
@@ -33,6 +34,7 @@ class ShortestTimeHeuristic:
 
 
         if all_stations_true is len(station_dictionary):
+            # eigenlijk hier al de trein laten stoppen
             starting_point: str = random.choice(statnames)
             current_station = station_dictionary.get(starting_point)
         
@@ -48,6 +50,7 @@ class ShortestTimeHeuristic:
 
 
         while True:
+            
             shortest_connection = 100
             print(f'hello {current_station.connection_visited}')
 
@@ -55,14 +58,17 @@ class ShortestTimeHeuristic:
         
             if check_stations is True:
                 for station in stations_dictionary:
-                    check_connections = stations_dictionary.get(station)
-                    check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
-                    # print(check_startingpoint)
-                    if check_startingpoint is True:
-                        all_stations_true += 1
-                if all_stations_true is len(stations_dictionary):
-                    return train_stations, time
-                else:
+                    # trein stopt als alle connecties zijn bereden
+                #     check_connections = stations_dictionary.get(station)
+                #     check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
+                #     # print(check_startingpoint)
+                #     if check_startingpoint is True:
+                #         all_stations_true += 1
+                # print(all_stations_true)
+                # print(len(stations_dictionary))
+                # if all_stations_true == len(stations_dictionary):
+                #     return train_stations, time
+                # else:
                     for connections in current_station.connections:
                         check_connections = stations_dictionary.get(connections)
                         # print(check_connections)
