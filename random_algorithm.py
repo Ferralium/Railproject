@@ -84,7 +84,7 @@ class Railsolver():
             self.algo = RandomAlgorithm()
         elif self.algoselector == 2:
             self.algo = SmartAlgorithm()
-        elif sef.algoselector == 3:
+        elif self.algoselector == 3:
             self.ago = GreedyAlgorithm()
         elif self.algoselector == 4:
             self.algo = LeastConnections()
