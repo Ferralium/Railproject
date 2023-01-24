@@ -19,6 +19,9 @@ class Station:
         """sets a connections to visited"""
         self.connection_visited[connection] = True
     
+    def station_unvisit(self, connection) -> None:
+        self.connection_visited[connection] = False
+    
     def is_visited(self, next_connection: str) -> bool:
         """checks if a connection is visited and return True or False"""
         return self.connection_visited[next_connection]

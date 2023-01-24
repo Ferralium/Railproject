@@ -26,7 +26,7 @@ class MostConnectionsHeuristic:
 
                 if unused_connections > highest_unused_connections:
                     highest_unused_connections = unused_connections
-                    current_station = station_dictionary.get(str(possible_current_station))
+                    current_station = station_dictionary.get(str(stations))
 
         print(len(station_dictionary))
         print(all_stations_true)
@@ -38,26 +38,42 @@ class MostConnectionsHeuristic:
 
     def move(self, current_station, train_stations, stations_dictionary):
         time = 0
+        
 
         # voeg de current station toe aan de lijst
         train_stations.append(current_station)
-        print(train_stations)
+        # print(train_stations)
 
         while True:
-
-            # Moves to next random connection that has not been visited yet
-            possible_next_station: str | Station = random.choice(list(current_station.connections))
-            next_station: Station = stations_dictionary.get(possible_next_station)
+            highest_unused_connections = 0
 
             check_stations: bool = all(station is True for station in current_station.connection_visited.values())
-
+            
+            # alle trajecten bereden? kies dan random...
             if check_stations is True:
                 possible_next_station = random.choice(list(current_station.connections))
                 next_station = stations_dictionary.get(possible_next_station)
+                print("hi")
             else:
-                while current_station.is_visited(str(next_station)) is True:
-                    possible_next_station = random.choice(list(current_station.connection_visited))
-                    next_station = stations_dictionary.get(possible_next_station)
+                print("bye")
+                for connections in current_station.connections:
+                    print(connections)
+                    possible_next_station = stations_dictionary.get(connections)
+                    for station in possible_next_station.connection_visited.values():
+                        unused_connection = 0
+                        print(possible_next_station.connection_visited, station)
+                        if station is False:
+                            unused_connection += 1
+                    print(highest_unused_connections)
+                    print(unused_connection)
+                    print(station)
+                    # gaat hier fout, na den haag HS
+                    if unused_connection > highest_unused_connections:
+                        highest_unused_connections = unused_connection
+                        print("lol")
+                        next_station = stations_dictionary.get(connections)
+                        print(next_station)
+            print("c")
 
             all_time: int = time + current_station.connections.get(str(next_station))
 
@@ -72,7 +88,8 @@ class MostConnectionsHeuristic:
             print(f' Current Station: {current_station}')
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
-            current_station: Station = stations_dictionary.get(str(next_station))
+
+            current_station = stations_dictionary.get(str(next_station))
 
             # voeg current_station toe aan de lijst
             train_stations.append(current_station)

@@ -92,8 +92,6 @@ class Railsolver():
             self.algo = ShortestTimeHeuristic()
         elif self.algoselector == 6:
             self.algo = LongestTimeHeuristic()
-        elif self.algoselector == 7:
-            self.algo = MostConnectionsHeuristic()
         
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
@@ -181,7 +179,17 @@ class Railsolver():
 
         list_of_numbers: list[int] = [total_time, number_of_routes]
         print(f'list of numbers: {list_of_numbers}')
+
         return list_of_numbers
+    
+    def clear_visited_stations(self):
+        for station in self.stations:
+            temp_station = self.stations[station]
+            # print(temp_station.connection_visited.values())
+            for connection in temp_station.connection_visited:
+                temp_station.station_unvisit(connection)
+            # print(temp_station.connection_visited.values())
+
 
     def visualise(self, routes):
         """Uses the map visualisation module to create multiple images of the state of the map."""
@@ -292,6 +300,7 @@ if __name__ == '__main__':
         score.write(str(wisselstoring.K))
         score.write('\n')
         score.close()
+        wisselstoring.clear_visited_stations()
 
     wisselstoring.visualise(best_solution)
     # wisselstoring.gifmod.map_to_gif()

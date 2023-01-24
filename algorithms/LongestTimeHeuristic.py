@@ -52,8 +52,8 @@ class LongestTimeHeuristic:
                     check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
                     if check_startingpoint is True:
                         all_stations_true += 1
-                if all_stations_true is len(stations_dictionary):
-                    return train_stations, time
+                # if all_stations_true is len(stations_dictionary):
+                #     return train_stations, time
                 else:
                     for connections in current_station.connections:
                         check_connections = stations_dictionary.get(connections)
