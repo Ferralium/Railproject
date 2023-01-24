@@ -22,7 +22,7 @@ from algorithms.smart_algo import SmartAlgorithm
 from algorithms.least_connections import LeastConnections
 from algorithms.ShortestTimeHeuristic import ShortestTimeHeuristic
 from algorithms.LongestTimeHeuristic import LongestTimeHeuristic
-from algorithms.SimulatedAnnealing import SimulatedAnnealing
+from algorithms.simulatedannealing import SimulatedAnnealing
 from algorithms.GreedyAlgorithm import GreedyAlgorithm
 
 class Railsolver():
@@ -85,7 +85,7 @@ class Railsolver():
         elif self.algoselector == 2:
             self.algo = SmartAlgorithm()
         elif self.algoselector == 3:
-            self.ago = GreedyAlgorithm()
+            self.algo = GreedyAlgorithm()
         elif self.algoselector == 4:
             self.algo = LeastConnections()
         elif self.algoselector == 5:

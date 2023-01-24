@@ -69,7 +69,7 @@ class SimulatedAnnealing:
         pass
 
 
-        if chance => 1:
+        if chance >= 1:
 
             # voer nieuwe state in
             train_dictionary = option_2
