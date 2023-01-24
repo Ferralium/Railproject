@@ -9,10 +9,10 @@ class StatsDrawer:
                 self.scorenumbers.append(float(line))
 
     def draw_hist(self):
-        plt.hist(self.scorenumbers, bins = 10, edgecolor = 'black')
+        plt.hist(self.scorenumbers, bins = 20, edgecolor = 'black')
         plt.xlabel("Score", fontsize=13)
         plt.ylabel("Frequency", fontsize=13)
-        plt.savefig('images/resultshistogram.png')
+        plt.savefig('images/resultshistogram.png', dpi = 800)
         plt.close()
 
 histoplot = StatsDrawer()
