@@ -39,7 +39,7 @@ class Mapdrawer():
                 tempconnect.append(templine[0])
                 tempconnect.append(templine[1])
                 self.connections.append(tempconnect)
-            
+
     def print_to_image(self):
         """Prints all the stations on a map made with Miller Cylindrical projection and saves the map as .PNG"""
         # Miller cylindrical projection
@@ -62,7 +62,7 @@ class Mapdrawer():
 
             # Extracts the names for the first and second station which are connected
             station1, station2 = self.connections[i][0], self.connections[i][1]
-            
+
             # Extract coordinates for the first station
             xpt1, ypt1 = self.correctcoords[station1][0], self.correctcoords[station1][1]
             x_points.append(xpt1)
@@ -86,7 +86,7 @@ class Mapdrawer():
         # Loads in and loops over all trains with individual routes
         for trains in trainroutes:
             self.color_generator()
-            
+
             tempstations = routes[trains]
 
             # Iterates over stations until the second to last station to plot the driven routes
@@ -107,12 +107,12 @@ class Mapdrawer():
                 xpt2, ypt2 = self.correctcoords[str(desintation_station)][0], self.correctcoords[str(desintation_station)][1]
                 x_coords.append(xpt2)
                 y_coords.append(ypt2)
-                
+
                 # Plots the connection between the stations on the map, using the generated colors for the particular route number
                 self.m.plot(x_coords, y_coords, color = (self.colormap[colorcounter][0], self.colormap[colorcounter][1], self.colormap[colorcounter][2]), linewidth = 1)
                 plt.savefig(f'gifgen/route{piccounter}.png')
                 piccounter += 1
-            
+
             # Moves to the next point in the color library to avoid using the same colors
             colorcounter += 1
 
@@ -128,14 +128,14 @@ class Mapdrawer():
     def color_generator(self):
         """Generates random number combinations to get unique colors for trainroutes"""
         while True:
-            
+
             colorlist = []
             for i in range(3):
                 rand_col = 0
                 while rand_col <= 0.1:
                     rand_col = random.random()
                 rand_col = round(rand_col, 1)
-                colorlist.append(rand_col) 
+                colorlist.append(rand_col)
 
             if colorlist not in self.colormap:
                 self.colormap.append(colorlist)

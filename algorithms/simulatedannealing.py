@@ -16,6 +16,15 @@ class SimulatedAnnealing:
         print(f'random starting station: {current_station}')
         return current_station
 
+    def quality_calc(self, fraction: float, list_of_numbers) -> None:
+        T: int = list_of_numbers[1]
+        Min: int = list_of_numbers[0]
+        self.K: float = fraction*10000 - (T*100 + Min)
+        self.quality = f'Quality: {self.K} = {fraction}*1000 - ({T}*100 + {Min})'
+        print(self.quality)
+
+        return self.K
+
 
     def move(self, current_station, train_stations, stations_dictionary):
         time = 0
@@ -53,37 +62,47 @@ class SimulatedAnnealing:
             print(time)
             print(" ")
 
-    def compare_scores(self, score_new, score_old):
-        """ Function that compares the scores of the mutated and start algorithm """
-
-        delta: float = score_new - score_old
-        chance = 2**delta
-
-        return chance
-
-        #pass
 
 
-    def make_or_break_change(self):
+
+    def make_or_break_change(self, quality: float, quality_2: float, train_dictionary, train_dictionary_2):
         """ Function that makes or breaks the mutation """
-        pass
+
+        delta = quality_2 - quality
+        print(f'delta: {delta}')
+
+        if delta > 1:
+
+            # voer nieuwe state sowieso in
+            train_dictionary = train_dictionary_2
+            quality = quality_2
+
+        else:
+
+            chance = 2**delta
 
 
-        if chance >= 1:
+            if chance >= 1:
 
-            # voer nieuwe state in
-            train_dictionary = option_2
+                # voer nieuwe state in
+                train_dictionary = train_dictionary_2
+                quality = quality_2
 
-        if chance > 0 and chance < 1:
+            if chance > 0 and chance < 1:
 
-            # afhankelijk van de kans, voer hem in:
-            guess = random.uniform(0, 1)
+                # afhankelijk van de kans, voer hem in:
+                guess = random.uniform(0, 1)
 
-            print(f'guess: {guess}')
+                print(f'guess: {guess}')
 
-            if guess < chance:
+                if guess < chance:
 
-                train_dictionary = option_2
+                    train_dictionary = train_dictionary_2
+                    quality = quality_2
+
+
+        short_tuple = [train_dictionary, quality]
+        return short_tuple
 
     # def mutation(self):
     #     """ Functie die een kleine mutatie maakt op de huidige state. """

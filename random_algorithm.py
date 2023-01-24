@@ -191,7 +191,8 @@ class Railsolver():
 
         # bereken de fractie van de bereden routes
         fraction: float = wisselstoring.fraction_calc()
-        quality = SimulatedAnnealing.quality_calc(fraction, list_of_numbers)
+        quality = self.algo.quality_calc(fraction, list_of_numbers)
+        print(quality)
 
         # de range is nu 10 keer, dus er wordt 10 keer geprobeerd een andere oplossing te vinden
         for i in range(10):
@@ -233,7 +234,7 @@ if __name__ == '__main__':
     start_time = time.time()
     statconnectlib = {}
     statnamelib = []
-    algoselect = 1
+    algoselect = 7
 
     wisselstoring = Railsolver(statconnectlib, statnamelib, algoselect)
     statconnectlib, statnamelib = wisselstoring.load_stations()
