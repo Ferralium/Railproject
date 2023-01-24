@@ -23,6 +23,7 @@ from algorithms.least_connections import LeastConnections
 from algorithms.ShortestTimeHeuristic import ShortestTimeHeuristic
 from algorithms.LongestTimeHeuristic import LongestTimeHeuristic
 from algorithms.SimulatedAnnealing import SimulatedAnnealing
+from algorithms.GreedyAlgorithm import GreedyAlgorithm
 
 class Railsolver():
 
@@ -83,13 +84,15 @@ class Railsolver():
             self.algo = RandomAlgorithm()
         elif self.algoselector == 2:
             self.algo = SmartAlgorithm()
-        elif self.algoselector == 3:
-            self.algo = LeastConnections()
+        elif sef.algoselector == 3:
+            self.ago = GreedyAlgorithm()
         elif self.algoselector == 4:
-            self.algo = ShortestTimeHeuristic()
+            self.algo = LeastConnections()
         elif self.algoselector == 5:
-            self.algo = LongestTimeHeuristic()
+            self.algo = ShortestTimeHeuristic()
         elif self.algoselector == 6:
+            self.algo = LongestTimeHeuristic()
+        elif self.algoselector == 7:
             self.algo = SimulatedAnnealing()
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
@@ -264,7 +267,7 @@ if __name__ == '__main__':
     train_dictionary = {}
 
     # simulated annealing loop:
-    if algoselect == 6:
+    if algoselect == 7:
 
         print("simulated annealing")
 
