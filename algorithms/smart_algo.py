@@ -13,7 +13,6 @@ class SmartAlgorithm:
         all_stations_true: int = 0
 
         for station in station_dictionary:
-            print(station)
             check_connections: Station = station_dictionary.get(station)
             check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
             possible_current_station: Station = station_dictionary.get(str(check_connections))
@@ -32,14 +31,10 @@ class SmartAlgorithm:
                     # print(connections)
                     if connections == False:
                         unused_connections += 1
-                print(unused_connections)
-                print(highest_unused_connections)
                 if unused_connections < highest_unused_connections and unused_connections != 0:
                     highest_unused_connections = unused_connections
                     current_station = station_dictionary.get(str(possible_current_station))
 
-        print(len(station_dictionary))
-        print(all_stations_true)
         if all_stations_true is len(station_dictionary):
             starting_point: str = random.choice(statnames)
             current_station = station_dictionary.get(starting_point)
@@ -51,7 +46,6 @@ class SmartAlgorithm:
 
         # voeg de current station toe aan de lijst
         train_stations.append(current_station)
-        print(train_stations)
 
         while True:
 
@@ -73,13 +67,11 @@ class SmartAlgorithm:
 
             # stops if time is more than 3 hours
             if all_time > 180:
-                print(f'hi {all_time}')
-                print(f'this will be returned {time}')
                 return train_stations, time
             else:
                 time = time + current_station.connections.get(str(next_station))
 
-            print(f' Current Station: {current_station}')
+            # print(f' Current Station: {current_station}')
             # check_startingpoint: bool = all(station is True for station in current_station.connection_visited.values())
             # print(check_startingpoint)
             current_station.stationvisit(str(next_station))
@@ -90,7 +82,7 @@ class SmartAlgorithm:
             train_stations.append(current_station)
             # print("treinstation toegevoegd")
 
-            print(f' Next Station: {current_station}')
-            print(time)
-            print(" ")
+            # print(f' Next Station: {current_station}')
+            # print(time)
+            # print(" ")
    

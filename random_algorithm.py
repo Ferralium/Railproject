@@ -103,9 +103,6 @@ class Railsolver():
 
     def fraction_calc(self) -> float:
         """ Function calculates percentage of used connections """
-
-        print("Calculate franction of used connections")
-        print()
         connected = 0
         total = 0
 
@@ -136,7 +133,6 @@ class Railsolver():
         train_dictionary[train_number] = list_of_stations
 
         train_data = pd.DataFrame.from_dict(train_dictionary, orient='index')
-        print(train_data)
 
         data_to_excel = pd.ExcelWriter('train_data.xlsx')
 
@@ -144,7 +140,7 @@ class Railsolver():
         train_data.to_excel(data_to_excel)
 
         # save the excel
-        data_to_excel.save()
+        # data_to_excel.save()
 
     def take_a_ride(self):
         """ Function that keeps the order of everything that must be done for the algorithm
@@ -162,9 +158,6 @@ class Railsolver():
             # maak een lege lijst voor de stations:
             train_stations: list[Station] = []
 
-            print(" ")
-            print("new trajectory")
-
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
             list_of_stations_and_time: tuple[Station, int] = self.algo.move(current_station, train_stations, self.stations)
@@ -178,17 +171,14 @@ class Railsolver():
             total_time += time_trajectory
 
         list_of_numbers: list[int] = [total_time, number_of_routes]
-        print(f'list of numbers: {list_of_numbers}')
 
         return list_of_numbers
     
     def clear_visited_stations(self):
         for station in self.stations:
             temp_station = self.stations[station]
-            # print(temp_station.connection_visited.values())
             for connection in temp_station.connection_visited:
                 temp_station.station_unvisit(connection)
-            # print(temp_station.connection_visited.values())
 
 
     def visualise(self, routes):
@@ -245,42 +235,13 @@ if __name__ == '__main__':
 
 
     for i in range(num_of_runs):
+        print(f'Currently on run number {i}')
         wisselstoring = Railsolver(statconnectlib, statnamelib, algoselect)
 
         # maak een lege dictionary waarin de treinen worden opgeslagen
         train_dictionary = {}
-        # number_of_routes: int = 0
-        # total_time: int = 0
 
         list_of_numbers = wisselstoring.take_a_ride()
-
-        # dit stuk naar een functie !
-        # for route in range(7):
-        #
-        #     number_of_routes += 1
-        #
-        #     # maak de treinnaam
-        #     train_number: str = "train_" + str(route + 1)
-        #
-        #     # maak een lege lijst voor de stations:
-        #     train_stations: list[Station] = []
-        #
-        #     print(" ")
-        #     print("new trajectory")
-        #
-        #     current_station: Station = wisselstoring.starting_station()
-        #
-        #     list_of_stations_and_time: tuple[Station, int] = wisselstoring.move(current_station, train_stations)
-        #
-        #     # voeg dit toe aan de tabel van treinen
-        #     wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
-        #
-        #     time_trajectory: int = list_of_stations_and_time[1]
-        #
-        #     # add total time of all trajectories
-        #     total_time += time_trajectory
-        #
-        # print(f'total time {total_time}')
 
         fraction: float = wisselstoring.fraction_calc()
         wisselstoring.quality_calc(fraction, list_of_numbers)
@@ -303,7 +264,8 @@ if __name__ == '__main__':
         wisselstoring.clear_visited_stations()
 
     wisselstoring.visualise(best_solution)
-    # wisselstoring.gifmod.map_to_gif()
+    wisselstoring.gifmod.map_to_gif()
+    print()
     print(f'Best solution found: {best_calc}')
     print(f'Average soluton: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
