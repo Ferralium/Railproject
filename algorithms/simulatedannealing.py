@@ -185,12 +185,49 @@ class SimulatedAnnealing:
         short_tuple = [train_dictionary, quality]
         return short_tuple
 
-    # def mutation(self):
-    #     """ Functie die een kleine mutatie maakt op de huidige state. """
-    #     pass
-    #     # make a mutation on this random algorithm
+
+    def mutation(self, train_dictionary):
+        """ Functie die het laatse treinspoor verlegt."""
+
+        # kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
+        pick_train = random.choice(list(train_dictionary.keys()))
+        print(pick_train)
+        # front_or_back = random.randint(1,2)
+
+        # zoek deze op in de train_dictionary
+        # if front_or_back == 1:
+
+        # verander het eerste station
+        list_of_stations_for_mutation = train_dictionary[pick_train]
+
+        # ga naar het 2e station in de lijst
+        station_for_mutation = list_of_stations_for_mutation[1]
+
+        # zoek deze op in de stations dictionary
+        connections_for_mutation = stations_dictionary.get(station_for_mutation)
+
+        # kies een random station om hem in te veranderen uit deze lijst
+        new_station_for_mutation = random.choice(connections_for_mutation)
+
+        # zet deze nieuwe connection_visited op true
+        new_station_for_mutation.connection_visited[station_for_mutation] == True
+
+        # zet de oude connection_visited op false
+        old_station = list_of_stations_for_mutation[0]
+        old_station.connection_visited[station_for_mutation] == False
+
+        # en ten slotte, verander het in de train_dictionary
+        list_of_stations_for_mutation[0] = new_station_for_mutation
+        train_dictionary[pick_train] = list_of_stations_for_mutation
+
+        # de tijd moet nog worden veranderd...
+
+        # else:...
+
+            # verander het laatste station
+
+    # def calculate_time_again(self, train_dictionary):
+    #     """ Dictionary that calculates the total time for the mutated solution """
     #
-    #     # hierin wordt eventueel het uiteinde van een random trein aangepast
-    #     # kies eerst een random getal tussen de 1 en 20, en een getal tussen 1 of 2 (begin of eind van de trein)
-    #     random_change = random.randint(0,19)
-    #     front_or_back = random.randint(1,2)
+    #     time = 0
+    #     for
