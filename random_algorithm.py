@@ -13,11 +13,12 @@ import time
 import random
 from algorithm import Algorithm
 from algorithms.heuristic_algorithm import HeuristicAlgorithm
-from heuristics.least_connections import least_connection_start_heuristic
+from heuristics.start_least_connections import least_connection_start_heuristic
 from station import Station
 from train import Train
-from heuristics.random import random_start_heuristic, random_move_heuristic
-from heuristics.shortest import shortest_move_heuristic
+from heuristics.start_random import random_start_heuristic
+from heuristics.move_random import random_move_heuristic
+from heuristics.move_shortest import shortest_move_heuristic
 import pandas as pd
 from typing import Any
 from representatie import Mapdrawer, Gifgenerator
@@ -292,10 +293,10 @@ if __name__ == '__main__':
         algo = GreedyAlgorithm()
     elif algoselect == 4:
         algo = LeastConnections()
-    elif algoselect == 5:
-        algo = ShortestTimeHeuristic()
-    elif algoselect == 6:
-        algo = LongestTimeHeuristic()
+    # elif algoselect == 5:
+    #     algo = ShortestTimeHeuristic()
+    # elif algoselect == 6:
+    #     algo = LongestTimeHeuristic()
     elif algoselect == 7:
         algo = SimulatedAnnealing()
     elif algoselect == 8:
@@ -338,8 +339,8 @@ if __name__ == '__main__':
             score.write('\n')
             score.close()
 
-        # wisselstoring.visualise(best_solution)
-        # wisselstoring.gifmod.map_to_gif()
+        wisselstoring.visualise(best_solution)
+        wisselstoring.gifmod.map_to_gif()
         print(f'Best solution found: {best_calc}')
         print(f'Average soluton: {mean_solution / num_of_runs}')
         print(f'Runtime: {time.time() - start_time}')
