@@ -21,10 +21,8 @@ def least_connection_start_heuristic(stations: dict[str, Station]) -> Station:
                     current_station: Station = stations.get(str(possible_current_station))
                     break
         elif check_connections.connection_count != 1 or check_startingpoint == False:
-            # possible_current_station = self.stations.get(str(check_connections))
             unused_connections: int = 0
             for connections in possible_current_station.connection_visited.values():
-                # print(connections)
                 if connections == False:
                     unused_connections += 1
             if unused_connections < highest_unused_connections and unused_connections != 0:
