@@ -1,5 +1,7 @@
 import random
 
+from station import Station
+
 class RandomAlgorithm:
     def __init__(self):
         pass
@@ -20,7 +22,7 @@ class RandomAlgorithm:
         while True:
 
             # Moves to next random connection that has not been visited yet
-            possible_next_station: str | Station = random.choice(list(current_station.connections))
+            possible_next_station: Station = random.choice(list(current_station.connections.keys()))
             next_station: Station = stations_dictionary.get(possible_next_station)
 
 

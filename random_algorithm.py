@@ -11,8 +11,13 @@
 
 import time
 import random
+from algorithm import Algorithm
+from algorithms.heuristic_algorithm import HeuristicAlgorithm
+from heuristics.least_connections import least_connection_start_heuristic
 from station import Station
 from train import Train
+from heuristics.random import random_start_heuristic, random_move_heuristic
+from heuristics.shortest import shortest_move_heuristic
 import pandas as pd
 from typing import Any
 from representatie import Mapdrawer, Gifgenerator
@@ -28,13 +33,11 @@ from algorithms.GreedyAlgorithm import GreedyAlgorithm
 class Railsolver():
 
     # Initializes the stations dictionary for the railsolver
-    def __init__(self, stations, statnames, algonum) -> None:
-        self.stations =  stations
-        self.statnames = statnames
-        self.algoselector = algonum
-
-        # Selects and implements the algorithm for the railsolver
-        self.algorithm_selection()
+    def __init__(self, algorithm: Algorithm) -> None:
+        self.stations = {}
+        self.statnames = []
+        self.load_stations()
+        self.algo = algorithm
 
         # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
         self.traincount: int = 1
@@ -76,24 +79,6 @@ class Railsolver():
 
                 elif templine[1] in self.stations:
                     self.stations[templine[1]].add_station(templine[0], float(templine[2]))
-
-        return self.stations, self.statnames
-
-    def algorithm_selection(self):
-        if self.algoselector == 1:
-            self.algo = RandomAlgorithm()
-        elif self.algoselector == 2:
-            self.algo = SmartAlgorithm()
-        elif self.algoselector == 3:
-            self.algo = GreedyAlgorithm()
-        elif self.algoselector == 4:
-            self.algo = LeastConnections()
-        elif self.algoselector == 5:
-            self.algo = ShortestTimeHeuristic()
-        elif self.algoselector == 6:
-            self.algo = LongestTimeHeuristic()
-        elif self.algoselector == 7:
-            self.algo = SimulatedAnnealing()
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
         T: int = list_of_numbers[1]
@@ -230,14 +215,26 @@ class Railsolver():
         # Initializes gif generator
         self.gifmod = Gifgenerator()
 
+
+def select_heuristic(start_heurselect, move_heurselect):
+    start_heuristic = None
+    if start_heurselect == 1:
+        start_heuristic = random_start_heuristic
+    elif start_heurselect == 2:
+        start_heuristic = least_connection_start_heuristic
+    
+    if move_heurselect == 1:
+        return start_heuristic, random_move_heuristic
+    elif move_heurselect == 2:
+        return start_heuristic, shortest_move_heuristic
+
+
 if __name__ == '__main__':
     start_time = time.time()
-    statconnectlib = {}
-    statnamelib = []
     algoselect = 7
+    start_heuristic = None
+    move_heuristic = None
 
-    wisselstoring = Railsolver(statconnectlib, statnamelib, algoselect)
-    statconnectlib, statnamelib = wisselstoring.load_stations()
     best_solution = {}
     best_score = 0
     best_calc = ''
@@ -253,31 +250,66 @@ if __name__ == '__main__':
 
 
 
-    if len(sys.argv) >= 2:
-        if sys.argv[1].isnumeric() == False:
+    if len(sys.argv) > 1:
+        if not sys.argv[1].isnumeric():
             print('Usage: python3 main.py (Optional) n')
             sys.exit()
-        if int(sys.argv[1]) > 1:
-            num_of_runs = int(sys.argv[1])
-        if len(sys.argv) >= 3:
-            if sys.argv[1].isnumeric() == False and sys.argv[2].isnumeric() == False:
+        num_of_runs = int(sys.argv[1])
+        if num_of_runs < 1:
+            print('Usage: python3 main.py (Optional) n')
+            print('Number of runs must be 1 or higher')
+            sys.exit()
+
+        if len(sys.argv) > 2:
+            if not sys.argv[2].isnumeric():
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
-            if int(sys.argv[2]) > 1:
-                algoselect = int(sys.argv[2])
+                sys.exit()
+            algoselect = int(sys.argv[2])
+            if algoselect < 1 or algoselect > 8:
+                print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
+                print('Algorithm must be between 1 and 8')
+                sys.exit()
+
+            if algoselect == 8:
+                if len(sys.argv) < 5 or not sys.argv[3].isnumeric() or not sys.argv[4].isnumeric():
+                    print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm (1 -> x) start_heuristic move_heuristic')
+                    sys.exit()
+                start_heurselect = int(sys.argv[3]) 
+                move_heurselect = int(sys.argv[4]) 
+                if start_heurselect < 1 or start_heurselect > 4 or move_heurselect < 1 or move_heurselect > 4:
+                    print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm (1 -> x) start_heuristic move_heuristic')
+                    print('Heuristic must be between 1 and 4')
+                    sys.exit()
+                start_heuristic, move_heuristic = select_heuristic(start_heurselect, move_heurselect)
+                
+
+
+    if algoselect == 1:
+        algo = RandomAlgorithm()
+    elif algoselect == 2:
+        algo = SmartAlgorithm()
+    elif algoselect == 3:
+        algo = GreedyAlgorithm()
+    elif algoselect == 4:
+        algo = LeastConnections()
+    elif algoselect == 5:
+        algo = ShortestTimeHeuristic()
+    elif algoselect == 6:
+        algo = LongestTimeHeuristic()
+    elif algoselect == 7:
+        algo = SimulatedAnnealing()
+    elif algoselect == 8:
+        algo = HeuristicAlgorithm(start_heuristic, move_heuristic)
 
     train_dictionary = {}
 
     # simulated annealing loop:
     if algoselect == 7:
-
         print("simulated annealing")
-
-        wisselstoring.loop_simulated_annealing(train_dictionary)
-
-
+        Railsolver(algo).loop_simulated_annealing(train_dictionary)
     else:
         for i in range(num_of_runs):
-            wisselstoring = Railsolver(statconnectlib, statnamelib, algoselect)
+            wisselstoring = Railsolver(algo)
 
             # maak een lege dictionary waarin de treinen worden opgeslagen
             train_dictionary = {}
