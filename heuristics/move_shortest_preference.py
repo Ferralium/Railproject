@@ -1,7 +1,7 @@
 from station import Station
 import random
 
-def shortest_move_heuristic(curr: Station, visited: list[Station], stations: dict[str, Station]):
+def preference_shortest_move_heuristic(curr: Station, visited: list[Station], stations: dict[str, Station]):
     """Preference for moving to the next connection that has not been visited yet and has the least travel time"""
 
     shortest_connection = 100

@@ -12,24 +12,27 @@
 import time
 import random
 from algorithm import Algorithm
-from algorithms.heuristic_algorithm import HeuristicAlgorithm
-from heuristics.start_least_connections import least_connection_start_heuristic
 from station import Station
 from train import Train
-from heuristics.start_random import random_start_heuristic
-from heuristics.move_random import random_move_heuristic
-from heuristics.move_shortest import shortest_move_heuristic
 import pandas as pd
 from typing import Any
 from representatie import Mapdrawer, Gifgenerator
 import sys
+
 from algorithms.random_algo  import RandomAlgorithm
-from algorithms.smart_algo import SmartAlgorithm
-from algorithms.least_connections import LeastConnections
-from algorithms.ShortestTimeHeuristic import ShortestTimeHeuristic
-from algorithms.LongestTimeHeuristic import LongestTimeHeuristic
 from algorithms.simulatedannealing import SimulatedAnnealing
 from algorithms.GreedyAlgorithm import GreedyAlgorithm
+from algorithms.heuristic_algorithm import HeuristicAlgorithm
+from algorithms.dijkstra_algo import DijkstraAlgorithm
+from heuristics.start_least_connections import least_connection_start_heuristic
+from heuristics.start_most_connections import most_connection_start_heuristic
+from heuristics.start_random import random_start_heuristic
+from heuristics.start_7bridges import sevenbridges_start_heuristic
+from heuristics.move_random import random_move_heuristic
+from heuristics.move_visited_random import visited_random_move_heuristic
+from heuristics.move_shortest import shortest_move_heuristic
+from heuristics.move_shortest_preference import preference_shortest_move_heuristic
+
 
 class Railsolver():
 
@@ -246,11 +249,19 @@ def select_heuristic(start_heurselect, move_heurselect):
         start_heuristic = random_start_heuristic
     elif start_heurselect == 2:
         start_heuristic = least_connection_start_heuristic
+    elif start_heurselect == 3:
+        start_heuristic = most_connection_start_heuristic
+    elif start_heurselect == 4:
+        start_heuristic = sevenbridges_start_heuristic
 
     if move_heurselect == 1:
         return start_heuristic, random_move_heuristic
     elif move_heurselect == 2:
+        return start_heuristic, visited_random_move_heuristic
+    elif move_heurselect == 3:
         return start_heuristic, shortest_move_heuristic
+    elif move_heurselect == 4:
+        return start_heuristic, preference_shortest_move_heuristic
 
 
 if __name__ == '__main__':
@@ -289,12 +300,15 @@ if __name__ == '__main__':
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
                 sys.exit()
             algoselect = int(sys.argv[2])
-            if algoselect < 1 or algoselect > 8:
+            #
+            #
+            # deze tussen 1 en 8 hieronder nog veranderen naar het aantal van algoselect we op het einde hebben
+            if algoselect < 1 or algoselect > 5:
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
                 print('Algorithm must be between 1 and 8')
                 sys.exit()
 
-            if algoselect == 8:
+            if algoselect == 3:
                 if len(sys.argv) < 5 or not sys.argv[3].isnumeric() or not sys.argv[4].isnumeric():
                     print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm (1 -> x) start_heuristic move_heuristic')
                     sys.exit()
@@ -307,27 +321,25 @@ if __name__ == '__main__':
                 start_heuristic, move_heuristic = select_heuristic(start_heurselect, move_heurselect)
 
 
-
+    # command-line
     if algoselect == 1:
         algo = RandomAlgorithm()
     elif algoselect == 2:
-        algo = SmartAlgorithm()
-    elif algoselect == 3:
         algo = GreedyAlgorithm()
-    elif algoselect == 4:
-        algo = LeastConnections()
-    # elif algoselect == 5:
-    #     algo = ShortestTimeHeuristic()
-    # elif algoselect == 6:
-    #     algo = LongestTimeHeuristic()
-    elif algoselect == 7:
-        algo = SimulatedAnnealing()
-    elif algoselect == 8:
+    elif algoselect == 3:
         algo = HeuristicAlgorithm(start_heuristic, move_heuristic)
+    elif algoselect == 4:
+        algo = SimulatedAnnealing()
+    elif algoselect == 5:
+        algo = DijkstraAlgorithm()
+
 
     train_dictionary = {}
 
     # simulated annealing loop:
+    #
+    #
+    # deze if else loop kan niet... ik denk wat je onder if algoselect = 7 hebt, dat je het beter hierboven kan toevoegen eronder. Nu als je ieats anders op commandline doet geeft hij niet meer de goede errorS
     if algoselect == 7:
         wisselstoring = Railsolver(algo)
         print("simulated annealing")

@@ -24,7 +24,7 @@ def shortest_move_heuristic(curr: Station, visited: list[Station], stations: dic
     #return shortest_station
 
     shortest_connection = 100
-    print(f'hello {curr.connection_visited}')
+    # print(f'hello {curr.connection_visited}')
 
     check_stations: bool = all(station is True for station in curr.connection_visited.values())
     if check_stations is True:
