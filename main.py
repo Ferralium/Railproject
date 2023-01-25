@@ -223,7 +223,7 @@ def select_heuristic(start_heurselect, move_heurselect):
         start_heuristic = random_start_heuristic
     elif start_heurselect == 2:
         start_heuristic = least_connection_start_heuristic
-    
+
     if move_heurselect == 1:
         return start_heuristic, random_move_heuristic
     elif move_heurselect == 2:
@@ -275,14 +275,14 @@ if __name__ == '__main__':
                 if len(sys.argv) < 5 or not sys.argv[3].isnumeric() or not sys.argv[4].isnumeric():
                     print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm (1 -> x) start_heuristic move_heuristic')
                     sys.exit()
-                start_heurselect = int(sys.argv[3]) 
-                move_heurselect = int(sys.argv[4]) 
+                start_heurselect = int(sys.argv[3])
+                move_heurselect = int(sys.argv[4])
                 if start_heurselect < 1 or start_heurselect > 4 or move_heurselect < 1 or move_heurselect > 4:
                     print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm (1 -> x) start_heuristic move_heuristic')
                     print('Heuristic must be between 1 and 4')
                     sys.exit()
                 start_heuristic, move_heuristic = select_heuristic(start_heurselect, move_heurselect)
-                
+
 
 
     if algoselect == 1:
@@ -306,6 +306,7 @@ if __name__ == '__main__':
 
     # simulated annealing loop:
     if algoselect == 7:
+        wisselstoring = Railsolver(algo)
         print("simulated annealing")
         Railsolver(algo).loop_simulated_annealing(train_dictionary)
     else:
