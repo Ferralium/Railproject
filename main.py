@@ -180,6 +180,7 @@ class Railsolver():
         quality = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality)
 
+        # loop met een andere oplossing
         # de range is nu 10 keer, dus er wordt 10 keer geprobeerd een andere oplossing te vinden
         for i in range(10):
 
@@ -196,6 +197,28 @@ class Railsolver():
 
             train_dictionary = short_tuple[0]
             quality = short_tuple[1]
+
+
+        # loop met mutaties
+        # for i in range(10):
+        #
+        #     train_dictionary_2 = {}
+        #
+        #     # list_of_numbers = wisselstoring.take_a_ride()
+        #     self.algo.mutation()
+        #
+        #     # bereken nu opnieuw de totale tijd voor de treinen
+        #     list_of_numbers =
+        #
+        #     # bereken de fractie van de bereden routes
+        #     fraction: float = wisselstoring.fraction_calc()
+        #     quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
+        #
+        #     # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
+        #     short_tuple = self.algo.make_or_break_change(quality, quality_2, train_dictionary, train_dictionary_2)
+        #
+        #     train_dictionary = short_tuple[0]
+        #     quality = short_tuple[1]
 
 
 
