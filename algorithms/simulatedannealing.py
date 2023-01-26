@@ -164,16 +164,17 @@ class SimulatedAnnealing:
         delta = quality_2 - quality_old
         print(f'delta: {delta}')
 
-        if delta > 1:
+        if delta >= 0:
 
             # voer nieuwe state sowieso in
             train_dictionary = train_dictionary_2
             quality_old = quality_2
-            print("mutation accepted")
+            print("mutation accepted, verbetering of gelijk")
 
         else:
 
             chance = 2**delta
+            print(f'chance to be accepted: {chance}')
 
             # als kans groter dan 1 is, voer het in
             if chance >= 1:
@@ -181,7 +182,7 @@ class SimulatedAnnealing:
                 # voer nieuwe state in
                 train_dictionary = train_dictionary_2
                 quality_old = quality_2
-                print("mutation accepted")
+                print("mutation accepted, want dat moest via de kans")
 
             # als kans tussen nul en 1 is, maak een gok of je het moet invoeren
             elif chance > 0 and chance < 1:
@@ -195,16 +196,16 @@ class SimulatedAnnealing:
 
                     train_dictionary = train_dictionary_2
                     quality_old = quality_2
-                    print("mutation accepted")
+                    print("mutation accepted, chance says so")
 
                 else:
-                    print("mutation not accepted")
+                    print("mutation not accepted, chance too low")
                     # voer de change in time terug
                     list_of_numbers[0] += change_in_time
 
             # kans is kleiner dan nul, dus voer je het niet in
             else:
-                print("mutation not accepted")
+                print("mutation not accepted, kans kleiner dan 0")
                 # voer de change in time terug
                 list_of_numbers[0] += change_in_time
 
