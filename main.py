@@ -208,15 +208,7 @@ class Railsolver():
             train_dictionary_2 = train_dictionary
 
             # list_of_numbers = wisselstoring.take_a_ride()
-            station_for_mutation = self.algo.mutation_station(train_dictionary_2)
-
-            # kijk nu wat er voor nu voor connecties zijn
-            connections_for_mutation = station_for_mutation.connections.get(station_for_mutation)
-            print(f'dit zijn de connecties: {connections_for_mutation}')
-
-            change_in_time = self.algo.make_mutation(connections_for_mutation, station_for_mutation, list_of_stations_for_mutation)
-
-
+            change_in_time = self.algo.mutation(train_dictionary_2)
 
             # bereken nu opnieuw de totale tijd voor de treinen
 
