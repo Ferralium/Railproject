@@ -3,11 +3,17 @@ from station import Station
 
 
 class DijkstraAlgorithm:
-    def __init__(self):
+    def __init__(self, start_heuristic, move_heuristic):
         """Dijkstra Algorithm aims to create a minimum spanning tree with the lowest cost distances
            to all points in the map from a single source station"""
+        # Keeps track of whether the MST has been generated yet
+        self.gencount = 0
+        
         # Keeps the old dictionary with all the routes for safekeeping
         self.oldroutes = {}
+
+        self.start_heuristic = start_heuristic
+        self.move_heuristic = move_heuristic
 
         with open('data/ConnectiesNationaal.csv') as f:
             # Met de next functie wordt de eerste lijn overgeslagen, dit geeft alleen informatie over de inhoud
@@ -116,18 +122,45 @@ class DijkstraAlgorithm:
     def starting_station(self, station_dictionary, statnames):
         """Picks the starting station from a list of all possible stations
            Does this on the basis of the most connections"""
-        # Function to pick the starting station
-        starting_station = 0
-        self.oldroutes = station_dictionary
-        for station in station_dictionary:
-            self.distance_to[station] = float('inf')
-        self.map_shortest(station_dictionary, statnames)
-        pass  
+        if self.gencount == 0:
+            self.oldroutes = station_dictionary
+            self.map_shortest('Utrecht Centraal')
+            self.gencount += 1 
 
-    def move(self): 
+        return self.start_heuristic(self.prunedroutes)
+
+    def move(self, current_station, train_stations, station_dictionary): 
         """Moves to the next station along the precalculated route of the dijkstra algorithm
            When destination is reached, removes the line from possible lines"""
-        pass
+        time = 0
+        train_stations.append(current_station)
 
-dijk = DijkstraAlgorithm()
-dijk.map_shortest('Amsterdam Centraal')
+        if current_station == None:
+            return train_stations, time
+
+        while True:
+            next_station = self.move_heuristic(current_station, train_stations, self.prunedroutes)
+            if next_station is None:
+                return train_stations, time
+
+            # keeps track of the time the trajectory takes
+            all_time: int = time + current_station.connections.get(str(next_station))
+
+              # stops if time is more than 3 hours
+            if all_time > 180:
+                return train_stations, time
+            else:
+                time: float = all_time
+
+            # sets connections to and from to visited
+            current_station.stationvisit(str(next_station))
+            next_station.stationvisit(str(current_station))
+
+            current_station = next_station
+            train_stations.append(current_station)
+
+
+dijk = DijkstraAlgorithm('pief', 'paf')
+print(dijk.oldroutes)
+print('-----------------------------------')
+print(dijk.oldroutes)
