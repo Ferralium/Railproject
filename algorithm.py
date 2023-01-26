@@ -2,6 +2,7 @@ from station import Station
 
 
 class Algorithm():
+    """creates an algorithm object"""
     def starting_station(self, station_dictionary: dict[str, Station], _):
         pass
 
