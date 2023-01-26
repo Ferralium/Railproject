@@ -50,6 +50,13 @@ class SimulatedAnnealing:
 
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
+
+        # als de trein langer rijdt dan 180 minuten, mag het niet worden ingevoerd want de oplossing is ongeldig
+        # zet dan de K op 0, dan is de kans op invoering extreem klein
+        if list_of_numbers[0] > 180:
+            self.K = 0
+            return self.K
+
         T: int = list_of_numbers[1]
         Min: int = list_of_numbers[0]
         self.K: float = fraction*10000 - (T*100 + Min)
