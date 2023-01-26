@@ -1,4 +1,5 @@
 import random
+from station import Station
 # voor deze hillclimber wordt er een greedy algoritme gebruikt, dus dat is
 # een slim start station en slimme moves!
 
@@ -186,48 +187,54 @@ class SimulatedAnnealing:
         return short_tuple
 
 
-    def mutation(self, train_dictionary):
-        """ Functie die het laatse treinspoor verlegt."""
+    def mutation_station(self, train_dictionary_2):
+    	""" Functie die het laatse treinspoor verlegt."""
 
-        # kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
-        pick_train = random.choice(list(train_dictionary.keys()))
-        print(pick_train)
-        # front_or_back = random.randint(1,2)
+    	# kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
+    	pick_train = random.choice(list(train_dictionary_2.keys()))
+    	print(pick_train)
+    	# front_or_back = random.randint(1,2)
 
-        # zoek deze op in de train_dictionary
-        # if front_or_back == 1:
+    	# zoek deze op in de train_dictionary
+    	# if front_or_back == 1:
 
-        # verander het eerste station
-        list_of_stations_for_mutation = train_dictionary[pick_train]
+    	# verander het eerste station
+    	list_of_stations_for_mutation = train_dictionary_2[pick_train]
 
-        # ga naar het 2e station in de lijst
-        station_for_mutation = list_of_stations_for_mutation[1]
+    	# ga naar het 2e station in de lijst
+    	station_for_mutation = list_of_stations_for_mutation[1]
 
-        # zoek deze op in de stations dictionary
-        connections_for_mutation = stations_dictionary.get(station_for_mutation)
+    	print(f'dit is het knooppuntstation: {station_for_mutation}')
+    	print(type(station_for_mutation))
 
-        # kies een random station om hem in te veranderen uit deze lijst
-        new_station_for_mutation = random.choice(connections_for_mutation)
+    	return station_for_mutation
 
-        # zet deze nieuwe connection_visited op true
-        new_station_for_mutation.connection_visited[station_for_mutation] == True
 
-        # zet de oude connection_visited op false
-        old_station = list_of_stations_for_mutation[0]
-        old_station.connection_visited[station_for_mutation] == False
+    def make_mutation(self, connections_for_mutation, station_for_mutation, list_of_stations_for_mutation):
 
-        # en ten slotte, verander het in de train_dictionary
-        list_of_stations_for_mutation[0] = new_station_for_mutation
-        train_dictionary[pick_train] = list_of_stations_for_mutation
 
-        # de tijd moet nog worden veranderd...
+        # TIJDELIJK UITGECOMMEND, NAAR ANDERE FUNCTIE
+        # connections_for_mutation = station_for_mutation.connections.get(station_for_mutation)
+    	# print(f'dit zijn de connecties: {connections_for_mutation}')
 
-        # else:...
+    	# # kies een random station om hem in te veranderen uit deze lijst
+    	new_station_for_mutation = random.choice(connections_for_mutation)
 
-            # verander het laatste station
+    	# # zet deze nieuwe connection_visited op true
+    	new_station_for_mutation.connection_visited[station_for_mutation] == True
 
-    # def calculate_time_again(self, train_dictionary):
-    #     """ Dictionary that calculates the total time for the mutated solution """
-    #
-    #     time = 0
-    #     for
+    	# # zet de oude connection_visited op false
+    	old_station = list_of_stations_for_mutation[0]
+    	old_station.connection_visited[station_for_mutation] == False
+
+    	# # en ten slotte, verander het in de train_dictionary
+    	list_of_stations_for_mutation[0] = new_station_for_mutation
+    	train_dictionary[pick_train] = list_of_stations_for_mutation
+
+    	# verander ook de tijd:
+    	change_in_time = 0
+
+    	change_in_time -= station_for_mutation.connections[old_station]
+    	change_in_time += station_for_mutation.connections[new_station_for_mutation]
+
+    	return change_in_time

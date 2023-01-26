@@ -185,33 +185,11 @@ class Railsolver():
 
         # loop met een andere oplossing
         # de range is nu 10 keer, dus er wordt 10 keer geprobeerd een andere oplossing te vinden
-        for i in range(10):
-
-            train_dictionary_2 = {}
-
-            list_of_numbers = wisselstoring.take_a_ride()
-
-            # bereken de fractie van de bereden routes
-            fraction: float = wisselstoring.fraction_calc()
-            quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
-
-            # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
-            short_tuple = self.algo.make_or_break_change(quality, quality_2, train_dictionary, train_dictionary_2)
-
-            train_dictionary = short_tuple[0]
-            quality = short_tuple[1]
-
-
-        # loop met mutaties
         # for i in range(10):
         #
         #     train_dictionary_2 = {}
         #
-        #     # list_of_numbers = wisselstoring.take_a_ride()
-        #     self.algo.mutation()
-        #
-        #     # bereken nu opnieuw de totale tijd voor de treinen
-        #     list_of_numbers =
+        #     list_of_numbers = wisselstoring.take_a_ride()
         #
         #     # bereken de fractie van de bereden routes
         #     fraction: float = wisselstoring.fraction_calc()
@@ -222,6 +200,36 @@ class Railsolver():
         #
         #     train_dictionary = short_tuple[0]
         #     quality = short_tuple[1]
+
+
+        # loop met mutaties
+        for i in range(10):
+
+            train_dictionary_2 = train_dictionary
+
+            # list_of_numbers = wisselstoring.take_a_ride()
+            station_for_mutation = self.algo.mutation_station(train_dictionary_2)
+
+            # kijk nu wat er voor nu voor connecties zijn
+            connections_for_mutation = station_for_mutation.connections.get(station_for_mutation)
+            print(f'dit zijn de connecties: {connections_for_mutation}')
+
+            change_in_time = self.algo.make_mutation(connections_for_mutation, station_for_mutation, list_of_stations_for_mutation)
+
+
+
+            # bereken nu opnieuw de totale tijd voor de treinen
+
+            list_of_numbers[0] += change_in_time
+            # bereken de fractie van de bereden routes
+            fraction: float = wisselstoring.fraction_calc()
+            quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
+
+            # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
+            short_tuple = self.algo.make_or_break_change(quality, quality_2, train_dictionary, train_dictionary_2)
+
+            train_dictionary = short_tuple[0]
+            quality = short_tuple[1]
 
 
 
@@ -266,7 +274,7 @@ def select_heuristic(start_heurselect, move_heurselect):
 
 if __name__ == '__main__':
     start_time = time.time()
-    algoselect = 7
+    algoselect = 4
     start_heuristic = None
     move_heuristic = None
 
@@ -340,7 +348,7 @@ if __name__ == '__main__':
     #
     #
     # deze if else loop kan niet... ik denk wat je onder if algoselect = 7 hebt, dat je het beter hierboven kan toevoegen eronder. Nu als je ieats anders op commandline doet geeft hij niet meer de goede errorS
-    if algoselect == 7:
+    if algoselect == 4:
         wisselstoring = Railsolver(algo)
         print("simulated annealing")
         Railsolver(algo).loop_simulated_annealing(train_dictionary)
