@@ -53,9 +53,9 @@ class SimulatedAnnealing:
 
         # als de trein langer rijdt dan 180 minuten, mag het niet worden ingevoerd want de oplossing is ongeldig
         # zet dan de K op 0, dan is de kans op invoering extreem klein
-        if list_of_numbers[0] > 180:
-            self.K = 0
-            return self.K
+        # if list_of_numbers[0] > 180:
+        #     self.K = 0
+        #     return self.K
 
         T: int = list_of_numbers[1]
         Min: int = list_of_numbers[0]
@@ -154,30 +154,37 @@ class SimulatedAnnealing:
 
 
 
-    def make_or_break_change(self, quality: float, quality_2: float, train_dictionary, train_dictionary_2):
+    def make_or_break_change(self, quality_old: float, quality_2: float, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers):
         """ Function that makes or breaks the mutation """
 
-        delta = quality_2 - quality
+        # Quality old was de kwaliteit van de vorige loop. Als Quality_2 beter is of de kans het zegt,
+        # veranderen we Quality_old in Quality_2. Anders blijft het hetzelfde
+        # Quality_old returnen we vervolgens.
+
+        delta = quality_2 - quality_old
         print(f'delta: {delta}')
 
         if delta > 1:
 
             # voer nieuwe state sowieso in
             train_dictionary = train_dictionary_2
-            quality = quality_2
+            quality_old = quality_2
+            print("mutation accepted")
 
         else:
 
             chance = 2**delta
 
-
+            # als kans groter dan 1 is, voer het in
             if chance >= 1:
 
                 # voer nieuwe state in
                 train_dictionary = train_dictionary_2
-                quality = quality_2
+                quality_old = quality_2
+                print("mutation accepted")
 
-            if chance > 0 and chance < 1:
+            # als kans tussen nul en 1 is, maak een gok of je het moet invoeren
+            elif chance > 0 and chance < 1:
 
                 # afhankelijk van de kans, voer hem in:
                 guess = random.uniform(0, 1)
@@ -187,10 +194,22 @@ class SimulatedAnnealing:
                 if guess < chance:
 
                     train_dictionary = train_dictionary_2
-                    quality = quality_2
+                    quality_old = quality_2
+                    print("mutation accepted")
 
+                else:
+                    print("mutation not accepted")
+                    # voer de change in time terug
+                    list_of_numbers[0] += change_in_time
 
-        short_tuple = [train_dictionary, quality]
+            # kans is kleiner dan nul, dus voer je het niet in
+            else:
+                print("mutation not accepted")
+                # voer de change in time terug
+                list_of_numbers[0] += change_in_time
+
+        delta = 0
+        short_tuple = [train_dictionary, quality_old]
         return short_tuple
 
 
@@ -199,7 +218,7 @@ class SimulatedAnnealing:
 
     	# kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
     	pick_train = random.choice(list(train_dictionary_2.keys()))
-    	print(pick_train)
+    	print(f'trein die gemuteerd word: {pick_train}')
     	# front_or_back = random.randint(1,2)
 
     	# zoek deze op in de train_dictionary
@@ -212,7 +231,9 @@ class SimulatedAnnealing:
     	station_for_mutation = list_of_stations_for_mutation[1]
 
     	print(f'dit is het knooppuntstation: {station_for_mutation}')
-    	print(type(station_for_mutation))
+    	# print(type(station_for_mutation))
+    	old_station_for_mutation = list_of_stations_for_mutation[0]
+    	print(f'oud station: {old_station_for_mutation}')
 
     	connections_for_mutation = station_for_mutation.connections
     	print(f'dit zijn de connecties: {connections_for_mutation}')
@@ -220,26 +241,23 @@ class SimulatedAnnealing:
     	new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
 
     	# make sure this is another one than the one it was:
-    	while new_station_for_mutation == list_of_stations_for_mutation[0]:
-            new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-            print(new_station_for_mutation)
+    	# while new_station_for_mutation == list_of_stations_for_mutation[0]:
+        #     new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
+        #     print(new_station_for_mutation)
 
-    	print(new_station_for_mutation)
+    	print(f'nieuw station: {new_station_for_mutation}')
 
-    	print(type(new_station_for_mutation))
+    	# print(type(new_station_for_mutation))
     	new_station_for_mutation = stations_library[new_station_for_mutation]
 
     	print(f' type new station: {type(new_station_for_mutation)}')
     	# # zet deze nieuwe connection_visited op true
     	new_station_for_mutation.connection_visited[str(station_for_mutation)] == True
 
-    	# print("oud station: ", end = "")
-    	# # zet de oude connection_visited op false
-    	old_station_for_mutation = list_of_stations_for_mutation[0]
-    	print(f'oud station: {old_station_for_mutation}')
-    	print(f' type old station: {type(old_station_for_mutation)}')
-    	print("hello?")
-    	print(f' stations library: {stations_library}')
+
+    	# print(f' type old station: {type(old_station_for_mutation)}')
+    	# print("hello?")
+    	# print(f' stations library: {stations_library}')
     	# old_station_for_mutation = stations_library[old_station_for_mutation]
     	# print(type(old_station))
     	old_station_for_mutation.connection_visited[str(station_for_mutation)] == False
@@ -254,11 +272,11 @@ class SimulatedAnnealing:
     	new_station = new_station_for_mutation
 
     	temporary_name = station_for_mutation.connections[str(old_station)]
-    	print(f'wat is het {temporary_name}', type(temporary_name))
+    	print(f'min oude route {temporary_name}')
     	change_in_time -= temporary_name
     	# change_in_time -= station_for_mutation.connections[old_station]
     	temporary_name_2 = station_for_mutation.connections[str(new_station)]
-    	print(f'wat is het {temporary_name_2}', type(temporary_name_2))
+    	print(f'min nieuwe route {temporary_name_2}')
     	change_in_time += temporary_name_2
     	print(f'change in time: {change_in_time}')
 
