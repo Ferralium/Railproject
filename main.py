@@ -206,9 +206,10 @@ class Railsolver():
         for i in range(10):
 
             train_dictionary_2 = train_dictionary
+            stations_library = wisselstoring.stations
 
             # list_of_numbers = wisselstoring.take_a_ride()
-            change_in_time = self.algo.mutation(train_dictionary_2)
+            change_in_time = self.algo.mutation(train_dictionary_2, stations_library, train_dictionary)
 
             # bereken nu opnieuw de totale tijd voor de treinen
 

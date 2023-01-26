@@ -187,7 +187,7 @@ class SimulatedAnnealing:
         return short_tuple
 
 
-    def mutation(self, train_dictionary_2):
+    def mutation(self, train_dictionary_2, stations_library, train_dictionary):
     	""" Functie die het laatse treinspoor verlegt."""
 
     	# kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
@@ -220,23 +220,30 @@ class SimulatedAnnealing:
     	print(new_station_for_mutation)
 
     	print(type(new_station_for_mutation))
-    	new_station_for_mutation = wisselstoring.stations[new_station_for_mutation]
+    	new_station_for_mutation = stations_library[new_station_for_mutation]
+
+    	print(type(new_station_for_mutation))
     	# # zet deze nieuwe connection_visited op true
-    	new_station_for_mutation.connection_visited[station_for_mutation] == True
+    	new_station_for_mutation.connection_visited[str(station_for_mutation)] == True
 
     	# # zet de oude connection_visited op false
     	old_station = list_of_stations_for_mutation[0]
-    	old_station.connection_visited[station_for_mutation] == False
+    	old_station.connection_visited[str(station_for_mutation)] == False
 
     	# # en ten slotte, verander het in de train_dictionary
-    	list_of_stations_for_mutation[0] = new_station_for_mutation
+    	list_of_stations_for_mutation[0] = str(new_station_for_mutation)
     	train_dictionary[pick_train] = list_of_stations_for_mutation
 
     	# verander ook de tijd:
-    	change_in_time = 0
+    	change_in_time: float = 0
 
-    	change_in_time -= station_for_mutation.connections[old_station]
-    	change_in_time += station_for_mutation.connections[new_station_for_mutation]
+    	temporary_name = station_for_mutation.connections[str(old_station)]
+    	print(f'wat is het {temporary_name}', type(temporary_name))
+    	change_in_time -= temporary_name
+    	# change_in_time -= station_for_mutation.connections[old_station]
+    	temporary_name_2 = station_for_mutation.connections[str(new_station_for_mutation)]
+    	print(f'wat is het {temporary_name_2}', type(temporary_name_2))
+    	change_in_time += temporary_name_2
 
     	return change_in_time
 
