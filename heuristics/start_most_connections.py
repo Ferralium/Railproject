@@ -18,11 +18,10 @@ def most_connection_start_heuristic(stations: dict[str, Station]) -> Station:
             for connections in possible_current_station.connection_visited.values():
                 if connections == False:
                     unused_connections += 1
-                print(station, connections, unused_connections)
 
             if unused_connections > highest_unused_connections:
                 highest_unused_connections = unused_connections
-                current_station = stations.get(str(stations))
+                current_station = stations.get(str(station))
 
     if all_stations_true is len(stations):
         starting_point: str = random.choice(list(stations.keys()))
