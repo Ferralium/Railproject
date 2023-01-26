@@ -31,8 +31,8 @@ def sevenbridges_start_heuristic(stations: dict[str, Station]) -> Station:
         
         # if all connections are used or only stations with an even number of connections are left, choose a random uneven station
         if len(stations_visited) is len(stations):
-            current_station = None
-
+            current_station = None 
+            break 
         elif len(stations_even) is len(stations):
             while True:
                 current_station = random.choice(list(stations.values()))

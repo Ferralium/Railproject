@@ -1,4 +1,5 @@
 import random
+from station import Station
 
 class GreedyAlgorithm:
 
@@ -35,8 +36,9 @@ class GreedyAlgorithm:
                     current_station = station_dictionary.get(str(possible_current_station))
 
         if all_stations_true is len(station_dictionary):
-            starting_point: str = random.choice(statnames)
-            current_station = station_dictionary.get(starting_point)
+            current_station = None
+            # starting_point: str = random.choice(statnames)
+            # current_station = station_dictionary.get(starting_point)
 
         return current_station
 
@@ -49,11 +51,13 @@ class GreedyAlgorithm:
         train_stations.append(current_station)
         print(current_station)
 
+        if current_station == None:
+            return train_stations, time
 
         while True:
             
             shortest_connection = 100
-            print(f'hello {current_station.connection_visited}')
+            # print(f'hello {current_station.connection_visited}')
 
             check_stations: bool = all(station is True for station in current_station.connection_visited.values())
         
