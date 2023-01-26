@@ -204,13 +204,13 @@ class SimulatedAnnealing:
                 else:
                     print("mutation not accepted, chance too low")
                     # voer de change in time terug
-                    list_of_numbers[0] += change_in_time
+                    list_of_numbers[0] -= change_in_time
 
             # kans is kleiner dan nul, dus voer je het niet in
             else:
                 print("mutation not accepted, kans kleiner dan 0")
                 # voer de change in time terug
-                list_of_numbers[0] += change_in_time
+                list_of_numbers[0] -= change_in_time
 
         delta = 0
         short_tuple = [train_dictionary, quality_old]
