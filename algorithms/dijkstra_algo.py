@@ -64,34 +64,35 @@ class DijkstraAlgorithm:
         # Takes the source station and starts mapping outwards to find shortest paths to all possible
         current_station = self.oldroutes[starting_station]
 
-        while len(visited) < len(self.oldroutes):
+        while True:
+            counter += 1
+            visited.append(current_station.name)
             tempkeys = current_station.connections.keys()
-            self.newroute[current_station.name].append(current_station.name)
+            # print(tempkeys)
 
-            # If station has not been visited yet, add to the queue to visit
+            # Queues station outward
             for station in tempkeys:
                 if station not in visited:
                     if station not in queue:
-                        queue.append(station)
+                        queue.append(station)           
 
             # Checks if the route length from this path is better than the old length. If so change the route and the length
             for station in tempkeys:
-                if current_station.connections[station] not in visited:
+                if station not in visited:
                     if current_station.connections[station] < self.distance_to[station]:
                         self.distance_to[station] = self.distance_to[current_station.name] + current_station.connections[station]
-                        self.newroute[station] = self.newroute[current_station.name]
+                        self.newroute[station] = self.newroute[current_station.name] + [current_station.name]
 
-            counter += 1
-            visited.append(current_station.name)
             if len(queue) > 0:
                 newstat = queue.pop(0)
                 current_station = self.oldroutes[newstat]
-
-            if counter == 2:
+            
+            if len(queue) == 0:
                 break
             
-        # print(self.distance_to)
-        print(self.newroute['Amsterdam Centraal'])
+        # Adds the starting/ending station to the route
+        for key in self.newroute:
+            self.newroute[key].append(key)
 
     def starting_station(self, station_dictionary, statnames):
         """Picks the starting station from a list of all possible stations
@@ -110,7 +111,4 @@ class DijkstraAlgorithm:
         pass
 
 dijk = DijkstraAlgorithm()
-
-# Check for updated distances
-# print(dijk.distance_to)
-dijk.map_shortest('Amsterdam Centraal')
+dijk.map_shortest('Alkmaar')
