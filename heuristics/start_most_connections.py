@@ -29,7 +29,7 @@ def most_connection_start_heuristic(stations: dict[str, Station]) -> Station:
 
     # if all connections are used, a random starting station is chosen
     if all_stations_true is len(stations):
-        starting_point: str = random.choice(list(stations.keys()))
-        current_station = stations.get(starting_point)
+        current_station = None
+    
 
     return current_station

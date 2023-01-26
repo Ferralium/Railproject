@@ -16,8 +16,12 @@ class HeuristicAlgorithm(Algorithm):
     
     def move(self, current_station: Station, train_stations: list[Station], station_dictionary: dict[str, Station]) -> None:
         """Moves to the next connections based on the move_heuristic"""
+
         time: float = 0
         train_stations.append(current_station)
+
+        if current_station == None:
+            return train_stations, time
 
         # one loop is a move from station A to station B
         while True:

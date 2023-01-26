@@ -42,4 +42,5 @@ def shortest_move_heuristic(curr: Station, visited: list[Station], stations: dic
                 shortest_connection: int = curr.connections[connections]
                 next_station: Station = stations.get(connections)
 
+
     return next_station

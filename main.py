@@ -13,7 +13,7 @@ import time
 import random
 from algorithm import Algorithm
 from station import Station
-from train import Train
+# from train import Train
 import pandas as pd
 from typing import Any
 from representatie import Mapdrawer, Gifgenerator
@@ -144,7 +144,7 @@ class Railsolver():
 
         for route in range(20):
 
-            number_of_routes += 1
+            # number_of_routes += 1
 
             # maak de treinnaam
             train_number: str = "train_" + str(route + 1)
@@ -159,13 +159,22 @@ class Railsolver():
 
             list_of_stations_and_time: tuple[Station, int] = self.algo.move(current_station, train_stations, self.stations)
 
-            # voeg dit toe aan de tabel van treinen
-            wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
+            print(list_of_stations_and_time)
+            check_station = list_of_stations_and_time[0]
+            print(check_station)
+            if check_station == [None]:
+                break
+            else:
 
-            time_trajectory: int = list_of_stations_and_time[1]
+                # voeg dit toe aan de tabel van treinen
+                wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
 
-            # add total time of all trajectories
-            total_time += time_trajectory
+                time_trajectory: int = list_of_stations_and_time[1]
+
+                # add total time of all trajectories
+                total_time += time_trajectory
+
+                number_of_routes += 1
 
         list_of_numbers: list[int] = [total_time, number_of_routes]
         print(f'list of numbers: {list_of_numbers}')
