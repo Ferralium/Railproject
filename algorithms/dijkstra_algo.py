@@ -37,18 +37,15 @@ class DijkstraAlgorithm:
 
         self.newroute = {}
         self.distance_to = {}
-        # self.unvisited = []
 
         # These are the variables required to to keep updating the MST
         for station in self.oldroutes:
-            # self.unvisited.append(station)
             self.distance_to[station] = float('inf')
             self.newroute[station] = []
 
         # Saves all the optimized routes
         self.prunedroutes = {}
         
-        pass
 
     def map_shortest(self, starting_station):
         """Maps all nodes and finds the shortest route to all the nodes from the source node
@@ -94,6 +91,28 @@ class DijkstraAlgorithm:
         for key in self.newroute:
             self.newroute[key].append(key)
 
+        # Writes new dictionary with the inefficient connections left out
+        for station in self.newroute:       
+            for i in range(0, len(self.newroute[station]) - 1, 1):
+                stationname1 = self.newroute[station][i]
+                stationname2 = self.newroute[station][i + 1]
+                
+                # If the station 
+                if stationname1 in self.prunedroutes:
+                    self.prunedroutes[stationname1].add_station(stationname2, self.oldroutes[stationname1].connections[stationname2])
+
+                elif stationname1 not in self.prunedroutes:
+                    self.prunedroutes[stationname1] = Station(stationname1)
+                    self.prunedroutes[stationname1].add_station(stationname2, self.oldroutes[stationname1].connections[stationname2])
+
+                if stationname2 in self.prunedroutes:
+                    self.prunedroutes[stationname2].add_station(stationname1, self.oldroutes[stationname2].connections[stationname1])
+
+                elif stationname2 not in self.prunedroutes:
+                    self.prunedroutes[stationname2] = Station(stationname2)
+                    self.prunedroutes[stationname2].add_station(stationname1, self.oldroutes[stationname2].connections[stationname1])      
+        
+
     def starting_station(self, station_dictionary, statnames):
         """Picks the starting station from a list of all possible stations
            Does this on the basis of the most connections"""
@@ -111,4 +130,4 @@ class DijkstraAlgorithm:
         pass
 
 dijk = DijkstraAlgorithm()
-dijk.map_shortest('Alkmaar')
+dijk.map_shortest('Amsterdam Centraal')
