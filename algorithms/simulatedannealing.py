@@ -222,57 +222,37 @@ class SimulatedAnnealing:
     	print(type(new_station_for_mutation))
     	new_station_for_mutation = stations_library[new_station_for_mutation]
 
-    	print(type(new_station_for_mutation))
+    	print(f' type new station: {type(new_station_for_mutation)}')
     	# # zet deze nieuwe connection_visited op true
     	new_station_for_mutation.connection_visited[str(station_for_mutation)] == True
 
+    	# print("oud station: ", end = "")
     	# # zet de oude connection_visited op false
-    	old_station = list_of_stations_for_mutation[0]
-    	old_station.connection_visited[str(station_for_mutation)] == False
+    	old_station_for_mutation = list_of_stations_for_mutation[0]
+    	print(f'oud station: {old_station_for_mutation}')
+    	print(f' type old station: {type(old_station_for_mutation)}')
+    	print("hello?")
+    	print(f' stations library: {stations_library}')
+    	# old_station_for_mutation = stations_library[old_station_for_mutation]
+    	# print(type(old_station))
+    	old_station_for_mutation.connection_visited[str(station_for_mutation)] == False
 
     	# # en ten slotte, verander het in de train_dictionary
-    	list_of_stations_for_mutation[0] = str(new_station_for_mutation)
+    	list_of_stations_for_mutation[0] = new_station_for_mutation
     	train_dictionary[pick_train] = list_of_stations_for_mutation
-
-    	# verander ook de tijd:
+        #
+    	# # verander ook de tijd:
     	change_in_time: float = 0
+    	old_station = old_station_for_mutation
+    	new_station = new_station_for_mutation
 
     	temporary_name = station_for_mutation.connections[str(old_station)]
     	print(f'wat is het {temporary_name}', type(temporary_name))
     	change_in_time -= temporary_name
     	# change_in_time -= station_for_mutation.connections[old_station]
-    	temporary_name_2 = station_for_mutation.connections[str(new_station_for_mutation)]
+    	temporary_name_2 = station_for_mutation.connections[str(new_station)]
     	print(f'wat is het {temporary_name_2}', type(temporary_name_2))
     	change_in_time += temporary_name_2
+    	print(f'change in time: {change_in_time}')
 
     	return change_in_time
-
-
-    # def make_mutation(self, connections_for_mutation, station_for_mutation, list_of_stations_for_mutation):
-    #
-    #
-    #     # TIJDELIJK UITGECOMMEND, NAAR ANDERE FUNCTIE
-    #     # connections_for_mutation = station_for_mutation.connections.get(station_for_mutation)
-    # 	# print(f'dit zijn de connecties: {connections_for_mutation}')
-    #
-    # 	# # kies een random station om hem in te veranderen uit deze lijst
-    # 	new_station_for_mutation = random.choice(connections_for_mutation)
-    #
-    # 	# # zet deze nieuwe connection_visited op true
-    # 	new_station_for_mutation.connection_visited[station_for_mutation] == True
-    #
-    # 	# # zet de oude connection_visited op false
-    # 	old_station = list_of_stations_for_mutation[0]
-    # 	old_station.connection_visited[station_for_mutation] == False
-    #
-    # 	# # en ten slotte, verander het in de train_dictionary
-    # 	list_of_stations_for_mutation[0] = new_station_for_mutation
-    # 	train_dictionary[pick_train] = list_of_stations_for_mutation
-    #
-    # 	# verander ook de tijd:
-    # 	change_in_time = 0
-    #
-    # 	change_in_time -= station_for_mutation.connections[old_station]
-    # 	change_in_time += station_for_mutation.connections[new_station_for_mutation]
-    #
-    # 	return change_in_time
