@@ -15,31 +15,31 @@ class DijkstraAlgorithm:
         self.start_heuristic = start_heuristic
         self.move_heuristic = move_heuristic
 
-        with open('data/ConnectiesNationaal.csv') as f:
-            # Met de next functie wordt de eerste lijn overgeslagen, dit geeft alleen informatie over de inhoud
-            next(f) 
-            # For loop iterates over the lines in the csv and modifies them to usable format
-            for line in f:
-                templine: str = line
+        # with open('data/ConnectiesNationaal.csv') as f:
+        #     # Met de next functie wordt de eerste lijn overgeslagen, dit geeft alleen informatie over de inhoud
+        #     next(f) 
+        #     # For loop iterates over the lines in the csv and modifies them to usable format
+        #     for line in f:
+        #         templine: str = line
 
-                # ik denk dat we deze een andere variabele naam moeten geven, anders werkt de typehint niet.
-                templine = templine.strip().split(',')     
+        #         # ik denk dat we deze een andere variabele naam moeten geven, anders werkt de typehint niet.
+        #         templine = templine.strip().split(',')     
 
-                # Checks if station already exists, if so adds connection
-                if templine[0] in self.oldroutes:
-                    self.oldroutes[templine[0]].add_station(templine[1], float(templine[2]))    
+        #         # Checks if station already exists, if so adds connection
+        #         if templine[0] in self.oldroutes:
+        #             self.oldroutes[templine[0]].add_station(templine[1], float(templine[2]))    
 
-                # If the station does not exist initializes the station and adds the connection
-                elif templine[0] not in self.oldroutes:
-                    self.oldroutes[templine[0]] = Station(templine[0])
-                    self.oldroutes[templine[0]].add_station(templine[1], float(templine[2]))   
+        #         # If the station does not exist initializes the station and adds the connection
+        #         elif templine[0] not in self.oldroutes:
+        #             self.oldroutes[templine[0]] = Station(templine[0])
+        #             self.oldroutes[templine[0]].add_station(templine[1], float(templine[2]))   
 
-                # Checks whether the connection already exists in the stations and adds it if this is not the case
-                if templine[1] not in self.oldroutes:
-                    self.oldroutes[templine[1]] = Station(templine[1])
-                    self.oldroutes[templine[1]].add_station(templine[0], float(templine[2]))    
-                elif templine[1] in self.oldroutes:
-                    self.oldroutes[templine[1]].add_station(templine[0], float(templine[2]))
+        #         # Checks whether the connection already exists in the stations and adds it if this is not the case
+        #         if templine[1] not in self.oldroutes:
+        #             self.oldroutes[templine[1]] = Station(templine[1])
+        #             self.oldroutes[templine[1]].add_station(templine[0], float(templine[2]))    
+        #         elif templine[1] in self.oldroutes:
+        #             self.oldroutes[templine[1]].add_station(templine[0], float(templine[2]))
 
         self.newroute = {}
         self.distance_to = {}
@@ -103,17 +103,20 @@ class DijkstraAlgorithm:
                 stationname1 = self.newroute[station][i]
                 stationname2 = self.newroute[station][i + 1]
                 
-                # If the station 
+                # If station 1 is in prunedroutes, simply add the second station as a connection
                 if stationname1 in self.prunedroutes:
                     self.prunedroutes[stationname1].add_station(stationname2, self.oldroutes[stationname1].connections[stationname2])
 
+                # If station 1 is not in prunedroutes, add the station as a station-class object and add the connection
                 elif stationname1 not in self.prunedroutes:
                     self.prunedroutes[stationname1] = Station(stationname1)
                     self.prunedroutes[stationname1].add_station(stationname2, self.oldroutes[stationname1].connections[stationname2])
 
+                # If station 2 is in prunedroutes, simply add the first station as a connection
                 if stationname2 in self.prunedroutes:
                     self.prunedroutes[stationname2].add_station(stationname1, self.oldroutes[stationname2].connections[stationname1])
 
+                # If station 2 is not in prunedroutes, add the station as a station-class object and add the connection
                 elif stationname2 not in self.prunedroutes:
                     self.prunedroutes[stationname2] = Station(stationname2)
                     self.prunedroutes[stationname2].add_station(stationname1, self.oldroutes[stationname2].connections[stationname1])      
