@@ -161,6 +161,7 @@ class SimulatedAnnealing:
         # veranderen we Quality_old in Quality_2. Anders blijft het hetzelfde
         # Quality_old returnen we vervolgens.
 
+        mutated: Bool = True
         delta = quality_2 - quality_old
         print(f'delta: {delta}')
 
@@ -203,15 +204,30 @@ class SimulatedAnnealing:
                     # voer de change in time terug
                     list_of_numbers[0] -= change_in_time
 
+                    # zet changed op False
+                    mutated = False
+
             # kans is kleiner dan nul, dus voer je het niet in
             else:
                 print("mutation not accepted, kans kleiner dan 0")
                 # voer de change in time terug
                 list_of_numbers[0] -= change_in_time
 
+                mutated = False
+
         delta = 0
         short_tuple = [train_dictionary, quality_old]
-        return short_tuple
+        return short_tuple, mutated
+
+
+    def reset_visiting_status(self, switching_stations, stations_library):
+        """ Function that resets the visited-status of connections, in case a mutation is not persued after all. """
+
+        switching_stations[2].station_unvisit(str(switching_stations[1]))
+        switching_stations[1].station_unvisit(str(switching_stations[2]))
+
+        switching_stations[0].stationvisit(str(switching_stations[1]))
+        switching_stations[1].stationvisit(str(switching_stations[0]))
 
 
     def stations_to_be_switched(self, train_dictionary_2, stations_library):
@@ -320,9 +336,6 @@ class SimulatedAnnealing:
         # unvisit de oude route
         # old_station_for_mutation.station_unvisit(str(station_for_mutation))
         # station_for_mutation.station_unvisit(str(old_station_for_mutation))
-        print(f' checken of het werkt: {switching_stations[0]}')
-        print(f' checken of het werkt: {switching_stations[1]}')
-        print(f' checken of het werkt: {switching_stations[2]}')
         switching_stations[0].station_unvisit(str(switching_stations[1]))
         switching_stations[1].station_unvisit(str(switching_stations[0]))
 

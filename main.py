@@ -251,10 +251,14 @@ class Railsolver():
               print(f'quality 2: {quality_2}')
 
               # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
-              short_tuple = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers)
+              short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers)
 
               train_dictionary = short_tuple[0]
               quality_old = short_tuple[1]
+
+              if mutated == False:
+                  # zet dan ook de connection visits weer terug
+                  self.algo.reset_visiting_status(switching_stations, stations_library)
 
 
 
