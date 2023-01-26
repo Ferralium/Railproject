@@ -213,23 +213,25 @@ class SimulatedAnnealing:
         short_tuple = [train_dictionary, quality_old]
         return short_tuple
 
+
     def stations_to_be_switched(self, train_dictionary_2, stations_library):
         """ Functie die willekeurig uitkiest welke connecties worden gemuteerd. """
 
         # kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
-    	pick_train = random.choice(list(train_dictionary_2.keys()))
-    	print(f'trein die gemuteerd word: {pick_train}')
-    	front_or_back = random.randint(1,2)
+        pick_train = random.choice(list(train_dictionary_2.keys()))
+        print(f'trein die gemuteerd word: {pick_train}')
+        front_or_back = random.randint(1,2)
 
         chosen_one = [pick_train, front_or_back]
 
     	# zoek deze op in de train_dictionary
-    	if front_or_back == 1:
+        if front_or_back == 1:
             print("change front of train")
 
-            # verander het eerste station
+            # pak de lijst van de stations
             list_of_stations_for_mutation = train_dictionary_2[pick_train]
-
+            print(f'wat gaat er mis met het oude station? {list_of_stations_for_mutation}')
+            chosen_one.append(list_of_stations_for_mutation)
         	# ga naar het 2e station in de lijst
             station_for_mutation = list_of_stations_for_mutation[1]
 
@@ -242,7 +244,10 @@ class SimulatedAnnealing:
             print(f'dit zijn de connecties: {connections_for_mutation}')
 
             new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-            new_station_for_mutation = stations_library[new_station_for_mutation]
+
+            if type(new_station_for_mutation) is str:
+                # maak er een station van
+                new_station_for_mutation = stations_library[new_station_for_mutation]
             # make sure this is another one than the one it was:
         	# while new_station_for_mutation == list_of_stations_for_mutation[0]:
             #     new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
@@ -250,8 +255,10 @@ class SimulatedAnnealing:
 
             print(f'nieuw station: {new_station_for_mutation}')
 
-        	# print(type(new_station_for_mutation))
-            new_station_for_mutation = stations_library[new_station_for_mutation]
+            # type_new_station = type(new_station_for_mutation)
+
+
+            # new_station_for_mutation = stations_library[new_station_for_mutation]
 
 
             # return uiteindelijk de stations
@@ -264,6 +271,7 @@ class SimulatedAnnealing:
             print("change back of train")
 
             list_of_stations_for_mutation = train_dictionary_2[pick_train]
+            chosen_one.append(list_of_stations_for_mutation)
             length_traject = len(list_of_stations_for_mutation)
 
 
@@ -275,6 +283,7 @@ class SimulatedAnnealing:
         	# print(type(station_for_mutation))
             # old_station_for_mutation = list_of_stations_for_mutation[0]
             old_station_for_mutation = list_of_stations_for_mutation[length_traject - 1]
+            print(list_of_stations_for_mutation)
 
             print(f'oud station: {old_station_for_mutation}')
 
@@ -298,7 +307,7 @@ class SimulatedAnnealing:
             return switching_stations, chosen_one
 
 
-    def mutation_small(self, train_dictionary_2, train_dictionary, switching_stations, chosen_one):
+    def mutation_small(self, train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library):
         """ Functie die gekregen stations omwisselt, en daarbij de tijd veranderd, en de visited routes veranderd. """
 
         # Zet de nieuwe route op visited
@@ -311,22 +320,24 @@ class SimulatedAnnealing:
         # unvisit de oude route
         # old_station_for_mutation.station_unvisit(str(station_for_mutation))
         # station_for_mutation.station_unvisit(str(old_station_for_mutation))
-
+        print(f' checken of het werkt: {switching_stations[0]}')
+        print(f' checken of het werkt: {switching_stations[1]}')
+        print(f' checken of het werkt: {switching_stations[2]}')
         switching_stations[0].station_unvisit(str(switching_stations[1]))
         switching_stations[1].station_unvisit(str(switching_stations[0]))
 
         # verander het in de train_dictionary
-        if chosen_one[1] == 1
+        if chosen_one[1] == 1:
 
             list_of_stations_for_mutation = train_dictionary_2[chosen_one[0]]
-            list_of_stations_for_mutation[0] = chosen_one[2]
-            train_dictionary[pick_train] = list_of_stations_for_mutation
+            list_of_stations_for_mutation[0] = switching_stations[2]
+            train_dictionary[chosen_one[0]] = list_of_stations_for_mutation
 
         else:
             list_of_stations_for_mutation = train_dictionary_2[chosen_one[0]]
             length_traject = len(list_of_stations_for_mutation)
-            list_of_stations_for_mutation[length_traject - 1] = chosen_one[2]
-            train_dictionary[pick_train] = list_of_stations_for_mutation
+            list_of_stations_for_mutation[length_traject - 1] = switching_stations[2]
+            train_dictionary[chosen_one[0]] = list_of_stations_for_mutation
 
         # # verander ook de tijd:
         change_in_time: float = 0
