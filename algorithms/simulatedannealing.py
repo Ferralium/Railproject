@@ -342,9 +342,18 @@ class SimulatedAnnealing:
         switching_stations[2].stationvisit(str(switching_stations[1]))
         switching_stations[1].stationvisit(str(switching_stations[2]))
 
-        # unvisit de oude route
-        switching_stations[0].station_unvisit(str(switching_stations[1]))
-        switching_stations[1].station_unvisit(str(switching_stations[0]))
+        # unvisit de oude route (als daar maar 1 visit staat)
+        string_knooppunt = str(switching_stations[1])
+        string_oud = str(switching_stations[0])
+
+        if switching_stations[0].check_number_visits(string_knooppunt) <= 1:
+            switching_stations[0].station_unvisit(str(switching_stations[1]))
+            switching_stations[1].station_unvisit(str(switching_stations[0]))
+
+        else:
+            switching_stations[0].one_less_visit(str(switching_stations[1]))
+            switching_stations[1].one_less_visit(str(switching_stations[0]))
+
 
         # verander het in de train_dictionary
         if chosen_one[1] == 1:
