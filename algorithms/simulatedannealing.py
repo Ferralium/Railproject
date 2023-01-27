@@ -278,56 +278,6 @@ class SimulatedAnnealing:
             connections_for_mutation = station_for_mutation.connections
             print(f'dit zijn de connecties: {connections_for_mutation}')
 
-            # insert straks de nieuwe functie voor dit ding
-            # new_station_for_mutation, time_difference = choose_new_station(new_station_for_mutation, station_for_mutation, old_station_for_mutation, connections_for_mutation, stations_library, total_time_for_mutation, pick_train)
-
-            new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-            new_station_for_mutation = stations_library[new_station_for_mutation]
-            # new_station = str(new_station_for_mutation)
-            knooppunt = str(station_for_mutation)
-
-            total_time_train = total_time_each_train[pick_train]
-            # nu kijken wat de tijd is om daar te komen:
-            time_new_connection = new_station_for_mutation.connections[knooppunt]
-            time_old_connection = old_station_for_mutation.connections[knooppunt]
-            time_difference = time_new_connection - time_old_connection
-            time_spare = 180 - total_time_train
-
-            while time_spare < time_difference:
-
-                new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-
-                # maak er een station object van:
-                new_station_for_mutation = stations_library[new_station_for_mutation]
-
-
-                # nu kijken wat de tijd is om daar te komen:
-                time_new_connection = new_station_for_mutation.connections[knooppunt]
-                time_old_connection = old_station_for_mutation.connections[knooppunt]
-                time_difference = time_new_connection - time_old_connection
-                time_spare = 180 - total_time_train
-
-            # nu heb je een trein gevonden die past!
-
-
-            # new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-
-            if type(new_station_for_mutation) is str:
-                # maak er een station van
-                new_station_for_mutation = stations_library[new_station_for_mutation]
-            # make sure this is another one than the one it was:
-        	# while new_station_for_mutation == list_of_stations_for_mutation[0]:
-            #     new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-            #     print(new_station_for_mutation)
-
-            print(f'nieuw station: {new_station_for_mutation}')
-
-            # return uiteindelijk de stations
-            switching_stations = [old_station_for_mutation, station_for_mutation, new_station_for_mutation]
-            return switching_stations, chosen_one
-
-
-
         else:
             print("change back of train")
 
@@ -335,14 +285,11 @@ class SimulatedAnnealing:
             chosen_one.append(list_of_stations_for_mutation)
             length_traject = len(list_of_stations_for_mutation)
 
-
         	# ga naar het 2e station in de lijst
-            # station_for_mutation = list_of_stations_for_mutation[1]
             station_for_mutation = list_of_stations_for_mutation[length_traject - 2]
 
             print(f'dit is het knooppuntstation: {station_for_mutation}')
-        	# print(type(station_for_mutation))
-            # old_station_for_mutation = list_of_stations_for_mutation[0]
+
             old_station_for_mutation = list_of_stations_for_mutation[length_traject - 1]
             print(list_of_stations_for_mutation)
 
@@ -351,51 +298,39 @@ class SimulatedAnnealing:
             connections_for_mutation = station_for_mutation.connections
             print(f'dit zijn de connecties: {connections_for_mutation}')
 
-            # new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
 
-            #### voorwaarde lengte trein!
+        #### voorwaarde lengte trein!
+        new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
+        new_station_for_mutation = stations_library[new_station_for_mutation]
+        # new_station = str(new_station_for_mutation)
+        knooppunt = str(station_for_mutation)
+
+        total_time_train = total_time_each_train[pick_train]
+        # nu kijken wat de tijd is om daar te komen:
+        time_new_connection = new_station_for_mutation.connections[knooppunt]
+        time_old_connection = old_station_for_mutation.connections[knooppunt]
+        time_difference = time_new_connection - time_old_connection
+        time_spare = 180 - total_time_train
+
+        while time_spare < time_difference:
+
             new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-            new_station_for_mutation = stations_library[new_station_for_mutation]
-            # new_station = str(new_station_for_mutation)
-            knooppunt = str(station_for_mutation)
 
-            total_time_train = total_time_each_train[pick_train]
+            # maak er een station object van:
+            new_station_for_mutation = stations_library[new_station_for_mutation]
+
+
             # nu kijken wat de tijd is om daar te komen:
             time_new_connection = new_station_for_mutation.connections[knooppunt]
             time_old_connection = old_station_for_mutation.connections[knooppunt]
             time_difference = time_new_connection - time_old_connection
             time_spare = 180 - total_time_train
 
-            while time_spare < time_difference:
-
-                new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-
-                # maak er een station object van:
-                new_station_for_mutation = stations_library[new_station_for_mutation]
-
-
-                # nu kijken wat de tijd is om daar te komen:
-                time_new_connection = new_station_for_mutation.connections[knooppunt]
-                time_old_connection = old_station_for_mutation.connections[knooppunt]
-                time_difference = time_new_connection - time_old_connection
-                time_spare = 180 - total_time_train
-
-
-
-
-            # make sure this is another one than the one it was:
-        	# while new_station_for_mutation == list_of_stations_for_mutation[0]:
-            #     new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-            #     print(new_station_for_mutation)
-
             print(f'nieuw station: {new_station_for_mutation}')
 
-        	# print(type(new_station_for_mutation))
-            # new_station_for_mutation = stations_library[new_station_for_mutation]
-
-            # return uiteindelijk de stations
-            switching_stations = [old_station_for_mutation, station_for_mutation, new_station_for_mutation]
-            return switching_stations, chosen_one
+        # return uiteindelijk de stations
+        switching_stations = [old_station_for_mutation, station_for_mutation, new_station_for_mutation]
+        return switching_stations, chosen_one
 
 
     def mutation_small(self, train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library):
@@ -446,40 +381,3 @@ class SimulatedAnnealing:
         print(f'change in time: {change_in_time}')
 
         return change_in_time
-
-
-# def choose_new_station(self, new_station_for_mutation, station_for_mutation, old_station_for_mutation, connections_for_mutation, stations_library, total_time_for_mutation, pick_train):
-#     """ Aparte functie die een nieuw station kiest om naar toe te gaan. Want de totale tijd mag niet over de
-#     180  minuten, en om deze if statements in een andere functie te verwerken wordt erg complicated.. """
-#
-#     new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-#
-#     # new_station = str(new_station_for_mutation)
-#     knooppunt = str(station_for_mutation)
-#
-#     # nu kijken wat de tijd is om daar te komen:
-#     time_new_connection = new_station_for_mutation.connections[knooppunt]
-#     time_old_connection = old_station_for_mutation.connections[knooppunt]
-#     time_difference = time_new_connection - time_old_connection
-#     time_spare = 180 - total_time_for_mutation
-#
-#     while time_spare < time_difference:
-#
-#         new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-#
-#         # nu kijken wat de tijd is om daar te komen:
-#         time_new_connection = new_station_for_mutation.connections[knooppunt]
-#         time_old_connection = old_station_for_mutation.connections[knooppunt]
-#         time_difference = time_new_connection - time_old_connection
-#         time_spare = 180 - total_time_for_mutation[pick_train]
-#
-#     # nu heb je een trein gevonden die past!
-#
-#     # maak van new_station_for_mutation een Station object
-#     new_station_for_mutation = stations_library[new_station_for_mutation]
-#
-#     # pas daarna de totale tijd aan van het traject (of misschien dit pas doen als het daadwerkelijk wordt ingevoerd?)
-#     # total_time_for_mutation[pick_train] += time_difference
-#
-#     # return het nieuwe station
-#     return new_station_for_mutation, time_difference

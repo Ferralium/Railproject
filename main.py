@@ -230,37 +230,8 @@ class Railsolver():
             quality_old = short_tuple[1]
 
             if mutated == False:
-                #check
                 # zet dan ook de connection visits weer terug
                 self.algo.reset_visiting_status(switching_stations, stations_library)
-
-
-        # loop met mutaties
-        # for i in range(10):
-        #
-        #     train_dictionary_2 = train_dictionary
-        #     stations_library = wisselstoring.stations
-        #
-        #     switching_stations, chosen_one = self.algo.stations_to_be_switched(train_dictionary_2, stations_library)
-        #     # list_of_numbers = wisselstoring.take_a_ride()
-        #     change_in_time = self.algo.mutation_small(train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library)
-        #
-        #     # bereken nu opnieuw de totale tijd voor de treinen
-        #
-        #     list_of_numbers[0] += change_in_time
-        #     # bereken de fractie van de bereden routes
-        #     fraction: float = wisselstoring.fraction_calc()
-        #     quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
-        #
-        #     # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
-        #     short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers)
-        #
-        #     train_dictionary = short_tuple[0]
-        #     quality = short_tuple[1]
-        #
-        #     if mutated == False:
-        #           # zet dan ook de connection visits weer terug
-        #           self.algo.reset_visiting_status(switching_stations, stations_library)
 
 
 
