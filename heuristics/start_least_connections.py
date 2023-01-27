@@ -1,8 +1,8 @@
-import random
 from station import Station
+from typing import Optional
 
 
-def least_connection_start_heuristic(stations: dict[str, Station]) -> Station:
+def least_connection_start_heuristic(stations: dict[str, Station]) -> Optional[Station]:
     """Picks a starting station with the least unused connections"""
     first_number_connections = list(stations.values())[0]
     highest_unused_connections = first_number_connections.connection_count
@@ -10,9 +10,9 @@ def least_connection_start_heuristic(stations: dict[str, Station]) -> Station:
 
     # loops over all stations
     for station in stations:
-        check_connections: Station = stations.get(station)
+        check_connections: Optional[Station] = stations.get(station)
         check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
-        possible_current_station: Station = stations.get(str(check_connections))
+        possible_current_station: Optional[Station] = stations.get(str(check_connections))
 
         # counts stations that have used all connections
         if check_startingpoint is True:
@@ -20,7 +20,7 @@ def least_connection_start_heuristic(stations: dict[str, Station]) -> Station:
 
         # checks if station has 1 unused connection
         if check_connections.connection_count == 1 and check_startingpoint == False:
-                current_station: Station = stations.get(str(possible_current_station))
+                current_station: Optional[Station] = stations.get(str(possible_current_station))
                 break
         # checks number of unused connections
         elif check_connections.connection_count != 1 or check_startingpoint == False:

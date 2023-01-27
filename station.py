@@ -22,7 +22,7 @@ class Station:
         self.connection_visited[connection] = True
         self.visits_counter[connection] += 1
 
-    def station_unvisit(self, connection) -> None:
+    def station_unvisit(self, connection: str) -> None:
         self.connection_visited[connection] = False
         self.visits_counter[connection] -= 1
 
@@ -30,11 +30,11 @@ class Station:
         """checks if a connection is visited and return True or False"""
         return self.connection_visited[next_connection]
 
-    def check_number_visits(self, connection):
+    def check_number_visits(self, connection: str) -> int:
         """ Checks how many times the connection has been visited """
         return self.visits_counter[connection]
 
-    def one_less_visit(self, connection):
+    def one_less_visit(self, connection: str) -> None:
         """ lowers the number of visits by 1 """
         self.visits_counter[connection] -= 1
 

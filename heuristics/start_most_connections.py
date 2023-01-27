@@ -1,17 +1,18 @@
 import random
 from station import Station
+from typing import Optional
 
 
-def most_connection_start_heuristic(stations: dict[str, Station]) -> Station:
+def most_connection_start_heuristic(stations: dict[str, Station]) -> Optional[Station]:
     """Chooses a starting station with the most unused connections"""
     highest_unused_connections = 0
     all_stations_true = 0
 
     # loops over all stations
     for station in stations:
-        check_connections: Station = stations.get(station)
+        check_connections: Optional[Station] = stations.get(station)
         check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
-        possible_current_station: Station = stations.get(str(check_connections))
+        possible_current_station: Optional[Station] = stations.get(str(check_connections))
 
         # counts stations that have used all connections
         if check_startingpoint is True:

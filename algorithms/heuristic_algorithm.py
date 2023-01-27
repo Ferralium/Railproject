@@ -1,4 +1,4 @@
-from typing import Callable
+from typing import Callable, Literal
 from algorithm import Algorithm
 from station import Station
 
@@ -14,7 +14,7 @@ class HeuristicAlgorithm(Algorithm):
         """returns the starting station chosen by the start_heuristic"""
         return self.start_heuristic(station_dictionary)
     
-    def move(self, current_station: Station, train_stations: list[Station], station_dictionary: dict[str, Station]) -> None:
+    def move(self, current_station: Station, train_stations: list[Station], station_dictionary: dict[str, Station]) -> (tuple[list[Station], Literal[0]] | tuple[list[Station], float]):
         """Moves to the next connections based on the move_heuristic"""
 
         time: float = 0
@@ -30,13 +30,13 @@ class HeuristicAlgorithm(Algorithm):
                 return train_stations, time
 
             # keeps track of the time the trajectory takes
-            all_time: int = time + current_station.connections.get(str(next_station))
+            all_time: float = time + current_station.connections.get(str(next_station))
 
             # stops if time is more than 3 hours
             if all_time > 180:
                 return train_stations, time
             else:
-                time: float = all_time
+                time = all_time
 
             # sets connections to and from to visited
             current_station.stationvisit(str(next_station))
