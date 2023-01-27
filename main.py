@@ -141,6 +141,7 @@ class Railsolver():
         (less in the main) """
         total_time: int = 0
         number_of_routes: int = 0
+        total_time_each_train = {}
 
         for route in range(20):
 
@@ -158,8 +159,9 @@ class Railsolver():
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
             list_of_stations_and_time: tuple[Station, int] = self.algo.move(current_station, train_stations, self.stations)
-
+            total_time_each_train[train_number] = list_of_stations_and_time[1]
             print(list_of_stations_and_time)
+
             check_station = list_of_stations_and_time[0]
             print(check_station)
             if check_station == [None]:
@@ -178,14 +180,14 @@ class Railsolver():
 
         list_of_numbers: list[int] = [total_time, number_of_routes]
         print(f'list of numbers: {list_of_numbers}')
-        return list_of_numbers
+        return list_of_numbers, total_time_each_train
 
 
     def loop_simulated_annealing(self, train_dictionary):
         """ Loop that controls the simmulated annealing process """
 
         # train_dictionary = {}
-        list_of_numbers = wisselstoring.take_a_ride()
+        list_of_numbers, total_time_each_train = wisselstoring.take_a_ride()
 
          # bereken de fractie van de bereden routes
         fraction: float = wisselstoring.fraction_calc()
@@ -204,7 +206,7 @@ class Railsolver():
             train_dictionary_2 = train_dictionary
             stations_library = wisselstoring.stations
 
-            switching_stations, chosen_one = self.algo.stations_to_be_switched(train_dictionary_2, stations_library)
+            switching_stations, chosen_one = self.algo.stations_to_be_switched(train_dictionary_2, stations_library, total_time_each_train)
 
             change_in_time = self.algo.mutation_small(train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library)
 
@@ -220,7 +222,7 @@ class Railsolver():
             print(f'quality 2: {quality_2}')
 
             # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
-            short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers)
+            short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers, total_time_each_train, chosen_one)
 
             train_dictionary = short_tuple[0]
             quality_old = short_tuple[1]
@@ -388,7 +390,7 @@ if __name__ == '__main__':
             # number_of_routes: int = 0
             # total_time: int = 0
 
-            list_of_numbers = wisselstoring.take_a_ride()
+            list_of_numbers, total_time_each_train = wisselstoring.take_a_ride()
 
             # bereken de fractie van de bereden routes
             fraction: float = wisselstoring.fraction_calc()
