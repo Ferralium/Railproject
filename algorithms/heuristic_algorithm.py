@@ -44,3 +44,4 @@ class HeuristicAlgorithm(Algorithm):
 
             current_station = next_station
             train_stations.append(current_station)
+            

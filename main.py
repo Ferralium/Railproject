@@ -318,7 +318,7 @@ if __name__ == '__main__':
                 print('Algorithm must be between 1 and 8')
                 sys.exit()
 
-            if algoselect == 3 or algoselect == 5:
+            if algoselect == 3 or algoselect == 5 or algoselect == 4:
                 if len(sys.argv) < 5 or not sys.argv[3].isnumeric() or not sys.argv[4].isnumeric():
                     print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm (1 -> x) start_heuristic move_heuristic')
                     sys.exit()
@@ -339,7 +339,7 @@ if __name__ == '__main__':
     elif algoselect == 3:
         algo = HeuristicAlgorithm(start_heuristic, move_heuristic)
     elif algoselect == 4:
-        algo = SimulatedAnnealing()
+        algo = SimulatedAnnealing(start_heuristic, move_heuristic)
     elif algoselect == 5:
         algo = DijkstraAlgorithm(start_heuristic, move_heuristic)
 
