@@ -143,7 +143,12 @@ class DijkstraAlgorithm:
         time = 0
         train_stations.append(current_station)
 
+
         if current_station == None:
+            for station in self.prunedroutes:
+                temp_station = self.prunedroutes[station]
+                for connection in temp_station.connection_visited:
+                    temp_station.station_unvisit(str(connection))
             return train_stations, time
 
         while True:
@@ -169,6 +174,10 @@ class DijkstraAlgorithm:
 
             current_station = next_station
             train_stations.append(current_station)
+    
+
+
+
 
 
 dijk = DijkstraAlgorithm('pief', 'paf')

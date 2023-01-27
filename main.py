@@ -183,6 +183,8 @@ class Railsolver():
         return list_of_numbers, total_time_each_train
 
 
+
+
     def loop_simulated_annealing(self, train_dictionary):
         """ Loop that controls the simmulated annealing process """
 
@@ -411,6 +413,7 @@ if __name__ == '__main__':
             score.write(str(wisselstoring.K))
             score.write('\n')
             score.close()
+
 
             # print(wisselstoring.algo.prunedroutes.keys())
 
