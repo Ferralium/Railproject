@@ -126,11 +126,16 @@ class DijkstraAlgorithm:
         """Picks the starting station from a list of all possible stations
            Does this on the basis of the most connections"""
         if self.gencount == 0:
+            # These are the variables required to to keep updating the MST
             self.oldroutes = station_dictionary
+            for station in self.oldroutes:
+                self.distance_to[station] = float('inf')
+                self.newroute[station] = []
             self.map_shortest('Utrecht Centraal')
             self.gencount += 1 
-
+            
         return self.start_heuristic(self.prunedroutes)
+
 
     def move(self, current_station, train_stations, station_dictionary): 
         """Moves to the next station along the precalculated route of the dijkstra algorithm
