@@ -223,8 +223,21 @@ class SimulatedAnnealing:
     def reset_visiting_status(self, switching_stations, stations_library):
         """ Function that resets the visited-status of connections, in case a mutation is not persued after all. """
 
-        switching_stations[2].station_unvisit(str(switching_stations[1]))
-        switching_stations[1].station_unvisit(str(switching_stations[2]))
+        # zet de nieuwe route die niet doorgaat op unvisited, maar alleen als er maar 1 visit is
+        print("     reset visiting status")
+        print()
+        string_knooppunt = str(switching_stations[1])
+        string_new = str(switching_stations[2])
+
+        if switching_stations[2].check_number_visits(string_knooppunt) <= 1:
+            switching_stations[2].station_unvisit(str(switching_stations[1]))
+            switching_stations[1].station_unvisit(str(switching_stations[2]))
+
+        else:
+            switching_stations[2].one_less_visit(str(switching_stations[1]))
+            switching_stations[1].one_less_visit(str(switching_stations[2]))
+
+
 
         switching_stations[0].stationvisit(str(switching_stations[1]))
         switching_stations[1].stationvisit(str(switching_stations[0]))
