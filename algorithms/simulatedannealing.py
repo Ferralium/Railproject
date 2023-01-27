@@ -174,6 +174,8 @@ class SimulatedAnnealing:
             # voer de change in time ook in in de dictionary v
             total_time_each_train[chosen_one[0]] += change_in_time
             print("mutation accepted, verbetering of gelijk")
+            print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min')
+
 
         else:
 
@@ -202,6 +204,7 @@ class SimulatedAnnealing:
                     train_dictionary = train_dictionary_2
                     quality_old = quality_2
                     total_time_each_train[chosen_one[0]] += change_in_time
+                    print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min')
                     print("mutation accepted, chance says so")
 
                 else:
