@@ -164,6 +164,9 @@ class DijkstraAlgorithm:
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
 
+            station_dictionary[current_station.name].stationvisit(str(next_station))
+            station_dictionary[next_station.name].stationvisit(str(current_station))
+
             current_station = next_station
             train_stations.append(current_station)
 

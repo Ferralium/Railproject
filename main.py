@@ -385,6 +385,8 @@ if __name__ == '__main__':
             score.write('\n')
             score.close()
 
+            print(wisselstoring.algo.prunedroutes.keys())
+
         wisselstoring.visualise(best_solution)
         wisselstoring.gifmod.map_to_gif()
         print(f'Best solution found: {best_calc}')
