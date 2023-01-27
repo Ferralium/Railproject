@@ -182,65 +182,56 @@ class Railsolver():
 
 
     def loop_simulated_annealing(self, train_dictionary):
-          """ Loop that controls the simmulated annealing process """
+        """ Loop that controls the simmulated annealing process """
 
-          # train_dictionary = {}
-          list_of_numbers = wisselstoring.take_a_ride()
+        # train_dictionary = {}
+        list_of_numbers = wisselstoring.take_a_ride()
 
-          # bereken de fractie van de bereden routes
-          fraction: float = wisselstoring.fraction_calc()
-          quality_old = self.algo.quality_calc(fraction, list_of_numbers)
-          print(quality_old)
+        # bereken de fractie van de bereden routes
+        fraction: float = wisselstoring.fraction_calc()
+        quality = self.algo.quality_calc(fraction, list_of_numbers)
+        print(quality)
 
-          # loop met een andere oplossing
-          # de range is nu 10 keer, dus er wordt 10 keer geprobeerd een andere oplossing te vinden
-          # for i in range(10):
-          #
-          #     train_dictionary_2 = {}
-          #
-          #     list_of_numbers = wisselstoring.take_a_ride()
-          #
-          #     # bereken de fractie van de bereden routes
-          #     fraction: float = wisselstoring.fraction_calc()
-          #     quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
-          #
-          #     # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
-          #     short_tuple = self.algo.make_or_break_change(quality, quality_2, train_dictionary, train_dictionary_2)
-          #
-          #     train_dictionary = short_tuple[0]
-          #     quality = short_tuple[1]
+        # loop met een andere oplossing
+        # de range is nu 10 keer, dus er wordt 10 keer geprobeerd een andere oplossing te vinden
+        # for i in range(10):
+        #
+        #     train_dictionary_2 = {}
+        #
+        #     list_of_numbers = wisselstoring.take_a_ride()
+        #
+        #     # bereken de fractie van de bereden routes
+        #     fraction: float = wisselstoring.fraction_calc()
+        #     quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
+        #
+        #     # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
+        #     short_tuple = self.algo.make_or_break_change(quality, quality_2, train_dictionary, train_dictionary_2)
+        #
+        #     train_dictionary = short_tuple[0]
+        #     quality = short_tuple[1]
 
 
-          # loop met mutaties
-          for i in range(20):
+        # loop met mutaties
+        for i in range(10):
 
-              # kondig nieuwe loop aan:
-              print()
-              print("make a mutation: ")
-              print()
+            train_dictionary_2 = train_dictionary
+            stations_library = wisselstoring.stations
 
-              train_dictionary_2 = train_dictionary
-              stations_library = wisselstoring.stations
+            # list_of_numbers = wisselstoring.take_a_ride()
+            change_in_time = self.algo.mutation(train_dictionary_2, stations_library, train_dictionary)
 
-              # list_of_numbers = wisselstoring.take_a_ride()
-              change_in_time = self.algo.mutation(train_dictionary_2, stations_library, train_dictionary)
+            # bereken nu opnieuw de totale tijd voor de treinen
 
-              # bereken nu opnieuw de totale tijd voor de treinen
+            list_of_numbers[0] += change_in_time
+            # bereken de fractie van de bereden routes
+            fraction: float = wisselstoring.fraction_calc()
+            quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
 
-              print(f'min oud: {list_of_numbers[0]}')
-              list_of_numbers[0] += change_in_time
-              print(f'min update: {list_of_numbers[0]}')
-              # bereken de fractie van de bereden routes
-              fraction: float = wisselstoring.fraction_calc()
-              quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
-              print(f'quality oud: {quality_old}')
-              print(f'quality 2: {quality_2}')
+            # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
+            short_tuple = self.algo.make_or_break_change(quality, quality_2, train_dictionary, train_dictionary_2)
 
-              # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
-              short_tuple = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers)
-
-              train_dictionary = short_tuple[0]
-              quality_old = short_tuple[1]
+            train_dictionary = short_tuple[0]
+            quality = short_tuple[1]
 
 
 

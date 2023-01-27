@@ -3,37 +3,43 @@ from station import Station
 
 
 class DijkstraAlgorithm:
-    def __init__(self):
+    def __init__(self, start_heuristic, move_heuristic):
         """Dijkstra Algorithm aims to create a minimum spanning tree with the lowest cost distances
            to all points in the map from a single source station"""
+        # Keeps track of whether the MST has been generated yet
+        self.gencount = 0
+        
         # Keeps the old dictionary with all the routes for safekeeping
         self.oldroutes = {}
 
-        with open('data/ConnectiesNationaal.csv') as f:
-            # Met de next functie wordt de eerste lijn overgeslagen, dit geeft alleen informatie over de inhoud
-            next(f) 
-            # For loop iterates over the lines in the csv and modifies them to usable format
-            for line in f:
-                templine: str = line
+        self.start_heuristic = start_heuristic
+        self.move_heuristic = move_heuristic
 
-                # ik denk dat we deze een andere variabele naam moeten geven, anders werkt de typehint niet.
-                templine = templine.strip().split(',')     
+        # with open('data/ConnectiesNationaal.csv') as f:
+        #     # Met de next functie wordt de eerste lijn overgeslagen, dit geeft alleen informatie over de inhoud
+        #     next(f) 
+        #     # For loop iterates over the lines in the csv and modifies them to usable format
+        #     for line in f:
+        #         templine: str = line
 
-                # Checks if station already exists, if so adds connection
-                if templine[0] in self.oldroutes:
-                    self.oldroutes[templine[0]].add_station(templine[1], float(templine[2]))    
+        #         # ik denk dat we deze een andere variabele naam moeten geven, anders werkt de typehint niet.
+        #         templine = templine.strip().split(',')     
 
-                # If the station does not exist initializes the station and adds the connection
-                elif templine[0] not in self.oldroutes:
-                    self.oldroutes[templine[0]] = Station(templine[0])
-                    self.oldroutes[templine[0]].add_station(templine[1], float(templine[2]))   
+        #         # Checks if station already exists, if so adds connection
+        #         if templine[0] in self.oldroutes:
+        #             self.oldroutes[templine[0]].add_station(templine[1], float(templine[2]))    
 
-                # Checks whether the connection already exists in the stations and adds it if this is not the case
-                if templine[1] not in self.oldroutes:
-                    self.oldroutes[templine[1]] = Station(templine[1])
-                    self.oldroutes[templine[1]].add_station(templine[0], float(templine[2]))    
-                elif templine[1] in self.oldroutes:
-                    self.oldroutes[templine[1]].add_station(templine[0], float(templine[2]))
+        #         # If the station does not exist initializes the station and adds the connection
+        #         elif templine[0] not in self.oldroutes:
+        #             self.oldroutes[templine[0]] = Station(templine[0])
+        #             self.oldroutes[templine[0]].add_station(templine[1], float(templine[2]))   
+
+        #         # Checks whether the connection already exists in the stations and adds it if this is not the case
+        #         if templine[1] not in self.oldroutes:
+        #             self.oldroutes[templine[1]] = Station(templine[1])
+        #             self.oldroutes[templine[1]].add_station(templine[0], float(templine[2]))    
+        #         elif templine[1] in self.oldroutes:
+        #             self.oldroutes[templine[1]].add_station(templine[0], float(templine[2]))
 
         self.newroute = {}
         self.distance_to = {}
@@ -97,17 +103,20 @@ class DijkstraAlgorithm:
                 stationname1 = self.newroute[station][i]
                 stationname2 = self.newroute[station][i + 1]
                 
-                # If the station 
+                # If station 1 is in prunedroutes, simply add the second station as a connection
                 if stationname1 in self.prunedroutes:
                     self.prunedroutes[stationname1].add_station(stationname2, self.oldroutes[stationname1].connections[stationname2])
 
+                # If station 1 is not in prunedroutes, add the station as a station-class object and add the connection
                 elif stationname1 not in self.prunedroutes:
                     self.prunedroutes[stationname1] = Station(stationname1)
                     self.prunedroutes[stationname1].add_station(stationname2, self.oldroutes[stationname1].connections[stationname2])
 
+                # If station 2 is in prunedroutes, simply add the first station as a connection
                 if stationname2 in self.prunedroutes:
                     self.prunedroutes[stationname2].add_station(stationname1, self.oldroutes[stationname2].connections[stationname1])
 
+                # If station 2 is not in prunedroutes, add the station as a station-class object and add the connection
                 elif stationname2 not in self.prunedroutes:
                     self.prunedroutes[stationname2] = Station(stationname2)
                     self.prunedroutes[stationname2].add_station(stationname1, self.oldroutes[stationname2].connections[stationname1])      
@@ -116,18 +125,45 @@ class DijkstraAlgorithm:
     def starting_station(self, station_dictionary, statnames):
         """Picks the starting station from a list of all possible stations
            Does this on the basis of the most connections"""
-        # Function to pick the starting station
-        starting_station = 0
-        self.oldroutes = station_dictionary
-        for station in station_dictionary:
-            self.distance_to[station] = float('inf')
-        self.map_shortest(station_dictionary, statnames)
-        pass  
+        if self.gencount == 0:
+            self.oldroutes = station_dictionary
+            self.map_shortest('Utrecht Centraal')
+            self.gencount += 1 
 
-    def move(self): 
+        return self.start_heuristic(self.prunedroutes)
+
+    def move(self, current_station, train_stations, station_dictionary): 
         """Moves to the next station along the precalculated route of the dijkstra algorithm
            When destination is reached, removes the line from possible lines"""
-        pass
+        time = 0
+        train_stations.append(current_station)
 
-dijk = DijkstraAlgorithm()
-dijk.map_shortest('Amsterdam Centraal')
+        if current_station == None:
+            return train_stations, time
+
+        while True:
+            next_station = self.move_heuristic(current_station, train_stations, self.prunedroutes)
+            if next_station is None:
+                return train_stations, time
+
+            # keeps track of the time the trajectory takes
+            all_time: int = time + current_station.connections.get(str(next_station))
+
+              # stops if time is more than 3 hours
+            if all_time > 180:
+                return train_stations, time
+            else:
+                time: float = all_time
+
+            # sets connections to and from to visited
+            current_station.stationvisit(str(next_station))
+            next_station.stationvisit(str(current_station))
+
+            current_station = next_station
+            train_stations.append(current_station)
+
+
+dijk = DijkstraAlgorithm('pief', 'paf')
+print(dijk.oldroutes)
+print('-----------------------------------')
+print(dijk.oldroutes)

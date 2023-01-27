@@ -7,14 +7,7 @@ def preference_shortest_move_heuristic(curr: Station, visited: list[Station], st
     shortest_connection: int = 100
     check_stations: bool = all(station is True for station in curr.connection_visited.values())
 
-    # print(curr, curr.connections)
-    # print(curr, curr.connection_visited)
-
     if check_stations is True:
-            # stoppen met treinen rijden als alle connecties zijn bereden.
-            # if all_stations_true == len(stations_dictionary):
-            #     return train_stations, time
-            # else:
         # finds the shortest connection and weights the preference 70%
         for connections in curr.connections:
             check_connections = stations.get(connections)
@@ -42,5 +35,4 @@ def preference_shortest_move_heuristic(curr: Station, visited: list[Station], st
                     possible_next_station = random.choice(list(curr.connections.keys()))
                     next_station = stations.get(str(possible_next_station))
 
-    # print(next_station)
     return next_station

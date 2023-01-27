@@ -5,6 +5,7 @@ from station import Station
 
 
 class SimulatedAnnealing:
+    """ Class that creates a simulated annealing algorithm to solve the case. """
 
     def __init__(self):
         """ Deze klas is de representatie van een hill climber algoritme om het Rail NL probleem op te lossen """
@@ -61,9 +62,7 @@ class SimulatedAnnealing:
         T: int = list_of_numbers[1]
         Min: int = list_of_numbers[0]
         self.K: float = fraction*10000 - (T*100 + Min)
-
-        # print(T, Min, fraction)
-        self.quality = f'Quality: {self.K} = {fraction}*1000 - ({T}*100 + {Min})'
+        self.quality = f'Quality: {self.K} = {fraction}*10000 - ({T}*100 + {Min})'
         print(self.quality)
 
         return self.K
@@ -164,6 +163,7 @@ class SimulatedAnnealing:
         # veranderen we Quality_old in Quality_2. Anders blijft het hetzelfde
         # Quality_old returnen we vervolgens.
 
+        mutated: Bool = True
         delta = quality_2 - quality_old
         print(f'delta: {delta}')
 
@@ -206,82 +206,181 @@ class SimulatedAnnealing:
                     # voer de change in time terug
                     list_of_numbers[0] -= change_in_time
 
+                    # zet changed op False
+                    mutated = False
+
             # kans is kleiner dan nul, dus voer je het niet in
             else:
                 print("mutation not accepted, kans kleiner dan 0")
                 # voer de change in time terug
                 list_of_numbers[0] -= change_in_time
 
+                mutated = False
+
         delta = 0
         short_tuple = [train_dictionary, quality_old]
-        return short_tuple
+        return short_tuple, mutated
 
 
-    def mutation(self, train_dictionary_2, stations_library, train_dictionary):
-    	""" Functie die het laatse treinspoor verlegt."""
+    def reset_visiting_status(self, switching_stations, stations_library):
+        """ Function that resets the visited-status of connections, in case a mutation is not persued after all. """
 
-    	# kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
-    	pick_train = random.choice(list(train_dictionary_2.keys()))
-    	print(f'trein die gemuteerd word: {pick_train}')
-    	# front_or_back = random.randint(1,2)
+        # zet de nieuwe route die niet doorgaat op unvisited, maar alleen als er maar 1 visit is
+        print("     reset visiting status")
+        print()
+        string_knooppunt = str(switching_stations[1])
+        string_new = str(switching_stations[2])
+
+        if switching_stations[2].check_number_visits(string_knooppunt) <= 1:
+            switching_stations[2].station_unvisit(str(switching_stations[1]))
+            switching_stations[1].station_unvisit(str(switching_stations[2]))
+
+        else:
+            switching_stations[2].one_less_visit(str(switching_stations[1]))
+            switching_stations[1].one_less_visit(str(switching_stations[2]))
+
+        switching_stations[0].stationvisit(str(switching_stations[1]))
+        switching_stations[1].stationvisit(str(switching_stations[0]))
+
+
+    def stations_to_be_switched(self, train_dictionary_2, stations_library):
+        """ Functie die willekeurig uitkiest welke connecties worden gemuteerd. """
+
+        # kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
+        pick_train = random.choice(list(train_dictionary_2.keys()))
+        print(f'trein die gemuteerd word: {pick_train}')
+        front_or_back = random.randint(1,2)
+
+        chosen_one = [pick_train, front_or_back]
 
     	# zoek deze op in de train_dictionary
-    	# if front_or_back == 1:
+        if front_or_back == 1:
+            print("change front of train")
 
-    	# verander het eerste station
-    	list_of_stations_for_mutation = train_dictionary_2[pick_train]
+            # pak de lijst van de stations
+            list_of_stations_for_mutation = train_dictionary_2[pick_train]
+            print(f'wat gaat er mis met het oude station? {list_of_stations_for_mutation}')
+            chosen_one.append(list_of_stations_for_mutation)
+        	# ga naar het 2e station in de lijst
+            station_for_mutation = list_of_stations_for_mutation[1]
 
-    	# ga naar het 2e station in de lijst
-    	station_for_mutation = list_of_stations_for_mutation[1]
+            print(f'dit is het knooppuntstation: {station_for_mutation}')
+        	# print(type(station_for_mutation))
+            old_station_for_mutation = list_of_stations_for_mutation[0]
+            print(f'oud station: {old_station_for_mutation}')
 
-    	print(f'dit is het knooppuntstation: {station_for_mutation}')
-    	# print(type(station_for_mutation))
-    	old_station_for_mutation = list_of_stations_for_mutation[0]
-    	print(f'oud station: {old_station_for_mutation}')
+            connections_for_mutation = station_for_mutation.connections
+            print(f'dit zijn de connecties: {connections_for_mutation}')
 
-    	connections_for_mutation = station_for_mutation.connections
-    	print(f'dit zijn de connecties: {connections_for_mutation}')
+            new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
 
-    	new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
+            if type(new_station_for_mutation) is str:
+                # maak er een station van
+                new_station_for_mutation = stations_library[new_station_for_mutation]
+            # make sure this is another one than the one it was:
+        	# while new_station_for_mutation == list_of_stations_for_mutation[0]:
+            #     new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
+            #     print(new_station_for_mutation)
 
-    	# make sure this is another one than the one it was:
-    	# while new_station_for_mutation == list_of_stations_for_mutation[0]:
-        #     new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
-        #     print(new_station_for_mutation)
+            print(f'nieuw station: {new_station_for_mutation}')
 
-    	print(f'nieuw station: {new_station_for_mutation}')
-
-    	# print(type(new_station_for_mutation))
-    	new_station_for_mutation = stations_library[new_station_for_mutation]
-
-    	print(f' type new station: {type(new_station_for_mutation)}')
-    	# # zet deze nieuwe connection_visited op true
-    	new_station_for_mutation.connection_visited[str(station_for_mutation)] == True
+            # type_new_station = type(new_station_for_mutation)
 
 
-    	# print(f' type old station: {type(old_station_for_mutation)}')
-    	# print("hello?")
-    	# print(f' stations library: {stations_library}')
-    	# old_station_for_mutation = stations_library[old_station_for_mutation]
-    	# print(type(old_station))
-    	old_station_for_mutation.connection_visited[str(station_for_mutation)] == False
+            # new_station_for_mutation = stations_library[new_station_for_mutation]
 
-    	# # en ten slotte, verander het in de train_dictionary
-    	list_of_stations_for_mutation[0] = new_station_for_mutation
-    	train_dictionary[pick_train] = list_of_stations_for_mutation
-        #
-    	# # verander ook de tijd:
-    	change_in_time: float = 0
-    	old_station = old_station_for_mutation
-    	new_station = new_station_for_mutation
 
-    	temporary_name = station_for_mutation.connections[str(old_station)]
-    	print(f'min oude route {temporary_name}')
-    	change_in_time -= temporary_name
-    	# change_in_time -= station_for_mutation.connections[old_station]
-    	temporary_name_2 = station_for_mutation.connections[str(new_station)]
-    	print(f'min nieuwe route {temporary_name_2}')
-    	change_in_time += temporary_name_2
-    	print(f'change in time: {change_in_time}')
+            # return uiteindelijk de stations
+            switching_stations = [old_station_for_mutation, station_for_mutation, new_station_for_mutation]
+            return switching_stations, chosen_one
 
-    	return change_in_time
+
+
+        else:
+            print("change back of train")
+
+            list_of_stations_for_mutation = train_dictionary_2[pick_train]
+            chosen_one.append(list_of_stations_for_mutation)
+            length_traject = len(list_of_stations_for_mutation)
+
+
+        	# ga naar het 2e station in de lijst
+            # station_for_mutation = list_of_stations_for_mutation[1]
+            station_for_mutation = list_of_stations_for_mutation[length_traject - 2]
+
+            print(f'dit is het knooppuntstation: {station_for_mutation}')
+        	# print(type(station_for_mutation))
+            # old_station_for_mutation = list_of_stations_for_mutation[0]
+            old_station_for_mutation = list_of_stations_for_mutation[length_traject - 1]
+            print(list_of_stations_for_mutation)
+
+            print(f'oud station: {old_station_for_mutation}')
+
+            connections_for_mutation = station_for_mutation.connections
+            print(f'dit zijn de connecties: {connections_for_mutation}')
+
+            new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
+
+            # make sure this is another one than the one it was:
+        	# while new_station_for_mutation == list_of_stations_for_mutation[0]:
+            #     new_station_for_mutation: Station = random.choice(list(connections_for_mutation.keys()))
+            #     print(new_station_for_mutation)
+
+            print(f'nieuw station: {new_station_for_mutation}')
+
+        	# print(type(new_station_for_mutation))
+            new_station_for_mutation = stations_library[new_station_for_mutation]
+
+            # return uiteindelijk de stations
+            switching_stations = [old_station_for_mutation, station_for_mutation, new_station_for_mutation]
+            return switching_stations, chosen_one
+
+
+    def mutation_small(self, train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library):
+        """ Functie die gekregen stations omwisselt, en daarbij de tijd veranderd, en de visited routes veranderd. """
+
+        # Zet de nieuwe route op visited
+        switching_stations[2].stationvisit(str(switching_stations[1]))
+        switching_stations[1].stationvisit(str(switching_stations[2]))
+
+        # unvisit de oude route (als daar maar 1 visit staat)
+        string_knooppunt = str(switching_stations[1])
+        string_oud = str(switching_stations[0])
+
+        if switching_stations[0].check_number_visits(string_knooppunt) <= 1:
+            switching_stations[0].station_unvisit(str(switching_stations[1]))
+            switching_stations[1].station_unvisit(str(switching_stations[0]))
+
+        else:
+            switching_stations[0].one_less_visit(str(switching_stations[1]))
+            switching_stations[1].one_less_visit(str(switching_stations[0]))
+
+
+        # verander het in de train_dictionary
+        if chosen_one[1] == 1:
+
+            list_of_stations_for_mutation = train_dictionary_2[chosen_one[0]]
+            list_of_stations_for_mutation[0] = switching_stations[2]
+            train_dictionary[chosen_one[0]] = list_of_stations_for_mutation
+
+        else:
+            list_of_stations_for_mutation = train_dictionary_2[chosen_one[0]]
+            length_traject = len(list_of_stations_for_mutation)
+            list_of_stations_for_mutation[length_traject - 1] = switching_stations[2]
+            train_dictionary[chosen_one[0]] = list_of_stations_for_mutation
+
+        # # verander ook de tijd:
+        change_in_time: float = 0
+        old_station = switching_stations[0]
+        new_station = switching_stations[2]
+
+        temporary_name = switching_stations[1].connections[str(old_station)]
+        print(f'min oude route {temporary_name}')
+        change_in_time -= temporary_name
+        # change_in_time -= station_for_mutation.connections[old_station]
+        temporary_name_2 = switching_stations[1].connections[str(new_station)]
+        print(f'min nieuwe route {temporary_name_2}')
+        change_in_time += temporary_name_2
+        print(f'change in time: {change_in_time}')
+
+        return change_in_time

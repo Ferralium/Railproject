@@ -39,7 +39,6 @@ def sevenbridges_start_heuristic(stations: dict[str, Station]) -> Station:
                 if current_station.connection_count % 2 != 0:
                     break
             break
-    print(current_station)
 
     return current_station
 
