@@ -197,7 +197,7 @@ class Railsolver():
         print(quality_old)
 
         # loop met opgedeelde mutation functies
-        for i in range(20):
+        for i in range(5000):
             #check
 
             # kondig nieuwe loop aan:
