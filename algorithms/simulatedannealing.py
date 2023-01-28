@@ -31,10 +31,10 @@ class SimulatedAnnealing:
         T: int = list_of_numbers[1]
         Min: int = list_of_numbers[0]
         self.K: float = fraction*10000 - (T*100 + Min)
-        self.quality = f'Quality: {self.K} = {fraction}*10000 - ({T}*100 + {Min})'
-        print(self.quality)
+        self.quality_written = f'Quality: {self.K} = {fraction}*10000 - ({T}*100 + {Min})'
+        print(self.quality_written)
 
-        return self.K
+        return self.K, self.quality_written
 
 
     def move(self, current_station, train_stations, stations_dictionary):
@@ -274,7 +274,16 @@ class SimulatedAnnealing:
         knooppunt_middle_new = str(new_station_for_mutation_middle)
         knooppunt_middle_old = str(old_station_for_mutation_middle)
 
+        print(f'total time each train: {total_time_each_train}')
+        print(f'train dictionary: {train_dictionary_2}')
+        length_total_time_each_train = len(total_time_each_train)
+        length_train_dictionary = len(train_dictionary_2)
+        if length_train_dictionary != length_total_time_each_train:
+            print("HELPHELPHELP ERROR!!")
+            print(f'length train dictionary: {length_train_dictionary}')
+            print(f'length total time of each train: {length_total_time_each_train}')
 
+        print("train dictionary and total time each train should have the same number of trains..")
         total_time_train = total_time_each_train[pick_train]
 
         # nu kijken wat de tijd is om daar te komen:

@@ -158,14 +158,23 @@ class Railsolver():
 
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
-            list_of_stations_and_time: tuple[Station, int] = self.algo.move(current_station, train_stations, self.stations)
+            list_of_stations_and_time: Tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
+            print(f'wat zit er in list of stations and time? {list_of_stations_and_time}')
+            print()
+
             total_time_each_train[train_number] = list_of_stations_and_time[1]
+            print(f'total time each train maincheck: {total_time_each_train}')
             print(list_of_stations_and_time)
 
             check_station = list_of_stations_and_time[0]
             print(check_station)
+
             if check_station == [None]:
+                # verwijder dan het laatste item uit total time each train_number
+                total_time_each_train.popitem()
+                print("none item verwijderd doeiii")
                 break
+
             else:
 
                 # voeg dit toe aan de tabel van treinen
@@ -193,7 +202,7 @@ class Railsolver():
 
          # bereken de fractie van de bereden routes
         fraction: float = wisselstoring.fraction_calc()
-        quality_old = self.algo.quality_calc(fraction, list_of_numbers)
+        quality_old, quality_written = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality_old)
 
         # loop met opgedeelde mutation functies
@@ -219,7 +228,7 @@ class Railsolver():
             print(f'min update: {list_of_numbers[0]}')
               # bereken de fractie van de bereden routes
             fraction: float = wisselstoring.fraction_calc()
-            quality_2 = self.algo.quality_calc(fraction, list_of_numbers)
+            quality_2, quality_written = self.algo.quality_calc(fraction, list_of_numbers)
             print(f'quality oud: {quality_old}')
             print(f'quality 2: {quality_2}')
 
@@ -233,6 +242,7 @@ class Railsolver():
                 # zet dan ook de connection visits weer terug
                 self.algo.reset_visiting_status(switching_stations, stations_library)
 
+        return quality_old, quality_written
 
 
     def visualise(self, routes):
@@ -351,24 +361,26 @@ if __name__ == '__main__':
     #
     # deze if else loop kan niet... ik denk wat je onder if algoselect = 7 hebt, dat je het beter hierboven kan toevoegen eronder. Nu als je ieats anders op commandline doet geeft hij niet meer de goede errorS
     if algoselect == 4:
-        wisselstoring = Railsolver(algo)
-        print("simulated annealing")
-        Railsolver(algo).loop_simulated_annealing(train_dictionary)
+        for i in range(num_of_runs):
 
-        # if wisselstoring.K > best_score:
-        #     best_score = wisselstoring.K
-        #     best_solution = train_dictionary
-        #     best_calc = wisselstoring.quality
-        #
-        # results = open('results/resultsformula.txt', 'a')
-        # results.write(f'{wisselstoring.quality}')
-        # results.write('\n')
-        # results.close()
-        #
-        # score = open('results/score.txt', 'a')
-        # score.write(str(wisselstoring.K))
-        # score.write('\n')
-        # score.close()
+            wisselstoring = Railsolver(algo)
+            print("simulated annealing")
+            quality_old, quality_written = Railsolver(algo).loop_simulated_annealing(train_dictionary)
+
+            if quality_old > best_score:
+                best_score = quality_old
+                best_solution = train_dictionary
+                best_calc = quality_written
+
+            results = open('results/resultsformula.txt', 'a')
+            results.write(f'{quality_written}')
+            results.write('\n')
+            results.close()
+
+            score = open('results/score.txt', 'a')
+            score.write(str(quality_old))
+            score.write('\n')
+            score.close()
 
     else:
         for i in range(num_of_runs):
@@ -404,8 +416,8 @@ if __name__ == '__main__':
 
             # print(wisselstoring.algo.prunedroutes.keys())
 
-        wisselstoring.visualise(best_solution)
-        wisselstoring.gifmod.map_to_gif()
-        print(f'Best solution found: {best_calc}')
-        print(f'Average soluton: {mean_solution / num_of_runs}')
-        print(f'Runtime: {time.time() - start_time}')
+    wisselstoring.visualise(best_solution)
+    wisselstoring.gifmod.map_to_gif()
+    print(f'Best solution found: {best_calc}')
+    print(f'Average soluton: {mean_solution / num_of_runs}')
+    print(f'Runtime: {time.time() - start_time}')
