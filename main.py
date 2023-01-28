@@ -197,7 +197,7 @@ class Railsolver():
         print(quality_old)
 
         # loop met opgedeelde mutation functies
-        for i in range(5000):
+        for i in range(200):
             #check
 
             # kondig nieuwe loop aan:
@@ -354,6 +354,22 @@ if __name__ == '__main__':
         wisselstoring = Railsolver(algo)
         print("simulated annealing")
         Railsolver(algo).loop_simulated_annealing(train_dictionary)
+
+        # if wisselstoring.K > best_score:
+        #     best_score = wisselstoring.K
+        #     best_solution = train_dictionary
+        #     best_calc = wisselstoring.quality
+        #
+        # results = open('results/resultsformula.txt', 'a')
+        # results.write(f'{wisselstoring.quality}')
+        # results.write('\n')
+        # results.close()
+        #
+        # score = open('results/score.txt', 'a')
+        # score.write(str(wisselstoring.K))
+        # score.write('\n')
+        # score.close()
+
     else:
         for i in range(num_of_runs):
             wisselstoring = Railsolver(algo)
