@@ -27,15 +27,19 @@ The following algorithms are used:
 
 ### Usage:
 By default the program is run with the following command:
+
 """
 python3 main.py
 """
+
 This will run the program for 1 run, using the random algorithm.
 
 To run this program for multiple runs please use the following command:
+
 """
 python3 main.py a n (Example: python3 main.py 1 500)
 """
+
 Where a is the algorithm selector (1 - 5, as seen in types of algorithms) and n is the amount of runs (1 - ∞)
 
 ### Heuristics:
@@ -54,9 +58,11 @@ This program is also able to utilize the following heuristics:
 4. Preference shortest move heuristic
 
 For  algorithms 3-5 heuristics have to be selected. This can be done using the following command:
+
 """
 python3 main.py a n s m (Example: python3 main.py 1 500 3 3)
 """
+
 Where s is the start heuristic (1-4) and m is the move heuristic (1-4)
 
 # Experiments:
