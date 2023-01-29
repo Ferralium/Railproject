@@ -51,7 +51,7 @@ class Railsolver():
            Also creates new stations for the connections if they are not already in the dict"""
 
         with open('data/ConnectiesNationaal.csv') as f:
-            # Met de next functie wordt de eerste lijn overgeslagen, dit geeft alleen informatie over de inhoud
+            # Skips the first line
             next(f)
 
             # For loop iterates over the lines in the csv and modifies them to usable format
@@ -92,7 +92,7 @@ class Railsolver():
         print(self.quality)
 
     def fraction_calc(self) -> float:
-        """ Function calculates percentage of used connections """
+        """Function calculates percentage of used connections"""
 
         print("Calculate franction of used connections")
         print()
@@ -120,7 +120,7 @@ class Railsolver():
         return fraction
 
     def table_of_trains(self, train_number, list_of_stations, time, train_dictionary):
-        """ Function that keeps track of all the train routes that have been made """
+        """Function that keeps track of all the train routes that have been made"""
 
         # voeg de trein en stations toe aan de dictionary
         train_dictionary[train_number] = list_of_stations
@@ -137,8 +137,7 @@ class Railsolver():
         data_to_excel.save()
 
     def take_a_ride(self):
-        """ Function that keeps the order of everything that must be done for the algorithm
-        (less in the main) """
+        """ Function that keeps the order of everything that must be done for the algorithm"""
         total_time: int = 0
         number_of_routes: int = 0
         total_time_each_train = {}
@@ -196,7 +195,7 @@ class Railsolver():
 
 
     def loop_simulated_annealing(self, train_dictionary):
-        """ Loop that controls the simmulated annealing process """
+        """Loop controlling the simmulated annealing process"""
 
         # train_dictionary = {}
         list_of_numbers, total_time_each_train = wisselstoring.take_a_ride()
@@ -265,6 +264,7 @@ class Railsolver():
 
 
 def select_heuristic(start_heurselect, move_heurselect):
+    """Selects the heuristics with which the algorithms will perform their functions"""
     start_heuristic = None
     if start_heurselect == 1:
         start_heuristic = random_start_heuristic
@@ -298,14 +298,7 @@ if __name__ == '__main__':
     num_of_runs = 1
     histoscore = []
 
-
-    file1 = open('results/resultsformula.txt', 'w')
-    file1.close()
-    file2 = open('results/score.txt', 'w')
-    file2.close()
-
-
-
+    # Proper handling of command line arguments
     if len(sys.argv) > 1:
         if not sys.argv[1].isnumeric():
             print('Usage: python3 main.py (Optional) n')
@@ -341,8 +334,14 @@ if __name__ == '__main__':
                     sys.exit()
                 start_heuristic, move_heuristic = select_heuristic(start_heurselect, move_heurselect)
 
+    # Clears the respective result files
+    file1 = open(f'results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
+    file1.close()
+    file2 = open(f'results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
+    file2.close()
 
-    # command-line
+
+    # Command-line selection of algorithms
     if algoselect == 1:
         algo = RandomAlgorithm()
     elif algoselect == 2:
@@ -388,10 +387,8 @@ if __name__ == '__main__':
         for i in range(num_of_runs):
             wisselstoring = Railsolver(algo)
 
-            # maak een lege dictionary waarin de treinen worden opgeslagen
+            # Create empty dictionary in which the train routes are saved
             train_dictionary = {}
-            # number_of_routes: int = 0
-            # total_time: int = 0
 
             list_of_numbers, total_time_each_train = wisselstoring.take_a_ride()
 
@@ -400,23 +397,21 @@ if __name__ == '__main__':
             wisselstoring.quality_calc(fraction, list_of_numbers)
             mean_solution += wisselstoring.K
 
+            # If the score is better than the current best score replace the saved best solution
             if wisselstoring.K > best_score:
                 best_score = wisselstoring.K
                 best_solution = train_dictionary
                 best_calc = wisselstoring.quality
 
-            results = open('results/resultsformula.txt', 'a')
+            results = open(f'results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             results.write(f'{wisselstoring.quality}')
             results.write('\n')
             results.close()
 
-            score = open('results/score.txt', 'a')
+            score = open(f'results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             score.write(str(wisselstoring.K))
             score.write('\n')
             score.close()
-
-
-            # print(wisselstoring.algo.prunedroutes.keys())
 
     wisselstoring.visualise(best_solution)
     wisselstoring.gifmod.map_to_gif()

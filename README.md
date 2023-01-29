@@ -40,6 +40,7 @@ Where a is the algorithm selector (1 - 5, as seen in types of algorithms) and n 
 
 ### Heuristics:
 This program is also able to utilize the following heuristics:
+
 **Start heuristics:**
 1. Random start heuristic
 2. Least connections start heuristic
@@ -59,5 +60,3 @@ python3 main.py a n s m (Example: python3 main.py 1 500 3 3)
 Where s is the start heuristic (1-4) and m is the move heuristic (1-4)
 
 # Experiments:
-
-
