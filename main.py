@@ -152,6 +152,7 @@ class Railsolver():
 
             # maak een lege lijst voor de stations:
             train_stations: list[Station] = []
+            # total_time_each_train = {}
 
             print(" ")
             print("new trajectory")
@@ -354,7 +355,7 @@ if __name__ == '__main__':
         algo = DijkstraAlgorithm(start_heuristic, move_heuristic)
 
 
-    train_dictionary = {}
+    # train_dictionary = {}
 
     # simulated annealing loop:
     #
@@ -362,6 +363,7 @@ if __name__ == '__main__':
     # deze if else loop kan niet... ik denk wat je onder if algoselect = 7 hebt, dat je het beter hierboven kan toevoegen eronder. Nu als je ieats anders op commandline doet geeft hij niet meer de goede errorS
     if algoselect == 4:
         for i in range(num_of_runs):
+            train_dictionary = {}
 
             wisselstoring = Railsolver(algo)
             print("simulated annealing")
