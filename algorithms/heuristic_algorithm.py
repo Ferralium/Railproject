@@ -5,6 +5,7 @@ from station import Station
 
 class HeuristicAlgorithm(Algorithm):
     """Creates an Algorithm that can call and use different heuritics"""
+
     def __init__(self, start_heuristic: Callable[[dict[str, Station]], Station], move_heuristic: Callable[[Station, list[Station], dict[str, Station]], Station]) -> None:
         """Object has a start heuristic and a move heuristic"""
         self.start_heuristic: Callable[[dict[str, Station]], Station] = start_heuristic
@@ -23,22 +24,22 @@ class HeuristicAlgorithm(Algorithm):
         if current_station == None:
             return train_stations, time
 
-        # one loop is a move from station A to station B
+        # One loop to move from station A to station B
         while True:
             next_station: Station = self.move_heuristic(current_station, train_stations, station_dictionary)
             if next_station is None:
                 return train_stations, time
 
-            # keeps track of the time the trajectory takes
+            # Keeps track of the time the trajectory takes
             all_time: float = time + current_station.connections.get(str(next_station))
 
-            # stops if time is more than 3 hours
+            # Stops if time is more than 3 hours
             if all_time > 180:
                 return train_stations, time
             else:
                 time = all_time
 
-            # sets connections to and from to visited
+            # Sets connections to and from to visited
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
 

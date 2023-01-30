@@ -205,6 +205,8 @@ class Railsolver():
         quality_old, quality_written = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality_old)
 
+        checkpoint_quality_20 = 0
+
         # loop met opgedeelde mutation functies
         for i in range(200):
             #check
@@ -241,6 +243,24 @@ class Railsolver():
             if mutated == False:
                 # zet dan ook de connection visits weer terug
                 self.algo.reset_visiting_status(switching_stations, stations_library)
+
+            if i == 20:
+                print()
+                print("         CHECKPOINT 1 (after 20 mutations)")
+                print()
+
+                print(f'quality old: {quality_old}, checkpoint_quality: {checkpoint_quality_20}')
+
+                if quality_old >= checkpoint_quality_20:
+                    checkpoint_quality_20 += quality_old
+                    print("checkpoint passed succesfully")
+
+                else:
+                    print("checkpoint failed, abort")
+                    return quality_old, quality_written
+
+                checkpoint_quality_20 = quality_old
+
 
         return quality_old, quality_written
 
