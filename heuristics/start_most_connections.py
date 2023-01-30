@@ -8,7 +8,6 @@ def most_connection_start_heuristic(stations: dict[str, Station]) -> Optional[St
     highest_unused_connections = 0
     all_stations_true = 0
 
-
     # loops over all stations
     for station in stations:
         check_connections: Optional[Station] = stations.get(station)
@@ -34,5 +33,4 @@ def most_connection_start_heuristic(stations: dict[str, Station]) -> Optional[St
     if all_stations_true is len(stations):
         current_station = None
     
-
     return current_station
