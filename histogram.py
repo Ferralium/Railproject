@@ -2,22 +2,25 @@ import matplotlib.pyplot as plt
 import numpy as np
 
 class StatsDrawer:
-    def __init__(self):
+    def __init__(self, x):
         self.scorenumbers = []
 
-        with open('results/score.txt') as f:
+        with open(f'results/score{x}.txt') as f:
             for line in f:
                 self.scorenumbers.append(float(line))
 
-    def draw_hist(self):
+    def draw_hist(self, x):
         plt.hist(self.scorenumbers, bins = 20, edgecolor = 'black')
         plt.xlabel("Score", fontsize=13)
-        plt.xticks(np.arange(5300, 6000, step=100))
         plt.ylabel("Frequency", fontsize=13)
-        plt.yticks(np.arange(0, 3, step=1))
         plt.grid(True, linewidth=0.5, color='#757b82', linestyle='-')
-        plt.savefig('images/resultshistogram.png', dpi = 800)
+        plt.savefig(f'results/resultshistogram{x}.png', dpi = 800)
         plt.close()
 
-histoplot = StatsDrawer()
-histoplot.draw_hist()
+while True:
+    x = input('Which score? ')
+    if x == 'stop':
+        break
+    histo = StatsDrawer(x)
+    histo.draw_hist(x)
+    
