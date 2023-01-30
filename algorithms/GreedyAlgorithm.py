@@ -2,6 +2,7 @@ import random
 from station import Station
 
 class GreedyAlgorithm:
+    """Algorithm for RailNL which picks stations with the least travel time and connections"""
 
     def __init__(self):
         pass
@@ -12,6 +13,7 @@ class GreedyAlgorithm:
         highest_unused_connections = first_number_connections.connection_count
         all_stations_true: int = 0
 
+        # Goes through all stations in the dictionary to pick a suitable station
         for station in station_dictionary:
             check_connections: Station = station_dictionary.get(station)
             check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
@@ -25,10 +27,8 @@ class GreedyAlgorithm:
                         current_station: Station = station_dictionary.get(str(possible_current_station))
                         break
             elif check_connections.connection_count != 1 or check_startingpoint == False:
-                # possible_current_station = self.stations.get(str(check_connections))
                 unused_connections: int = 0
                 for connections in possible_current_station.connection_visited.values():
-                    # print(connections)
                     if connections == False:
                         unused_connections += 1
                 if unused_connections < highest_unused_connections and unused_connections != 0:
@@ -37,17 +37,15 @@ class GreedyAlgorithm:
 
         if all_stations_true is len(station_dictionary):
             current_station = None
-            # starting_point: str = random.choice(statnames)
-            # current_station = station_dictionary.get(starting_point)
 
         return current_station
 
     def move(self, current_station, train_stations, stations_dictionary):
-        """Moves to the next connections with the least travel time"""
+        """Moves to the next connection with the least travel time"""
         time = 0
         all_stations_true = 0
         
-        # voeg de current station toe aan de lijst
+        # Adds current station to the list
         train_stations.append(current_station)
         print(current_station)
 
@@ -57,7 +55,6 @@ class GreedyAlgorithm:
         while True:
             
             shortest_connection = 100
-            # print(f'hello {current_station.connection_visited}')
 
             check_stations: bool = all(station is True for station in current_station.connection_visited.values())
         
@@ -81,7 +78,7 @@ class GreedyAlgorithm:
 
             all_time: int = time + current_station.connections.get(str(next_station))
 
-            # stops if time is more than 3 hours
+            # Stops if time is more than 3 hours
             if all_time > 180:
                 print(f'hi {all_time}')
                 print(f'this will be returned {time}')
@@ -95,7 +92,7 @@ class GreedyAlgorithm:
             next_station.stationvisit(str(current_station))
             current_station = stations_dictionary.get(str(next_station))
 
-            # voeg current_station toe aan de lijst
+            # Adds current station to the list
             train_stations.append(current_station)
 
             print(f' Next Station: {current_station}')

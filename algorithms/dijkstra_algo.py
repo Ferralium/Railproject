@@ -1,6 +1,5 @@
 from station import Station
-
-
+from heuristics.start_most_connections import most_connection_start_heuristic
 
 class DijkstraAlgorithm:
     def __init__(self, start_heuristic, move_heuristic):
@@ -105,7 +104,7 @@ class DijkstraAlgorithm:
             for station in self.oldroutes:
                 self.distance_to[station] = float('inf')
                 self.newroute[station] = []
-            self.map_shortest('Utrecht Centraal')
+            self.map_shortest(str(most_connection_start_heuristic(station_dictionary)))
             self.gencount += 1 
             
         return self.start_heuristic(self.prunedroutes)
