@@ -11,7 +11,6 @@ def most_connection_start_heuristic(stations: dict[str, Station]) -> Optional[St
     # loops over all stations
     for station in stations:
         check_connections: Optional[Station] = stations.get(station)
-        print(check_connections.connection_visited.values())
         check_startingpoint: bool = all(station is True for station in check_connections.connection_visited.values())
         possible_current_station: Optional[Station] = stations.get(str(check_connections))
 
