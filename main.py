@@ -229,8 +229,8 @@ class Railsolver():
             list_of_numbers[0] += change_in_time
 
             # if the list of numbers is negative the whole run should be aborted something is going wrong!
-            # if list_of_numbers[0] < 1500:
-            #         continue
+            if list_of_numbers[0] < 1500:
+                    continue
 
             # print(f'min update: {list_of_numbers[0]}')
               # bereken de fractie van de bereden routes
