@@ -207,7 +207,7 @@ class Railsolver():
 
 
         # loop met opgedeelde mutation functies
-        for i in range(200):
+        for i in range(20000):
             #check
 
             # kondig nieuwe loop aan:
@@ -442,6 +442,7 @@ if __name__ == '__main__':
             wisselstoring = Railsolver(algo)
             print("simulated annealing")
             quality_old, quality_written, best_qualities_checkpoints = Railsolver(algo).loop_simulated_annealing(train_dictionary, best_qualities_checkpoints)
+            mean_solution += quality_old
 
             if quality_old > best_score:
                 best_score = quality_old
@@ -491,5 +492,5 @@ if __name__ == '__main__':
     wisselstoring.visualise(best_solution)
     wisselstoring.gifmod.map_to_gif()
     print(f'Best solution found: {best_calc}')
-    print(f'Average soluton: {mean_solution / num_of_runs}')
+    print(f'Average solution: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
