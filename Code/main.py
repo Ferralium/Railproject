@@ -616,4 +616,10 @@ if __name__ == '__main__':
     print(f'Runtime: {time.time() - start_time}')
     print(f'beste oplossing: {best_solution}')
 
+    score = open(f'../results/score{algoselect}.txt', 'a')
+    score.write(f'Best solution found: {best_calc}')
+    score.write('\n')
+    score.write(str(f'Average solution: {mean_solution / num_of_runs}'))
+    score.close()
+
 # Headfix

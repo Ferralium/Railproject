@@ -94,3 +94,12 @@ The user can call the histogram.py and answer the question with "322", and a his
 By answering "stop" the program will stop running, untill then the user can request as many histograms as there are result files.
 
 # Experiments:
+For our experiments we ran each algorithm (In combination with heuristics where applicable) for 5000 times. As there are 50 possible combinations we will simply summarize the best findings for each algorithm. To perform your own tests, please see 
+
+**Best combinations:**
+
+Random algorithm(1): Mean 1981 Highest 2741
+Greedy algorithm(2): Mean 4455 Highest 4655
+Heurisitc algorithm, Least connections start, Visited random move (322): Mean 6108 Highest 7020
+Simulated Annealing(4),
+Dijkstra algorithm,
