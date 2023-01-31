@@ -23,7 +23,7 @@ After downloading the code, you will find the files divided into multiple folder
 
 # Algorithms:
 This program has the ability to run  different algorithms, each providing  seperate output for comparison.
-These algoirthms can be found in the folder Algorithms (Wisselstoring/Code/algorithms).
+These algorithms can be found in the folder Algorithms (Wisselstoring/Code/algorithms).
 
 ### Types of algorithms:
 The following algorithms are used:
@@ -50,7 +50,8 @@ python3 main.py a n (Example: python3 main.py 500 1)
 
 Where a is the amount of runs (1 - ∞) and n is the algorithm selector (1 - 5, as seen in types of algorithms)
 
-### Heuristics:
+# Heuristics:
+The algorithms 'Dijkstra', 'Simulated Annealing' and 'Heuristics' can be combined with the following start and move functions, of which some include a heuristic.
 This program is also able to utilize the following heuristics:
 
 **Start heuristics:**
