@@ -126,15 +126,6 @@ class Railsolver():
         train_dictionary[train_number] = list_of_stations
 
         # train_data = pd.DataFrame.from_dict(train_dictionary, orient='index')
-<<<<<<< HEAD
-        # # print(train_data)
-
-        # data_to_excel = pd.ExcelWriter('train_data.xlsx')
-
-        # # write DataFrame to excel
-        # train_data.to_excel(data_to_excel)
-
-=======
         # print(train_data)
         #
         # data_to_excel = pd.ExcelWriter('train_data.xlsx')
@@ -142,7 +133,6 @@ class Railsolver():
         # # write DataFrame to excel
         # train_data.to_excel(data_to_excel)
         #
->>>>>>> 91b45a9b2b2adf4d6d5130b45354135537b09415
         # # save the excel
         # data_to_excel.save()
 
@@ -169,21 +159,12 @@ class Railsolver():
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
             list_of_stations_and_time: Tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
-<<<<<<< HEAD
             # print(f'wat zit er in list of stations and time? {list_of_stations_and_time}')
             print()
 
             total_time_each_train[train_number] = list_of_stations_and_time[1]
             # print(f'total time each train maincheck: {total_time_each_train}')
             # print(list_of_stations_and_time)
-=======
-            # print(f'wat zit er in list of stations and time? {list_of_stations_and_time}') UITGEZET
-            print()
-
-            total_time_each_train[train_number] = list_of_stations_and_time[1]
-            # print(f'total time each train maincheck: {total_time_each_train}') UITGEZET
-            print(list_of_stations_and_time)
->>>>>>> 91b45a9b2b2adf4d6d5130b45354135537b09415
 
             check_station = list_of_stations_and_time[0]
             # print(check_station)
@@ -513,3 +494,5 @@ if __name__ == '__main__':
     print(f'Best solution found: {best_calc}')
     print(f'Average solution: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
+
+# Headfix
