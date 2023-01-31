@@ -37,10 +37,10 @@ This will run the program for 1 run, using the random algorithm.
 To run this program for multiple runs please use the following command:
 
 """
-python3 main.py a n (Example: python3 main.py 1 500)
+python3 main.py a n (Example: python3 main.py 500 1)
 """
 
-Where a is the algorithm selector (1 - 5, as seen in types of algorithms) and n is the amount of runs (1 - ∞)
+Where a is the amount of runs (1 - ∞) and n is the algorithm selector (1 - 5, as seen in types of algorithms)
 
 ### Heuristics:
 This program is also able to utilize the following heuristics:
@@ -60,7 +60,7 @@ This program is also able to utilize the following heuristics:
 For  algorithms 3-5 heuristics have to be selected. This can be done using the following command:
 
 """
-python3 main.py a n s m (Example: python3 main.py 1 500 3 3)
+python3 main.py a n s m (Example: python3 main.py 500 1 3 3)
 """
 
 Where s is the start heuristic (1-4) and m is the move heuristic (1-4)
