@@ -94,8 +94,8 @@ class Railsolver():
     def fraction_calc(self) -> float:
         """Function calculates percentage of used connections"""
 
-        print("Calculate franction of used connections")
-        print()
+        # print("Calculate franction of used connections") UITGEZET
+        # print()UITGEZET
         connected = 0
         total = 0
 
@@ -114,7 +114,7 @@ class Railsolver():
                 if temporary_station.connection_visited[connecties] == True:
                     connected += 1
 
-        print(f' Connected: {connected}, Total: {total}')
+        # print(f' Connected: {connected}, Total: {total}') UITGEZET
         fraction: float = round(connected / total, 2)
 
         return fraction
@@ -126,6 +126,7 @@ class Railsolver():
         train_dictionary[train_number] = list_of_stations
 
         # train_data = pd.DataFrame.from_dict(train_dictionary, orient='index')
+<<<<<<< HEAD
         # # print(train_data)
 
         # data_to_excel = pd.ExcelWriter('train_data.xlsx')
@@ -133,6 +134,15 @@ class Railsolver():
         # # write DataFrame to excel
         # train_data.to_excel(data_to_excel)
 
+=======
+        # print(train_data)
+        #
+        # data_to_excel = pd.ExcelWriter('train_data.xlsx')
+        #
+        # # write DataFrame to excel
+        # train_data.to_excel(data_to_excel)
+        #
+>>>>>>> 91b45a9b2b2adf4d6d5130b45354135537b09415
         # # save the excel
         # data_to_excel.save()
 
@@ -159,12 +169,21 @@ class Railsolver():
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
             list_of_stations_and_time: Tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
+<<<<<<< HEAD
             # print(f'wat zit er in list of stations and time? {list_of_stations_and_time}')
             print()
 
             total_time_each_train[train_number] = list_of_stations_and_time[1]
             # print(f'total time each train maincheck: {total_time_each_train}')
             # print(list_of_stations_and_time)
+=======
+            # print(f'wat zit er in list of stations and time? {list_of_stations_and_time}') UITGEZET
+            print()
+
+            total_time_each_train[train_number] = list_of_stations_and_time[1]
+            # print(f'total time each train maincheck: {total_time_each_train}') UITGEZET
+            print(list_of_stations_and_time)
+>>>>>>> 91b45a9b2b2adf4d6d5130b45354135537b09415
 
             check_station = list_of_stations_and_time[0]
             # print(check_station)
@@ -188,7 +207,7 @@ class Railsolver():
                 number_of_routes += 1
 
         list_of_numbers: list[int] = [total_time, number_of_routes]
-        print(f'list of numbers: {list_of_numbers}')
+        # print(f'list of numbers: {list_of_numbers}')UITGEZET
         return list_of_numbers, total_time_each_train
 
 
@@ -224,14 +243,14 @@ class Railsolver():
 
             # bereken nu opnieuw de totale tijd voor de treinen
 
-            print(f'min oud: {list_of_numbers[0]}')
+            # print(f'min oud: {list_of_numbers[0]}')
             list_of_numbers[0] += change_in_time
-            print(f'min update: {list_of_numbers[0]}')
+            # print(f'min update: {list_of_numbers[0]}')
               # bereken de fractie van de bereden routes
             fraction: float = wisselstoring.fraction_calc()
             quality_2, quality_written = self.algo.quality_calc(fraction, list_of_numbers)
-            print(f'quality oud: {quality_old}')
-            print(f'quality 2: {quality_2}')
+            # print(f'quality oud: {quality_old}')
+            # print(f'quality 2: {quality_2}')
 
             # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
             short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers, total_time_each_train, chosen_one)
@@ -449,12 +468,12 @@ if __name__ == '__main__':
                 best_solution = train_dictionary
                 best_calc = quality_written
 
-            results = open('results/resultsformula.txt', 'a')
+            results = open(f'results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             results.write(f'{quality_written}')
             results.write('\n')
             results.close()
 
-            score = open('results/score.txt', 'a')
+            score = open(f'results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             score.write(str(quality_old))
             score.write('\n')
             score.close()
