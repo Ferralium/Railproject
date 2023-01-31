@@ -86,14 +86,14 @@ class SimulatedAnnealing:
             quality_old = quality_2
             # voer de change in time ook in in de dictionary v
             total_time_each_train[chosen_one[0]] += change_in_time
-            print("mutation accepted, verbetering of gelijk")
-            print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min')
+            # print("mutation accepted, verbetering of gelijk") UITGEZET
+            # print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min') UITGEZET
 
 
         else:
 
             chance = 2**delta
-            print(f'chance to be accepted: {chance}')
+            # print(f'chance to be accepted: {chance}') UITGEZET
 
             # als kans groter dan 1 is, voer het in
             if chance >= 1:
@@ -102,7 +102,7 @@ class SimulatedAnnealing:
                 train_dictionary = train_dictionary_2
                 quality_old = quality_2
                 total_time_each_train[chosen_one[0]] += change_in_time
-                print("mutation accepted, want dat moest via de kans")
+                # print("mutation accepted, want dat moest via de kans")UITGEZET
 
             # als kans tussen nul en 1 is, maak een gok of je het moet invoeren
             elif chance > 0 and chance < 1:
@@ -117,11 +117,11 @@ class SimulatedAnnealing:
                     train_dictionary = train_dictionary_2
                     quality_old = quality_2
                     total_time_each_train[chosen_one[0]] += change_in_time
-                    print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min')
-                    print("mutation accepted, chance says so")
+                    # print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min')UITGEZET
+                    # print("mutation accepted, chance says so")UITGEZET
 
                 else:
-                    print("mutation not accepted, chance too low")
+                    # print("mutation not accepted, chance too low")UITGEZET
                     # voer de change in time terug
                     list_of_numbers[0] -= change_in_time
 
@@ -130,7 +130,7 @@ class SimulatedAnnealing:
 
             # kans is kleiner dan nul, dus voer je het niet in
             else:
-                print("mutation not accepted, kans kleiner dan 0")
+                # print("mutation not accepted, kans kleiner dan 0")UITGEZET
                 # voer de change in time terug
                 list_of_numbers[0] -= change_in_time
 
@@ -145,8 +145,8 @@ class SimulatedAnnealing:
         """ Function that resets the visited-status of connections, in case a mutation is not persued after all. """
 
         # zet de nieuwe route die niet doorgaat op unvisited, maar alleen als er maar 1 visit is
-        print("     reset visiting status")
-        print()
+        # print("     reset visiting status")UITGEZET
+        # print()UITGEZET
 
         # maak eerst even string objecten van
         string_knooppunt = str(switching_stations[2])
@@ -185,37 +185,37 @@ class SimulatedAnnealing:
 
         # kies eerst willekeurig welke trein en welk uiteinde wordt verlegt.
         pick_train = random.choice(list(train_dictionary_2.keys()))
-        print(f'trein die gemuteerd word: {pick_train}')
+        # print(f'trein die gemuteerd word: {pick_train}')UITGEZET
         front_or_back = random.randint(1,2)
 
         chosen_one = [pick_train, front_or_back]
 
     	# zoek deze op in de train_dictionary
         if front_or_back == 1:
-            print("change front of train")
+            # print("change front of train")UITGEZET
 
             # pak de lijst van de stations
             list_of_stations_for_mutation = train_dictionary_2[pick_train]
-            print(f' route van gekozen trein: {list_of_stations_for_mutation}')
+            # print(f' route van gekozen trein: {list_of_stations_for_mutation}')UITGEZET
             chosen_one.append(list_of_stations_for_mutation)
 
             # ga naar het 3e station in de lijst
             station_for_mutation = list_of_stations_for_mutation[2]
 
-            print(f'dit is het knooppuntstation: {station_for_mutation}')
+            # print(f'dit is het knooppuntstation: {station_for_mutation}')UITGEZET
         	# print(type(station_for_mutation))
             old_station_for_mutation_end = list_of_stations_for_mutation[0]
-            print(f'oude station uiteinde: {old_station_for_mutation_end}')
+            # print(f'oude station uiteinde: {old_station_for_mutation_end}')UITGEZET
 
             old_station_for_mutation_middle = list_of_stations_for_mutation[1]
-            print(f'oude station midden: {old_station_for_mutation_middle}')
+            # print(f'oude station midden: {old_station_for_mutation_middle}')UITGEZET
 
 
             connections_for_mutation = station_for_mutation.connections
-            print(f'dit zijn de connecties: {connections_for_mutation}')
+            # print(f'dit zijn de connecties: {connections_for_mutation}')UITGEZET
 
         else:
-            print("change back of train")
+            # print("change back of train")UITGEZET
 
             # list_of_stations_for_mutation = train_dictionary_2[pick_train]
             # chosen_one.append(list_of_stations_for_mutation)
@@ -236,24 +236,24 @@ class SimulatedAnnealing:
 
             ## MET 2 STATIONS!!!
             list_of_stations_for_mutation = train_dictionary_2[pick_train]
-            print(f'wat gaat er mis met het oude station? {list_of_stations_for_mutation}')
+            # print(f'wat gaat er mis met het oude station? {list_of_stations_for_mutation}')UITGEZET
             chosen_one.append(list_of_stations_for_mutation)
 
             # ga naar het 3e station in de lijst
             length_traject = len(list_of_stations_for_mutation)
             station_for_mutation = list_of_stations_for_mutation[length_traject - 3]
 
-            print(f'dit is het knooppuntstation: {station_for_mutation}')
+            # print(f'dit is het knooppuntstation: {station_for_mutation}')UITGEZET
         	# print(type(station_for_mutation))
             old_station_for_mutation_end = list_of_stations_for_mutation[length_traject - 1]
-            print(f'oude station uiteinde: {old_station_for_mutation_end}')
+            # print(f'oude station uiteinde: {old_station_for_mutation_end}')UITGEZET
 
             old_station_for_mutation_middle = list_of_stations_for_mutation[length_traject - 2]
-            print(f'oude station midden: {old_station_for_mutation_middle}')
+            # print(f'oude station midden: {old_station_for_mutation_middle}')UITGEZET
 
 
             connections_for_mutation = station_for_mutation.connections
-            print(f'dit zijn de connecties van het knooppunt: {connections_for_mutation}')
+            # print(f'dit zijn de connecties van het knooppunt: {connections_for_mutation}')UITGEZET
 
 
         ## kies een nieuwe route uit:
@@ -274,8 +274,8 @@ class SimulatedAnnealing:
         knooppunt_middle_new = str(new_station_for_mutation_middle)
         knooppunt_middle_old = str(old_station_for_mutation_middle)
 
-        print(f'total time each train: {total_time_each_train}')
-        print(f'train dictionary: {train_dictionary_2}')
+        # print(f'total time each train: {total_time_each_train}')UITGEZET
+        # print(f'train dictionary: {train_dictionary_2}')UITGEZET
         length_total_time_each_train = len(total_time_each_train)
         length_train_dictionary = len(train_dictionary_2)
         if length_train_dictionary != length_total_time_each_train:
@@ -283,7 +283,7 @@ class SimulatedAnnealing:
             print(f'length train dictionary: {length_train_dictionary}')
             print(f'length total time of each train: {length_total_time_each_train}')
 
-        print("train dictionary and total time each train should have the same number of trains..")
+        # print("train dictionary and total time each train should have the same number of trains..")UITGEZET
         total_time_train = total_time_each_train[pick_train]
 
         # nu kijken wat de tijd is om daar te komen:
@@ -420,23 +420,23 @@ class SimulatedAnnealing:
         new_station_middle = switching_stations[3]
 
         temporary_name = switching_stations[1].connections[str(old_station_end)]
-        print(f'min oude route einde {temporary_name}')
+        # print(f'min oude route einde {temporary_name}')UITGEZET
         temporary_name_middle = switching_stations[2].connections[str(old_station_middle)]
-        print(f'min oude route einde midden {temporary_name_middle}')
+        # print(f'min oude route einde midden {temporary_name_middle}')UITGEZET
 
         change_in_time -= temporary_name
         change_in_time -= temporary_name_middle
         # change_in_time -= station_for_mutation.connections[old_station]
         temporary_name_2_end = switching_stations[3].connections[str(new_station_end)]
-        print(f'min nieuwe route einde {temporary_name_2_end}')
+        # print(f'min nieuwe route einde {temporary_name_2_end}')UITGEZET
         temporary_name_2_middle = switching_stations[2].connections[str(new_station_middle)]
-        print(f'min nieuwe route einde {temporary_name_2_middle}')
+        # print(f'min nieuwe route einde {temporary_name_2_middle}')UITGEZET
 
 
         change_in_time += temporary_name_2_end
         change_in_time += temporary_name_2_middle
 
-        print(f'change in time: {change_in_time}')
+        # print(f'change in time: {change_in_time}')UITGEZET
 
 
         return change_in_time

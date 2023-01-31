@@ -194,7 +194,7 @@ class Railsolver():
 
 
 
-    def loop_simulated_annealing(self, train_dictionary):
+    def loop_simulated_annealing(self, train_dictionary, best_qualities_checkpoints):
         """Loop controlling the simmulated annealing process"""
 
         # train_dictionary = {}
@@ -205,14 +205,15 @@ class Railsolver():
         quality_old, quality_written = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality_old)
 
+
         # loop met opgedeelde mutation functies
-        for i in range(200):
+        for i in range(20000):
             #check
 
             # kondig nieuwe loop aan:
             print()
             print("make a mutation: ")
-            print()
+            # print()
 
             train_dictionary_2 = train_dictionary
             stations_library = wisselstoring.stations
@@ -242,7 +243,74 @@ class Railsolver():
                 # zet dan ook de connection visits weer terug
                 self.algo.reset_visiting_status(switching_stations, stations_library)
 
-        return quality_old, quality_written
+
+            # add checkpoints: beëindig als het niet beter is dan de beste :)
+            if i == 20:
+                print()
+                print("         CHECKPOINT 1 (after 20 mutations)")
+                print()
+
+                print(f'quality old: {quality_old}, checkpoint_quality: {best_qualities_checkpoints[0]}')
+
+                if quality_old >= best_qualities_checkpoints[0]:
+
+                    best_qualities_checkpoints[0] = quality_old
+                    print("checkpoint passed succesfully")
+
+                else:
+                    print("checkpoint failed, abort")
+                    return quality_old, quality_written, best_qualities_checkpoints
+
+            if i == 100:
+                print()
+                print("         CHECKPOINT 2 (after 100 mutations)")
+                print()
+
+                print(f'quality old: {quality_old}, checkpoint_quality: {best_qualities_checkpoints[1]}')
+
+                if quality_old >= best_qualities_checkpoints[1]:
+
+                    best_qualities_checkpoints[1] = quality_old
+                    print("checkpoint passed succesfully")
+
+                else:
+                    print("checkpoint failed, abort")
+                    return quality_old, quality_written, best_qualities_checkpoints
+
+            if i == 250:
+                print()
+                print("         CHECKPOINT 3 (after 250 mutations)")
+                print()
+
+                print(f'quality old: {quality_old}, checkpoint_quality: {best_qualities_checkpoints[2]}')
+
+                if quality_old >= best_qualities_checkpoints[2]:
+
+                    best_qualities_checkpoints[2] = quality_old
+                    print("checkpoint passed succesfully")
+
+                else:
+                    print("checkpoint failed, abort")
+                    return quality_old, quality_written, best_qualities_checkpoints
+
+            if i == 10000:
+                print()
+                print("         CHECKPOINT 4 (after 10k mutations)")
+                print()
+
+                print(f'quality old: {quality_old}, checkpoint_quality: {best_qualities_checkpoints[3]}')
+
+                if quality_old >= best_qualities_checkpoints[3]:
+
+                    best_qualities_checkpoints[3] = quality_old
+                    print("checkpoint passed succesfully")
+
+                else:
+                    print("checkpoint failed, abort")
+                    return quality_old, quality_written, best_qualities_checkpoints
+
+
+        return quality_old, quality_written, best_qualities_checkpoints
 
 
     def visualise(self, routes):
@@ -361,12 +429,20 @@ if __name__ == '__main__':
     #
     # deze if else loop kan niet... ik denk wat je onder if algoselect = 7 hebt, dat je het beter hierboven kan toevoegen eronder. Nu als je ieats anders op commandline doet geeft hij niet meer de goede errorS
     if algoselect == 4:
+
+        best_quality_20 = 0
+        best_quality_100 = 0
+        best_quality_250 = 0
+        best_quality_10k = 0
+        best_qualities_checkpoints = [best_quality_20, best_quality_100, best_quality_250, best_quality_10k]
+
         for i in range(num_of_runs):
             train_dictionary = {}
 
             wisselstoring = Railsolver(algo)
             print("simulated annealing")
-            quality_old, quality_written = Railsolver(algo).loop_simulated_annealing(train_dictionary)
+            quality_old, quality_written, best_qualities_checkpoints = Railsolver(algo).loop_simulated_annealing(train_dictionary, best_qualities_checkpoints)
+            mean_solution += quality_old
 
             if quality_old > best_score:
                 best_score = quality_old
@@ -416,5 +492,5 @@ if __name__ == '__main__':
     wisselstoring.visualise(best_solution)
     wisselstoring.gifmod.map_to_gif()
     print(f'Best solution found: {best_calc}')
-    print(f'Average soluton: {mean_solution / num_of_runs}')
+    print(f'Average solution: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
