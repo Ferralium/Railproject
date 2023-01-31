@@ -5,7 +5,7 @@ class StatsDrawer:
     def __init__(self, x):
         self.scorenumbers = []
 
-        with open(f'results/score{x}.txt') as f:
+        with open(f'../results/score{x}.txt') as f:
             for line in f:
                 self.scorenumbers.append(float(line))
 
@@ -14,7 +14,7 @@ class StatsDrawer:
         plt.xlabel("Score", fontsize=13)
         plt.ylabel("Frequency", fontsize=13)
         plt.grid(True, linewidth=0.5, color='#757b82', linestyle='-')
-        plt.savefig(f'results/resultshistogram{x}.png', dpi = 800)
+        plt.savefig(f'../results/resultshistogram{x}.png', dpi = 800)
         plt.close()
 
 while True:

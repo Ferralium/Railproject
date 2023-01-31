@@ -13,17 +13,17 @@ pip install -r requirements.txt
 After downloading the code, you will find the files divided into multiple folders.
 * Wisselstoring: this is the main folder where you can navigate to other folders and read the text files.
 * Code: this is the main folder containing all the python code files, including the main.py. In the code folder you can find the following 2 folders as well:
-    * algorithms: containing all the different algorithms
-    * heuristics: containg the heuristics in different files
+    * algorithms: containing all the different algorithms.
+    * heuristics: containg the heuristics in different files.
 * Data: this folder contains the important csv files with the data about the trains station and connections.
-* Gifgen: Once the code has been run, this folder will hold images of all the seperate routes.
+* Gifgen: This folder will hold images of all the seperate routes, after running the code.
 * Images: After running the code, this folder contains the maps with the train stations and the connections. Moreover, it has a gif that has the routes of the trajectories animated.
 * Results: The results of the trajectories will be exported to csv files, that will show up in this folder after running the code.
 
 
 # Algorithms:
 This program has the ability to run  different algorithms, each providing  seperate output for comparison.
-These algoirthms can be found in ...
+These algoirthms can be found in the folder Algorithms (Wisselstoring/Code/algorithms).
 
 ### Types of algorithms:
 The following algorithms are used:
@@ -72,5 +72,20 @@ python3 main.py a n s m (Example: python3 main.py 500 1 3 3)
 """
 
 Where s is the start heuristic (1-4) and m is the move heuristic (1-4)
+
+# Histogram:
+Automatically when running the program, the quality of every run is being saved in a seperate file in the folder "results". In order to generate a histogram, the user can use the following commandline:
+"""
+python3 histogram.py
+"""
+The question "which score?" will pop up. The user can fill in the combination of numbers of the result file they wish to use for the histogram.
+
+For instance for the following combination, a resultsfile named "score322.txt" will be created/
+"""
+python3 main.py 1 3 2 2
+"""
+The user can call the histogram.py and answer the question with "322", and a histogram based on the information in the score322 file will be created.
+
+By answering "stop" the program will stop running, untill then the user can request as many histograms as there are result files.
 
 # Experiments:
