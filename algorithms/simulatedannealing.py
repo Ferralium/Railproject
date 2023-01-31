@@ -77,7 +77,7 @@ class SimulatedAnnealing:
 
         mutated: Bool = True
         delta = quality_2 - quality_old
-        print(f'delta: {delta}')
+        # print(f'delta: {delta}') UITGEZET
 
         if delta >= 0:
 
