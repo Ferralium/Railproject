@@ -105,12 +105,12 @@ class SimulatedAnnealing:
                 # print("mutation accepted, want dat moest via de kans")UITGEZET
 
             # als kans tussen nul en 1 is, maak een gok of je het moet invoeren
-            elif chance > 0 and chance < 1:
+            elif chance >= 0 and chance < 1:
 
                 # afhankelijk van de kans, voer hem in:
                 guess = random.uniform(0, 1)
 
-                print(f'guess: {guess}')
+                # print(f'guess: {guess}') UITGEZET
 
                 if guess <= chance:
 
@@ -123,22 +123,28 @@ class SimulatedAnnealing:
                 else:
                     # print("mutation not accepted, chance too low")UITGEZET
                     # voer de change in time terug
+                    ## BUG Fixen!!!
+
                     list_of_numbers[0] -= change_in_time
+                    print("?? chance tussen 0 en 1 ")
 
                     # zet changed op False
                     mutated = False
 
             # kans is kleiner dan nul, dus voer je het niet in
-            else:
-                # print("mutation not accepted, kans kleiner dan 0")UITGEZET
-                # voer de change in time terug
-                list_of_numbers[0] -= change_in_time
-
-                mutated = False
+            # else:
+            #     # print("mutation not accepted, kans kleiner dan 0")UITGEZET
+            #     # voer de change in time terug
+            #
+            #     list_of_numbers[0] -= change_in_time
+            #     print("?? chance kleiner dan 0")
+            #
+            #
+            #     mutated = False
 
         delta = 0
         short_tuple = [train_dictionary, quality_old]
-        return short_tuple, mutated
+        return short_tuple, mutated, list_of_numbers
 
 
     def reset_visiting_status(self, switching_stations, stations_library):

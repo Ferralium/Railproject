@@ -154,13 +154,13 @@ class Railsolver():
             # total_time_each_train = {}
 
             print(" ")
-            print("new trajectory")
+            # print("new trajectory") UITGEZET
 
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
             list_of_stations_and_time: Tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
             # print(f'wat zit er in list of stations and time? {list_of_stations_and_time}')
-            print()
+            # print()
 
             total_time_each_train[train_number] = list_of_stations_and_time[1]
             # print(f'total time each train maincheck: {total_time_each_train}')
@@ -202,7 +202,7 @@ class Railsolver():
 
          # bereken de fractie van de bereden routes
         fraction: float = wisselstoring.fraction_calc()
-        quality_old, quality_written = self.algo.quality_calc(fraction, list_of_numbers)
+        quality_old, quality_written_old = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality_old)
 
 
@@ -226,15 +226,21 @@ class Railsolver():
 
             # print(f'min oud: {list_of_numbers[0]}')
             list_of_numbers[0] += change_in_time
+
+            # if the list of numbers is negative the whole run should be aborted something is going wrong!
+            if list_of_numbers[0] < 1000:
+                    continue
+
             # print(f'min update: {list_of_numbers[0]}')
               # bereken de fractie van de bereden routes
             fraction: float = wisselstoring.fraction_calc()
-            quality_2, quality_written = self.algo.quality_calc(fraction, list_of_numbers)
+            quality_2, quality_written_2 = self.algo.quality_calc(fraction, list_of_numbers)
+            # print(f'nieuwe quality: {quality_written}')
             # print(f'quality oud: {quality_old}')
             # print(f'quality 2: {quality_2}')
 
             # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
-            short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers, total_time_each_train, chosen_one)
+            short_tuple, mutated, list_of_numbers = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers, total_time_each_train, chosen_one)
 
             train_dictionary = short_tuple[0]
             quality_old = short_tuple[1]
@@ -243,6 +249,13 @@ class Railsolver():
                 # zet dan ook de connection visits weer terug
                 self.algo.reset_visiting_status(switching_stations, stations_library)
 
+            if mutated == True:
+
+                # zet de nieuwe quality written new op old
+                qulaity_written_old = quality_written_2
+
+
+            print(f'nieuwe quality: {quality_written_old}')
 
             # add checkpoints: beëindig als het niet beter is dan de beste :)
             if i == 20:
@@ -259,7 +272,7 @@ class Railsolver():
 
                 else:
                     print("checkpoint failed, abort")
-                    return quality_old, quality_written, best_qualities_checkpoints
+                    return quality_old, quality_written_old, best_qualities_checkpoints
 
             if i == 100:
                 print()
@@ -275,7 +288,7 @@ class Railsolver():
 
                 else:
                     print("checkpoint failed, abort")
-                    return quality_old, quality_written, best_qualities_checkpoints
+                    return quality_old, quality_written_old, best_qualities_checkpoints
 
             if i == 250:
                 print()
@@ -291,7 +304,7 @@ class Railsolver():
 
                 else:
                     print("checkpoint failed, abort")
-                    return quality_old, quality_written, best_qualities_checkpoints
+                    return quality_old, quality_written_old, best_qualities_checkpoints
 
             if i == 10000:
                 print()
@@ -310,7 +323,7 @@ class Railsolver():
                     return quality_old, quality_written, best_qualities_checkpoints
 
 
-        return quality_old, quality_written, best_qualities_checkpoints
+        return quality_old, quality_written_old, best_qualities_checkpoints
 
 
     def visualise(self, routes):
