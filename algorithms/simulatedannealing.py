@@ -20,6 +20,37 @@ class SimulatedAnnealing:
         return self.start_heuristic(station_dictionary)
 
 
+    def fraction_calc(self, stations_library) -> float:
+        """Function calculates percentage of used connections"""
+
+        print("Calculate franction of used connections")
+        print()
+        connected = 0
+        total = 0
+
+        for station_name in stations_library:
+
+            temporary_station = stations_library[station_name]
+
+            # print(station_name, temporary_station.connection_visited)
+            # number_of_connections = len(temporary_station.connection_visited)
+            number_of_connections = len(temporary_station.connections)
+            # print(f'aantal connecties: {number_of_connections}')
+            total += number_of_connections
+
+            for connecties in temporary_station.connection_visited:
+
+                # print(temporary_station, connecties, temporary_station.connection_visited[connecties])
+
+                if temporary_station.connection_visited[connecties] == True:
+                    connected += 1
+
+        # print(f' Connected: {connected}, Total: {total}') UITGEZET
+        fraction: float = round(connected / total, 2)
+
+        return fraction
+
+
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
 
         # als de trein langer rijdt dan 180 minuten, mag het niet worden ingevoerd want de oplossing is ongeldig
@@ -331,11 +362,6 @@ class SimulatedAnnealing:
         switching_stations_4_str = str(switching_stations[4])
 
         # Zet de nieuwe route op visited
-        # switching_stations[2].stationvisit(str(switching_stations[3]))
-        # switching_stations[3].stationvisit(str(switching_stations[2]))
-        # switching_stations[3].stationvisit(str(switching_stations[4]))
-        # switching_stations[4].stationvisit(str(switching_stations[3]))
-
         switching_stations[2].stationvisit(switching_stations_3_str)
         switching_stations[3].stationvisit(switching_stations_2_str)
         switching_stations[3].stationvisit(switching_stations_4_str)

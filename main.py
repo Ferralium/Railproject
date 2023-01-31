@@ -91,11 +91,12 @@ class Railsolver():
         self.quality = f'Quality: {self.K} = {fraction}*1000 - ({T}*100 + {Min})'
         print(self.quality)
 
+
     def fraction_calc(self) -> float:
         """Function calculates percentage of used connections"""
 
-        # print("Calculate franction of used connections") UITGEZET
-        # print()UITGEZET
+        print("Calculate franction of used connections")
+        print()
         connected = 0
         total = 0
 
@@ -110,6 +111,8 @@ class Railsolver():
             total += number_of_connections
 
             for connecties in temporary_station.connection_visited:
+
+                # print(temporary_station, connecties, temporary_station.connection_visited[connecties])
 
                 if temporary_station.connection_visited[connecties] == True:
                     connected += 1
@@ -229,12 +232,44 @@ class Railsolver():
             list_of_numbers[0] += change_in_time
 
             # if the list of numbers is negative the whole run should be aborted something is going wrong!
-            if list_of_numbers[0] < 1500:
-                    continue
+            if list_of_numbers[0] < 1488:
+
+                    print("         ER IS NU EEN BUG")
+                    print(f' train dictionary op dit moment: {train_dictionary}')
+                    print("print alles van visiting status:")
+
+                    for station_name in stations_library:
+
+                        temporary_station = stations_library[station_name]
+
+                        for connecties in temporary_station.connection_visited:
+
+                            print(temporary_station, connecties, temporary_station.connection_visited[connecties])
+
+                    break
+
+
+
+
+            # if i == 19:
+            #     # doe eenmalig een check of de visiting status nu klopt
+            #
+            #     print("Controle stations visiting status bij loop 19")
+            #     print(f'huidige train dicitonary{train_dictionary}')
+            #
+            #     for station_name in stations_library:
+            #
+            #         temporary_station = stations_library[station_name]
+            #
+            #         for connecties in temporary_station.connection_visited:
+            #
+            #             print(temporary_station, connecties, temporary_station.connection_visited[connecties])
+
 
             # print(f'min update: {list_of_numbers[0]}')
               # bereken de fractie van de bereden routes
-            fraction: float = wisselstoring.fraction_calc()
+            # fraction: float = wisselstoring.fraction_calc()
+            fraction: float = self.algo.fraction_calc(stations_library)
             quality_2, quality_written_2 = self.algo.quality_calc(fraction, list_of_numbers)
             # print(f'nieuwe quality: {quality_written}')
             # print(f'quality oud: {quality_old}')
@@ -248,22 +283,21 @@ class Railsolver():
 
             if mutated == False:
                 # zet dan ook de connection visits weer terug
-                self.algo.reset_visiting_status(switching_stations, stations_library)
+                self.algo.reset_visiting_status(switching_stations, stations_library) # 31change
                 list_of_numbers[0] -= change_in_time
 
             if mutated == True:
 
                 # zet de nieuwe quality written new op old
-                # BUG: Deze wordt niet aangepast op de een of andere manier :(((
-                print("Er is een mutatie gemaakt")
-                print(f' Quality voor verandering: {quality_written_old}')
-                print(f' mutatie quality written {quality_written_2}')
+                # print("Er is een mutatie gemaakt")
+                # print(f' Quality voor verandering: {quality_written_old}')
+                # print(f' mutatie quality written {quality_written_2}')
                 quality_written_old = quality_written_2
                 # print(f' Quality na verandering: {quality_written_old}')
 
 
 
-            print(f'nieuwe quality: {quality_written_old}')
+            # print(f'nieuwe quality: {quality_written_old}')
 
             # add checkpoints: beëindig als het niet beter is dan de beste :)
             if i == 20:
@@ -332,6 +366,44 @@ class Railsolver():
 
 
         return quality_old, quality_written_old, best_qualities_checkpoints
+
+    # def reset_visiting_status(self, switching_stations, stations_library):
+    #     """ Function that resets the visited-status of connections, in case a mutation is not persued after all. """
+    #
+    #     # zet de nieuwe route die niet doorgaat op unvisited, maar alleen als er maar 1 visit is
+    #     # print("     reset visiting status")UITGEZET
+    #     # print()UITGEZET
+    #
+    #     # maak eerst even string objecten van
+    #     string_knooppunt = str(switching_stations[2])
+    #     string_oud_end = str(switching_stations[0])
+    #     strin_oud_middle = str(switching_stations[1])
+    #     string_new_middle = str(switching_stations[3])
+    #
+    #     # zet oude route op visited
+    #     switching_stations[0].stationvisit(str(switching_stations[1]))
+    #     switching_stations[1].stationvisit(str(switching_stations[0]))
+    #     switching_stations[1].stationvisit(str(switching_stations[2]))
+    #     switching_stations[2].stationvisit(str(switching_stations[1]))
+    #
+    #     # zet de nieuwe route op unvisited (alleen als daar geen andere treinen meer rijden)
+    #     # eerst van knooppunt naar middle
+    #     if switching_stations[3].check_number_visits(string_knooppunt) <= 1:
+    #         switching_stations[2].station_unvisit(str(switching_stations[3]))
+    #         switching_stations[3].station_unvisit(str(switching_stations[2]))
+    #
+    #     else:
+    #         switching_stations[2].one_less_visit(str(switching_stations[3]))
+    #         switching_stations[3].one_less_visit(str(switching_stations[2]))
+    #
+    #     # nu van new_middle naar new_end
+    #     if switching_stations[4].check_number_visits(string_new_middle) <= 1:
+    #         switching_stations[3].station_unvisit(str(switching_stations[4]))
+    #         switching_stations[4].station_unvisit(str(switching_stations[3]))
+    #
+    #     else:
+    #         switching_stations[4].one_less_visit(str(switching_stations[3]))
+    #         switching_stations[3].one_less_visit(str(switching_stations[4]))
 
 
     def visualise(self, routes):
