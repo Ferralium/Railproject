@@ -37,7 +37,9 @@ The following algorithms are used:
 The simulated annealing algorithm is a hillclimber algorithm that mutates the 2 last stations
 of a train route. If this leads to an improvement in the overall quality, it will be implemented. If it
 does not, the chance of it being implemented is 2 ^ (quality_old - quality_new). The bigger the
-decrease in quality, the smaller the chance it will be implemented.
+decrease in quality, the smaller the chance it will be implemented. There will be 20000 mutations for each run.
+However, the algorithm cuts of runs that are no improvement to the best run yet after 20, 100, 250 and 10000
+mutations.
 
 The simulated annealing algorithm contains an unidentified bug that causes the fraction of visited
 connections to be higher than it truly is. Therefore, two if-statements are used to break the current
