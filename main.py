@@ -202,7 +202,7 @@ class Railsolver():
 
          # bereken de fractie van de bereden routes
         fraction: float = wisselstoring.fraction_calc()
-        quality_old, quality_written_old_temp = self.algo.quality_calc(fraction, list_of_numbers)
+        quality_old, quality_written_old = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality_old)
 
 
@@ -210,7 +210,7 @@ class Railsolver():
         for i in range(20000):
 
             #check
-            quality_written_old = quality_written_old_temp
+            # quality_written_old = quality_written_old_temp
             # kondig nieuwe loop aan:
             print()
             print("make a mutation: ")
@@ -256,10 +256,11 @@ class Railsolver():
                 # zet de nieuwe quality written new op old
                 # BUG: Deze wordt niet aangepast op de een of andere manier :(((
                 print("Er is een mutatie gemaakt")
-                print(quality_written_old)
+                print(f' Quality voor verandering: {quality_written_old}')
                 print(f' mutatie quality written {quality_written_2}')
-                qulaity_written_old = quality_written_2
-                print(quality_written_old)
+                quality_written_old = quality_written_2
+                # print(f' Quality na verandering: {quality_written_old}')
+
 
 
             print(f'nieuwe quality: {quality_written_old}')
@@ -327,7 +328,7 @@ class Railsolver():
 
                 else:
                     print("checkpoint failed, abort")
-                    return quality_old, quality_written, best_qualities_checkpoints
+                    return quality_old, quality_written_old, best_qualities_checkpoints
 
 
         return quality_old, quality_written_old, best_qualities_checkpoints

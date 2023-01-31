@@ -31,11 +31,12 @@ class SimulatedAnnealing:
         T: int = list_of_numbers[1]
         Min: int = list_of_numbers[0]
         self.K: float = fraction*10000 - (T*100 + Min)
-        self.quality_written = f'Quality: {self.K} = {fraction}*10000 - ({T}*100 + {Min})'
+        quality_written = f'Quality: {self.K} = {fraction}*10000 - ({T}*100 + {Min})'
         print("in quality calc")
-        print(self.quality_written)
+        print(quality_written)
 
-        return self.K, self.quality_written
+
+        return self.K, quality_written
 
 
     def move(self, current_station, train_stations, stations_dictionary):
