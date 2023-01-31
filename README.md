@@ -33,6 +33,20 @@ The following algorithms are used:
 4. Simulated Annealing Algorithm
 5. Dijkstra Algorithm
 
+**Simulated Annealing algorithm**
+The simulated annealing algorithm is a hillclimber algorithm that mutates the 2 last stations
+of a train route. If this leads to an improvement in the overall quality, it will be implemented. If it
+does not, the chance of it being implemented is 2 ^ (quality_old - quality_new). The bigger the
+decrease in quality, the smaller the chance it will be implemented.
+
+The simulated annealing algorithm contains an unidentified bug that causes the fraction of visited
+connections to be higher than it truly is. Therefore, two if-statements are used to break the current
+run when this happens. This happens when the total amount of minutes is lower than 1488, and if the
+quality is higher than 6800 (no valid scores have been seen above this point). If either of these
+if-statements applies, the current run is broken off and will not be saved for the overall score.
+Please note that these if-statements may not break all incorrect scores. In addition, they may break some
+correct scores. This could influence the results.
+
 ### Usage:
 By default the program is run with the following command:
 
@@ -94,12 +108,19 @@ The user can call the histogram.py and answer the question with "322", and a his
 By answering "stop" the program will stop running, untill then the user can request as many histograms as there are result files.
 
 # Experiments:
-For our experiments we ran each algorithm (In combination with heuristics where applicable) for 5000 times. As there are 50 possible combinations we will simply summarize the best findings for each algorithm. To perform your own tests, please see 
+For our experiments we ran each algorithm (In combination with heuristics where applicable) for 5000 times. As there are 50 possible combinations we will simply summarize the best findings for each algorithm. To perform your own tests, please see
 
 **Best combinations:**
 
 Random algorithm(1): Mean 1981 Highest 2741
 Greedy algorithm(2): Mean 4455 Highest 4655
 Heurisitc algorithm, Least connections start, Visited random move (322): Mean 6108 Highest 7020
-Simulated Annealing(4),
+Simulated Annealing(4), Seven bridges start Heuristic, Preference shortest move heuristic (442), Mean 5867
 Dijkstra algorithm,
+
+# Discussion:
+
+In theory, the highest possible score is 7549. It requires 1551 minutes to visit all connections. For this, you need 9 trains.
+This yields the formula: K = p*10000 - (T*100 + Min) =  1 * 10000 - (9 * 100 + 1551) = 7549.
+
+Using a complete random algorithm, we found that the mean score produced was 1981. The algorithms we created produce scores somewhere between the values above, with a top score of 7020. This is approaching the maximum score.
