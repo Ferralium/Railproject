@@ -32,6 +32,7 @@ class SimulatedAnnealing:
         Min: int = list_of_numbers[0]
         self.K: float = fraction*10000 - (T*100 + Min)
         self.quality_written = f'Quality: {self.K} = {fraction}*10000 - ({T}*100 + {Min})'
+        print("in quality calc")
         print(self.quality_written)
 
         return self.K, self.quality_written
@@ -68,7 +69,7 @@ class SimulatedAnnealing:
             train_stations.append(current_station)
 
 
-    def make_or_break_change(self, quality_old: float, quality_2: float, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers, total_time_each_train, chosen_one):
+    def make_or_break_change(self, quality_old: float, quality_2: float, train_dictionary, train_dictionary_2, change_in_time, total_time_each_train, chosen_one):
         """ Function that makes or breaks the mutation """
 
         # Quality old was de kwaliteit van de vorige loop. Als Quality_2 beter is of de kans het zegt,
@@ -93,58 +94,37 @@ class SimulatedAnnealing:
         else:
 
             chance = 2**delta
-            # print(f'chance to be accepted: {chance}') UITGEZET
 
-            # als kans groter dan 1 is, voer het in
-            if chance >= 1:
+            if chance <= 0 or chance >= 1:
+                print("FOUT !!!")
 
-                # voer nieuwe state in
+
+                # afhankelijk van de kans, voer hem in:
+            guess = random.uniform(0, 1)
+
+            # print(f'guess: {guess}') UITGEZET
+
+            if guess <= chance:
+
                 train_dictionary = train_dictionary_2
                 quality_old = quality_2
                 total_time_each_train[chosen_one[0]] += change_in_time
-                # print("mutation accepted, want dat moest via de kans")UITGEZET
+                # print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min')UITGEZET
+                # print("mutation accepted, chance says so")UITGEZET
 
-            # als kans tussen nul en 1 is, maak een gok of je het moet invoeren
-            elif chance >= 0 and chance < 1:
+            else:
+                # print("mutation not accepted, chance too low")UITGEZET
+                # voer de change in time terug
+                ## BUG Fixen!!!
+                print("?? chance tussen 0 en 1 ")
 
-                # afhankelijk van de kans, voer hem in:
-                guess = random.uniform(0, 1)
+                # zet changed op False
+                mutated = False
 
-                # print(f'guess: {guess}') UITGEZET
-
-                if guess <= chance:
-
-                    train_dictionary = train_dictionary_2
-                    quality_old = quality_2
-                    total_time_each_train[chosen_one[0]] += change_in_time
-                    # print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min')UITGEZET
-                    # print("mutation accepted, chance says so")UITGEZET
-
-                else:
-                    # print("mutation not accepted, chance too low")UITGEZET
-                    # voer de change in time terug
-                    ## BUG Fixen!!!
-
-                    list_of_numbers[0] -= change_in_time
-                    print("?? chance tussen 0 en 1 ")
-
-                    # zet changed op False
-                    mutated = False
-
-            # kans is kleiner dan nul, dus voer je het niet in
-            # else:
-            #     # print("mutation not accepted, kans kleiner dan 0")UITGEZET
-            #     # voer de change in time terug
-            #
-            #     list_of_numbers[0] -= change_in_time
-            #     print("?? chance kleiner dan 0")
-            #
-            #
-            #     mutated = False
 
         delta = 0
         short_tuple = [train_dictionary, quality_old]
-        return short_tuple, mutated, list_of_numbers
+        return short_tuple, mutated
 
 
     def reset_visiting_status(self, switching_stations, stations_library):

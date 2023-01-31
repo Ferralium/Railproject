@@ -202,14 +202,15 @@ class Railsolver():
 
          # bereken de fractie van de bereden routes
         fraction: float = wisselstoring.fraction_calc()
-        quality_old, quality_written_old = self.algo.quality_calc(fraction, list_of_numbers)
+        quality_old, quality_written_old_temp = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality_old)
 
 
         # loop met opgedeelde mutation functies
         for i in range(20000):
-            #check
 
+            #check
+            quality_written_old = quality_written_old_temp
             # kondig nieuwe loop aan:
             print()
             print("make a mutation: ")
@@ -228,8 +229,8 @@ class Railsolver():
             list_of_numbers[0] += change_in_time
 
             # if the list of numbers is negative the whole run should be aborted something is going wrong!
-            if list_of_numbers[0] < 1000:
-                    continue
+            # if list_of_numbers[0] < 1500:
+            #         continue
 
             # print(f'min update: {list_of_numbers[0]}')
               # bereken de fractie van de bereden routes
@@ -240,7 +241,7 @@ class Railsolver():
             # print(f'quality 2: {quality_2}')
 
             # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
-            short_tuple, mutated, list_of_numbers = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers, total_time_each_train, chosen_one)
+            short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, total_time_each_train, chosen_one)
 
             train_dictionary = short_tuple[0]
             quality_old = short_tuple[1]
@@ -248,11 +249,17 @@ class Railsolver():
             if mutated == False:
                 # zet dan ook de connection visits weer terug
                 self.algo.reset_visiting_status(switching_stations, stations_library)
+                list_of_numbers[0] -= change_in_time
 
             if mutated == True:
 
                 # zet de nieuwe quality written new op old
+                # BUG: Deze wordt niet aangepast op de een of andere manier :(((
+                print("Er is een mutatie gemaakt")
+                print(quality_written_old)
+                print(f' mutatie quality written {quality_written_2}')
                 qulaity_written_old = quality_written_2
+                print(quality_written_old)
 
 
             print(f'nieuwe quality: {quality_written_old}')
@@ -450,20 +457,21 @@ if __name__ == '__main__':
         best_qualities_checkpoints = [best_quality_20, best_quality_100, best_quality_250, best_quality_10k]
 
         for i in range(num_of_runs):
+            print("Nieuwe run")
             train_dictionary = {}
 
             wisselstoring = Railsolver(algo)
             print("simulated annealing")
-            quality_old, quality_written, best_qualities_checkpoints = Railsolver(algo).loop_simulated_annealing(train_dictionary, best_qualities_checkpoints)
+            quality_old, quality_written_old, best_qualities_checkpoints = Railsolver(algo).loop_simulated_annealing(train_dictionary, best_qualities_checkpoints)
             mean_solution += quality_old
 
             if quality_old > best_score:
                 best_score = quality_old
                 best_solution = train_dictionary
-                best_calc = quality_written
+                best_calc = quality_written_old
 
             results = open(f'results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
-            results.write(f'{quality_written}')
+            results.write(f'{quality_written_old}')
             results.write('\n')
             results.close()
 
@@ -471,6 +479,8 @@ if __name__ == '__main__':
             score.write(str(quality_old))
             score.write('\n')
             score.close()
+
+            print("Einde run")
 
     else:
         for i in range(num_of_runs):
