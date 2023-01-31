@@ -99,9 +99,7 @@ The question "which score?" will pop up. The user can fill in the combination of
 
 For instance for the following combination, a resultsfile named "score322.txt" will be created.
 
-"""
-python3 main.py 1 3 2 2
-"""
+``` python3 main.py 1 3 2 2 ```
 
 The user can call the histogram.py and answer the question with "322", and a histogram based on the information in the score322 file will be created.
 
@@ -113,14 +111,28 @@ For our experiments we ran each algorithm (In combination with heuristics where 
 **Best combinations:**
 
 Random algorithm(1): Mean 1981 Highest 2741
+
 Greedy algorithm(2): Mean 4455 Highest 4655
+
 Heurisitc algorithm, Least connections start, Visited random move (322): Mean 6108 Highest 7020
-Simulated Annealing(4), Seven bridges start Heuristic, Preference shortest move heuristic (442), Mean 5867
-Dijkstra algorithm,
+
+Simulated Annealing(4), Seven bridges start Heuristic, Preference shortest move heuristic (442): Mean 5867
+
+Dijkstra algorithm, Least connections start, Visited random move (522): Mean 3508 Highest 4276
+
+To replicate these all of these indings please run the following code:
+
+``` python3 experiments.py ```
+
+Which will run all algorithms and combinations 5000 times, after which you can create histograms by running 
+
+``` python3 histogram.py ```
+
+Which will prompt the user for the combination you wish to plot (For example, entering 322 will give the histogram for algorithm 3, start and move heuristic 2.)
 
 # Discussion:
 
 In theory, the highest possible score is 7549. It requires 1551 minutes to visit all connections. For this, you need 9 trains.
 This yields the formula: K = p*10000 - (T*100 + Min) =  1 * 10000 - (9 * 100 + 1551) = 7549.
 
-Using a complete random algorithm, we found that the mean score produced was 1981. The algorithms we created produce scores somewhere between the values above, with a top score of 7020. This is approaching the maximum score.
+Using a complete random algorithm, we found that the mean score produced was 1981. The algorithms we created produce scores somewhere between the values above, with a top score of 7020. This is approaching the maximum score. Thus far it seems maximizing the value of p is worth more than driving less trains/less minutes.
