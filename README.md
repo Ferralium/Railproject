@@ -75,15 +75,19 @@ Where s is the start heuristic (1-4) and m is the move heuristic (1-4)
 
 # Histogram:
 Automatically when running the program, the quality of every run is being saved in a seperate file in the folder "results". In order to generate a histogram, the user can use the following commandline:
+
 """
 python3 histogram.py
 """
+
 The question "which score?" will pop up. The user can fill in the combination of numbers of the result file they wish to use for the histogram.
 
-For instance for the following combination, a resultsfile named "score322.txt" will be created/
+For instance for the following combination, a resultsfile named "score322.txt" will be created.
+
 """
 python3 main.py 1 3 2 2
 """
+
 The user can call the histogram.py and answer the question with "322", and a histogram based on the information in the score322 file will be created.
 
 By answering "stop" the program will stop running, untill then the user can request as many histograms as there are result files.
