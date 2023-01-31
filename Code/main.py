@@ -50,7 +50,7 @@ class Railsolver():
         """Loads the stations with distances from the CSV.
            Also creates new stations for the connections if they are not already in the dict"""
 
-        with open('data/ConnectiesNationaal.csv') as f:
+        with open('../data/ConnectiesNationaal.csv') as f:
             # Skips the first line
             next(f)
 
@@ -161,7 +161,7 @@ class Railsolver():
 
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
-            list_of_stations_and_time: Tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
+            list_of_stations_and_time: tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
             # print(f'wat zit er in list of stations and time? {list_of_stations_and_time}')
             # print()
 
@@ -475,13 +475,17 @@ if __name__ == '__main__':
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
                 sys.exit()
             algoselect = int(sys.argv[2])
-            #
-            #
-            # deze tussen 1 en 8 hieronder nog veranderen naar het aantal van algoselect we op het einde hebben
+            
             if algoselect < 1 or algoselect > 5:
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
                 print('Algorithm must be between 1 and 8')
                 sys.exit()
+
+            if algoselect == 1 or algoselect == 2:
+                file1 = open(f'../results/resultsformula{algoselect}.txt', 'w')
+                file1.close()
+                file2 = open(f'../results/score{algoselect}.txt', 'w')
+                file2.close()
 
             if algoselect == 3 or algoselect == 5 or algoselect == 4:
                 if len(sys.argv) < 5 or not sys.argv[3].isnumeric() or not sys.argv[4].isnumeric():
@@ -496,9 +500,9 @@ if __name__ == '__main__':
                 start_heuristic, move_heuristic = select_heuristic(start_heurselect, move_heurselect)
 
     # Clears the respective result files
-    file1 = open(f'results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
+    file1 = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
     file1.close()
-    file2 = open(f'results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
+    file2 = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
     file2.close()
 
 
@@ -543,12 +547,12 @@ if __name__ == '__main__':
                 best_solution = train_dictionary
                 best_calc = quality_written_old
 
-            results = open(f'results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
+            results = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             results.write(f'{quality_written_old}')
             results.write('\n')
             results.close()
 
-            score = open(f'results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
+            score = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             score.write(str(quality_old))
             score.write('\n')
             score.close()
@@ -575,12 +579,12 @@ if __name__ == '__main__':
                 best_solution = train_dictionary
                 best_calc = wisselstoring.quality
 
-            results = open(f'results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
+            results = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             results.write(f'{wisselstoring.quality}')
             results.write('\n')
             results.close()
 
-            score = open(f'results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
+            score = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             score.write(str(wisselstoring.K))
             score.write('\n')
             score.close()

@@ -18,7 +18,7 @@ class Mapdrawer():
 
         # Extracts correct coordinates from the CSV. Maps these to the station name as key
         self.correctcoords = {}
-        with open("data/StationsNationaal.csv") as f:
+        with open("../data/StationsNationaal.csv") as f:
             next(f)
             for line in f:
                 tempcoords = []
@@ -31,7 +31,7 @@ class Mapdrawer():
 
         # Extracts the connections between the stations into a list
         self.connections = []
-        with open('data/ConnectiesNationaal.csv') as c:
+        with open('../data/ConnectiesNationaal.csv') as c:
             next(c)
             for line in c:
                 tempconnect = []
@@ -75,7 +75,7 @@ class Mapdrawer():
 
             self.m.plot(x_points, y_points, color = 'k', linewidth = 1)
 
-        plt.savefig('images/lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0, dpi = 1200)
+        plt.savefig('../images/lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0, dpi = 1200)
 
     def print_driven_routes(self, routes):
         """Takes the trainroutes and prints them on the map with colors for each different route"""
@@ -110,13 +110,13 @@ class Mapdrawer():
 
                 # Plots the connection between the stations on the map, using the generated colors for the particular route number
                 self.m.plot(x_coords, y_coords, color = (self.colormap[colorcounter][0], self.colormap[colorcounter][1], self.colormap[colorcounter][2]), linewidth = 1)
-                plt.savefig(f'gifgen/route{piccounter}.png')
+                plt.savefig(f'../gifgen/route{piccounter}.png')
                 piccounter += 1
 
             # Moves to the next point in the color library to avoid using the same colors
             colorcounter += 1
 
-        plt.savefig('images/routesopkaart.png', bbox_inches = 'tight', pad_inches = 0, dpi = 1200)
+        plt.savefig('../images/routesopkaart.png', bbox_inches = 'tight', pad_inches = 0, dpi = 1200)
         # Necessary to prevent map from being drawn into histogram
         plt.close()
 
@@ -148,11 +148,11 @@ class Gifgenerator:
     def map_to_gif(self):
         """Takes all generated PNG's and creates an animated .gif for visualisation."""
         frames = []
-        imgs = glob.glob('gifgen/*.png')
+        imgs = glob.glob('../gifgen/*.png')
         for i in imgs:
             new_frame = Image.open(i)
             frames.append(new_frame)
 
-        frames[0].save('images/animatedroutes.gif', format = 'GIF', append_images=frames[1:], save_all = True, duration = 15, loop = 0)
+        frames[0].save('../images/animatedroutes.gif', format = 'GIF', append_images=frames[1:], save_all = True, duration = 15, loop = 0)
 
 # TODO: Visualisaties van meest bezochte stations in histogram etc
