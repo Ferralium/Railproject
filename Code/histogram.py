@@ -14,7 +14,7 @@ class StatsDrawer:
         plt.xlabel("Score", fontsize=13)
         plt.ylabel("Frequency", fontsize=13)
         plt.grid(True, linewidth=0.5, color='#757b82', linestyle='-')
-        plt.savefig(f'../results/resultshistogram{x}.png', dpi = 800)
+        plt.savefig(f'../results/resultshistogram{x}.png', bbox_inches = 'tight', pad_inches = 0, dpi = 800)
         plt.close()
 
 while True:

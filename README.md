@@ -113,7 +113,7 @@ Greedy algorithm(2): Mean 4455 Highest 4655
 
 Heurisitc algorithm, Least connections start, Visited random move (322): Mean 6108 Highest 7020
 
-Simulated Annealing(4), Seven bridges start Heuristic, Preference shortest move heuristic (442): Mean 5867
+Simulated Annealing, Seven bridges start Heuristic, Preference shortest move heuristic (442): Mean 5867
 
 Dijkstra algorithm, Least connections start, Visited random move (522): Mean 3508 Highest 4276
 

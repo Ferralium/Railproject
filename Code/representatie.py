@@ -110,7 +110,7 @@ class Mapdrawer():
 
                 # Plots the connection between the stations on the map, using the generated colors for the particular route number
                 self.m.plot(x_coords, y_coords, color = (self.colormap[colorcounter][0], self.colormap[colorcounter][1], self.colormap[colorcounter][2]), linewidth = 1)
-                plt.savefig(f'../gifgen/route{piccounter}.png')
+                plt.savefig(f'../gifgen/route{piccounter}.png', bbox_inches = 'tight', pad_inches = 0)
                 piccounter += 1
 
             # Moves to the next point in the color library to avoid using the same colors
