@@ -106,10 +106,7 @@ class DijkstraAlgorithm:
             for station in self.oldroutes:
                 self.distance_to[station] = float('inf')
                 self.newroute[station] = []
-<<<<<<< HEAD
             # self.map_shortest('Utrecht Centraal')
-=======
->>>>>>> 7299464bebceb37f79122b6fc6a3fb87a7f68534
             self.map_shortest(str(most_connection_start_heuristic(station_dictionary)))
             self.gencount += 1 
             
@@ -154,3 +151,5 @@ class DijkstraAlgorithm:
 
             current_station = next_station
             train_stations.append(current_station)
+
+# Fix dit
