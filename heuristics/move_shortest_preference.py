@@ -16,7 +16,7 @@ def preference_shortest_move_heuristic(curr: Station, visited: list[Station], st
                 if value < shortest_connection:
                     shortest_connection = value
                     chance: float = random.uniform(0,10)
-                    print(connections, chance)
+                    # print(connections, chance)
                     if chance < 7:
                         next_station: Optional[Station] = stations.get(connections)
                     else:

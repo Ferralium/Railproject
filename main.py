@@ -125,16 +125,16 @@ class Railsolver():
         # voeg de trein en stations toe aan de dictionary
         train_dictionary[train_number] = list_of_stations
 
-        train_data = pd.DataFrame.from_dict(train_dictionary, orient='index')
-        print(train_data)
+        # train_data = pd.DataFrame.from_dict(train_dictionary, orient='index')
+        # # print(train_data)
 
-        data_to_excel = pd.ExcelWriter('train_data.xlsx')
+        # data_to_excel = pd.ExcelWriter('train_data.xlsx')
 
-        # write DataFrame to excel
-        train_data.to_excel(data_to_excel)
+        # # write DataFrame to excel
+        # train_data.to_excel(data_to_excel)
 
-        # save the excel
-        data_to_excel.save()
+        # # save the excel
+        # data_to_excel.save()
 
     def take_a_ride(self):
         """ Function that keeps the order of everything that must be done for the algorithm"""
@@ -159,15 +159,15 @@ class Railsolver():
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
             list_of_stations_and_time: Tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
-            print(f'wat zit er in list of stations and time? {list_of_stations_and_time}')
+            # print(f'wat zit er in list of stations and time? {list_of_stations_and_time}')
             print()
 
             total_time_each_train[train_number] = list_of_stations_and_time[1]
-            print(f'total time each train maincheck: {total_time_each_train}')
-            print(list_of_stations_and_time)
+            # print(f'total time each train maincheck: {total_time_each_train}')
+            # print(list_of_stations_and_time)
 
             check_station = list_of_stations_and_time[0]
-            print(check_station)
+            # print(check_station)
 
             if check_station == [None]:
                 # verwijder dan het laatste item uit total time each train_number
