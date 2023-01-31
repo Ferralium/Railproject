@@ -11,8 +11,8 @@ pip install -r requirements.txt
 
 # Outline:
 After downloading the code, you will find the files divided into multiple folders.
-* Wisselstoring: this is the main folder where you can navigate to other folders and read the text files
-* Code: this is the main folder containing all the python code files, including the main.py. In the code folder you can find th efollowing 2 folders as well:
+* Wisselstoring: this is the main folder where you can navigate to other folders and read the text files.
+* Code: this is the main folder containing all the python code files, including the main.py. In the code folder you can find the following 2 folders as well:
     * algorithms: containing all the different algorithms
     * heuristics: containg the heuristics in different files
 * Data: this folder contains the important csv files with the data about the trains station and connections.
