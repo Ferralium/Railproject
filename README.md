@@ -11,7 +11,15 @@ pip install -r requirements.txt
 
 # Outline:
 After downloading the code, you will find the files divided into multiple folders.
-TODO: Folders fixen en uitleg geven
+* Wisselstoring: this is the main folder where you can navigate to other folders and read the text files
+* Code: this is the main folder containing all the python code files, including the main.py. In the code folder you can find th efollowing 2 folders as well:
+    * algorithms: containing all the different algorithms
+    * heuristics: containg the heuristics in different files
+* Data: this folder contains the important csv files with the data about the trains station and connections.
+* Gifgen: Once the code has been run, this folder will hold images of all the seperate routes.
+* Images: After running the code, this folder contains the maps with the train stations and the connections. Moreover, it has a gif that has the routes of the trajectories animated.
+* Results: The results of the trajectories will be exported to csv files, that will show up in this folder after running the code.
+
 
 # Algorithms:
 This program has the ability to run  different algorithms, each providing  seperate output for comparison.
