@@ -499,11 +499,11 @@ if __name__ == '__main__':
                     sys.exit()
                 start_heuristic, move_heuristic = select_heuristic(start_heurselect, move_heurselect)
 
-    # Clears the respective result files
-    file1 = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
-    file1.close()
-    file2 = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
-    file2.close()
+                # Clears the respective result files
+                file1 = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
+                file1.close()
+                file2 = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'w')
+                file2.close()
 
 
     # Command-line selection of algorithms
@@ -578,16 +578,27 @@ if __name__ == '__main__':
                 best_score = wisselstoring.K
                 best_solution = train_dictionary
                 best_calc = wisselstoring.quality
+            
+            if algoselect == 1 or algoselect == 2:
+                results = open(f'../results/resultsformula{algoselect}.txt', 'a')
+                results.write(f'{wisselstoring.quality}')
+                results.write('\n')
+                results.close()
 
-            results = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
-            results.write(f'{wisselstoring.quality}')
-            results.write('\n')
-            results.close()
+                score = open(f'../results/score{algoselect}.txt', 'a')
+                score.write(str(wisselstoring.K))
+                score.write('\n')
+                score.close()
+            else:
+                results = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
+                results.write(f'{wisselstoring.quality}')
+                results.write('\n')
+                results.close()
 
-            score = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
-            score.write(str(wisselstoring.K))
-            score.write('\n')
-            score.close()
+                score = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
+                score.write(str(wisselstoring.K))
+                score.write('\n')
+                score.close()
 
     wisselstoring.visualise(best_solution)
     wisselstoring.gifmod.map_to_gif()
