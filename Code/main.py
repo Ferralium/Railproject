@@ -448,7 +448,7 @@ def select_heuristic(start_heurselect, move_heurselect):
 
 if __name__ == '__main__':
     start_time = time.time()
-    algoselect = 4
+    algoselect = 1
     start_heuristic = None
     move_heuristic = None
 
@@ -468,6 +468,10 @@ if __name__ == '__main__':
         if num_of_runs < 1:
             print('Usage: python3 main.py (Optional) n')
             print('Number of runs must be 1 or higher')
+            sys.exit()
+        
+        if len(sys.argv) == 4 or len(sys.argv) > 5:
+            print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
             sys.exit()
 
         if len(sys.argv) > 2:
