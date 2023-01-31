@@ -213,7 +213,7 @@ class Railsolver():
             # kondig nieuwe loop aan:
             print()
             print("make a mutation: ")
-            print()
+            # print()
 
             train_dictionary_2 = train_dictionary
             stations_library = wisselstoring.stations
