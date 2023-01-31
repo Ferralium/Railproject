@@ -1,11 +1,8 @@
 from station import Station
 from heuristics.start_most_connections import most_connection_start_heuristic
-<<<<<<< HEAD
 
 
-=======
->>>>>>> 7299464bebceb37f79122b6fc6a3fb87a7f68534
-
+# Head fix
 class DijkstraAlgorithm:
     def __init__(self, start_heuristic, move_heuristic):
         """Dijkstra Algorithm aims to create a minimum spanning tree with the lowest cost distances
