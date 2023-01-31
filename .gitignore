@@ -7,6 +7,10 @@ __pycache__/
 *.png
 *.gif
 
+# Exceptions images for explaination
+!examplehisto1.png
+!examplegif.gif
+
 # Generated result files
 *.xlsx
 *.txt
