@@ -3,7 +3,7 @@ This project contains a python program which aims to provide the most optimal so
 It does this by implementing several algorithms and heuristics with the aim of providing the most optimal solution for the routes.
 Additionally, this program provides the option of visualising the routes in .PNG, .GIF format and can create insights in histogram form on the solutions.
 
-<!-- ![RailNL Gif](images/examplegif.gif) -->
+![RailNL Gif](images/examplegif.gif)
 
 # Getting started:
 To get started, some actions are required. First, multiple python packages are required for the program to run. These can be installed by using the following command:
