@@ -23,8 +23,8 @@ class SimulatedAnnealing:
     def fraction_calc(self, stations_library) -> float:
         """Function calculates percentage of used connections"""
 
-        print("Calculate franction of used connections")
-        print()
+        # print("Calculate franction of used connections")
+        # print()
         connected = 0
         total = 0
 
@@ -148,7 +148,7 @@ class SimulatedAnnealing:
                 # print("mutation not accepted, chance too low")UITGEZET
                 # voer de change in time terug
                 ## BUG Fixen!!!
-                print("?? chance tussen 0 en 1 ")
+                # print("?? chance tussen 0 en 1 ")
 
                 # zet changed op False
                 mutated = False

@@ -95,8 +95,8 @@ class Railsolver():
     def fraction_calc(self) -> float:
         """Function calculates percentage of used connections"""
 
-        print("Calculate franction of used connections")
-        print()
+        # print("Calculate franction of used connections")
+        # print()
         connected = 0
         total = 0
 
@@ -156,7 +156,7 @@ class Railsolver():
             train_stations: list[Station] = []
             # total_time_each_train = {}
 
-            print(" ")
+            # print(" ")
             # print("new trajectory") UITGEZET
 
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
@@ -175,7 +175,7 @@ class Railsolver():
             if check_station == [None]:
                 # verwijder dan het laatste item uit total time each train_number
                 total_time_each_train.popitem()
-                print("none item verwijderd doeiii")
+                # print("none item verwijderd doeiii")
                 break
 
             else:
@@ -215,8 +215,8 @@ class Railsolver():
             #check
             # quality_written_old = quality_written_old_temp
             # kondig nieuwe loop aan:
-            print()
-            print("make a mutation: ")
+            # print()
+            # print("make a mutation: ")
             # print()
 
             train_dictionary_2 = train_dictionary
@@ -247,6 +247,11 @@ class Railsolver():
                             print(temporary_station, connecties, temporary_station.connection_visited[connecties])
 
                     break
+
+            if quality_old > 6800:
+
+                # de oplossing klopt dan niet denk ik
+                break
 
 
 
@@ -469,7 +474,7 @@ if __name__ == '__main__':
             print('Usage: python3 main.py (Optional) n')
             print('Number of runs must be 1 or higher')
             sys.exit()
-        
+
         if len(sys.argv) == 4 or len(sys.argv) > 5:
             print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
             sys.exit()
@@ -479,7 +484,7 @@ if __name__ == '__main__':
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
                 sys.exit()
             algoselect = int(sys.argv[2])
-            
+
             if algoselect < 1 or algoselect > 5:
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
                 print('Algorithm must be between 1 and 8')
@@ -582,7 +587,7 @@ if __name__ == '__main__':
                 best_score = wisselstoring.K
                 best_solution = train_dictionary
                 best_calc = wisselstoring.quality
-            
+
             if algoselect == 1 or algoselect == 2:
                 results = open(f'../results/resultsformula{algoselect}.txt', 'a')
                 results.write(f'{wisselstoring.quality}')
@@ -609,5 +614,6 @@ if __name__ == '__main__':
     print(f'Best solution found: {best_calc}')
     print(f'Average solution: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
+    print(f'beste oplossing: {best_solution}')
 
 # Headfix
