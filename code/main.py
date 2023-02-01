@@ -36,6 +36,7 @@ from heuristics.move_shortest_preference import preference_shortest_move_heurist
 
 
 class Railsolver():
+    """Main function to attempt to find the most optimal solution for RailNL"""
 
     # Initializes the stations dictionary for the railsolver
     def __init__(self, algorithm: Algorithm) -> None:
@@ -86,6 +87,7 @@ class Railsolver():
                     self.stations[templine[1]].add_station(templine[0], float(templine[2]))
 
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
+        """Calculates the quality of the driven routes"""
         T: int = list_of_numbers[1]
         Min: int = list_of_numbers[0]
         self.K: float = fraction*10000 - (T*100 + Min)
@@ -95,30 +97,19 @@ class Railsolver():
 
     def fraction_calc(self) -> float:
         """Function calculates percentage of used connections"""
-
-        # print("Calculate franction of used connections")
-        # print()
         connected = 0
         total = 0
 
         for station_name in self.stations:
 
             temporary_station = self.stations[station_name]
-
-            # print(station_name, temporary_station.connection_visited)
-            # number_of_connections = len(temporary_station.connection_visited)
             number_of_connections = len(temporary_station.connections)
-            # print(f'aantal connecties: {number_of_connections}')
             total += number_of_connections
 
             for connecties in temporary_station.connection_visited:
-
-                # print(temporary_station, connecties, temporary_station.connection_visited[connecties])
-
                 if temporary_station.connection_visited[connecties] == True:
                     connected += 1
 
-        # print(f' Connected: {connected}, Total: {total}') UITGEZET
         fraction: float = round(connected / total, 2)
 
         return fraction
@@ -126,19 +117,8 @@ class Railsolver():
     def table_of_trains(self, train_number, list_of_stations, time, train_dictionary):
         """Function that keeps track of all the train routes that have been made"""
 
-        # voeg de trein en stations toe aan de dictionary
+        # Adds trains to the dictionary in the appropriate place
         train_dictionary[train_number] = list_of_stations
-
-        # train_data = pd.DataFrame.from_dict(train_dictionary, orient='index')
-        # print(train_data)
-        #
-        # data_to_excel = pd.ExcelWriter('train_data.xlsx')
-        #
-        # # write DataFrame to excel
-        # train_data.to_excel(data_to_excel)
-        #
-        # # save the excel
-        # data_to_excel.save()
 
     def take_a_ride(self):
         """ Function that keeps the order of everything that must be done for the algorithm"""
@@ -148,51 +128,39 @@ class Railsolver():
 
         for route in range(20):
 
-            # number_of_routes += 1
-
-            # maak de treinnaam
+            # Name the train
             train_number: str = "train_" + str(route + 1)
 
-            # maak een lege lijst voor de stations:
+            # Make an emtpy list for the stations
             train_stations: list[Station] = []
-            # total_time_each_train = {}
-
-            # print(" ")
-            # print("new trajectory") UITGEZET
 
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
 
             list_of_stations_and_time: tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
-            # print(f'wat zit er in list of stations and time? {list_of_stations_and_time}')
-            # print()
 
             total_time_each_train[train_number] = list_of_stations_and_time[1]
-            # print(f'total time each train maincheck: {total_time_each_train}')
-            # print(list_of_stations_and_time)
 
             check_station = list_of_stations_and_time[0]
-            # print(check_station)
 
+            # Checks if there are no more stations left to stop the loop
             if check_station == [None]:
-                # verwijder dan het laatste item uit total time each train_number
                 total_time_each_train.popitem()
-                # print("none item verwijderd doeiii")
                 break
 
             else:
 
-                # voeg dit toe aan de tabel van treinen
+                # Adds the route to table of trains
                 wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
 
                 time_trajectory: int = list_of_stations_and_time[1]
 
-                # add total time of all trajectories
+                # Add total time of all trajectories
                 total_time += time_trajectory
 
                 number_of_routes += 1
 
         list_of_numbers: list[int] = [total_time, number_of_routes]
-        # print(f'list of numbers: {list_of_numbers}')UITGEZET
+
         return list_of_numbers, total_time_each_train
 
 
@@ -201,24 +169,17 @@ class Railsolver():
     def loop_simulated_annealing(self, train_dictionary, best_qualities_checkpoints):
         """Loop controlling the simmulated annealing process"""
 
-        # train_dictionary = {}
+        # Initialize the train routes
         list_of_numbers, total_time_each_train = wisselstoring.take_a_ride()
 
-         # bereken de fractie van de bereden routes
+        # Calculates fraction of the driven routes 
         fraction: float = wisselstoring.fraction_calc()
         quality_old, quality_written_old = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality_old)
 
 
-        # loop met opgedeelde mutation functies
+        # Loops the mutations
         for i in range(20000):
-
-            #check
-            # quality_written_old = quality_written_old_temp
-            # kondig nieuwe loop aan:
-            # print()
-            # print("make a mutation: ")
-            # print()
 
             train_dictionary_2 = copy.deepcopy(train_dictionary)
             stations_library = wisselstoring.stations
@@ -226,13 +187,10 @@ class Railsolver():
             switching_stations, chosen_one = self.algo.stations_to_be_switched(train_dictionary_2, stations_library, total_time_each_train)
 
             change_in_time, train_dictionary_2 = self.algo.mutation_small(train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library)
-            # print(f'train_dictionary_2 in de main: {train_dictionary_2}')
-            # bereken nu opnieuw de totale tijd voor de treinen
 
-            # print(f'min oud: {list_of_numbers[0]}')
             list_of_numbers[0] += change_in_time
 
-            # if the list of numbers is negative the whole run should be aborted something is going wrong!
+            # Ff the list of numbers is negative the whole run should be aborted as something is going wrong
             if list_of_numbers[0] < 1488:
 
                     print("         ER IS NU EEN BUG")
@@ -250,66 +208,27 @@ class Railsolver():
                     break
 
             if quality_old > 6800:
-
-                # de oplossing klopt dan niet denk ik
                 break
 
 
-
-
-            # if i == 19:
-            #     # doe eenmalig een check of de visiting status nu klopt
-            #
-            #     print("Controle stations visiting status bij loop 19")
-            #     print(f'huidige train dicitonary{train_dictionary}')
-            #
-            #     for station_name in stations_library:
-            #
-            #         temporary_station = stations_library[station_name]
-            #
-            #         for connecties in temporary_station.connection_visited:
-            #
-            #             print(temporary_station, connecties, temporary_station.connection_visited[connecties])
-
-
-            # print(f'min update: {list_of_numbers[0]}')
-              # bereken de fractie van de bereden routes
-            # fraction: float = wisselstoring.fraction_calc()
-            # print(f'fractie oud: {fraction}') DEBUGPRINT UIT
             fraction_new: float = self.algo.fraction_calc(stations_library)
-            # print(f'fractie nieuw: {fraction_new}')DEBUGPRINT UIT
             quality_2, quality_written_2 = self.algo.quality_calc(fraction_new, list_of_numbers)
-            # print(f'nieuwe quality: {quality_written}')
-            # print(f'quality oud: {quality_old}')DEBUGPRINT UIT
-            # print(f'quality 2: {quality_2}')DEBUGPRINT UIT
 
-            # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
+            # Compare these, if it is better or the chance of change requires it change the route
             short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, total_time_each_train, chosen_one)
 
             train_dictionary = short_tuple[0]
             quality_old = short_tuple[1]
 
             if mutated == False:
-                # zet dan ook de connection visits weer terug
-                # print("mutatie gaat niet door")DEBUGPRINT UIT
-                self.algo.reset_visiting_status(switching_stations, stations_library) # 31change
+                self.algo.reset_visiting_status(switching_stations, stations_library)
                 list_of_numbers[0] -= change_in_time
 
             if mutated == True:
-
-                # zet de nieuwe quality written new op old
-                # print("Er is een mutatie gemaakt")DEBUGPRINT UIT
-                # print(f' Quality voor verandering: {quality_written_old}')
-                # print(f' mutatie quality written {quality_written_2}')
                 fraction = fraction_new
                 quality_written_old = quality_written_2
-                # print(f' Quality na verandering: {quality_written_old}')DEBUGPRINT UIT
 
-
-
-            # print(f'nieuwe quality: {quality_written_old}')
-
-            # add checkpoints: beëindig als het niet beter is dan de beste :)
+            # Adds checkpoints: Stops if not better than the best solution
             if i == 20:
                 print()
                 print("         CHECKPOINT 1 (after 20 mutations)")
@@ -375,16 +294,14 @@ class Railsolver():
                     return quality_old, quality_written_old, best_qualities_checkpoints
 
 
-        # print welke stations bezocht zijn:
+        # Print which stations have been visited
         print("welke connecties zijn bezocht? ")
         for station_name in stations_library:
 
             temporary_station = stations_library[station_name]
 
             for connecties in temporary_station.connection_visited:
-
                 print(temporary_station, connecties, temporary_station.connection_visited[connecties])
-
 
         return quality_old, quality_written_old, best_qualities_checkpoints
 
@@ -505,13 +422,7 @@ if __name__ == '__main__':
     elif algoselect == 5:
         algo = DijkstraAlgorithm(start_heuristic, move_heuristic)
 
-
-    # train_dictionary = {}
-
-    # simulated annealing loop:
-    #
-    #
-    # deze if else loop kan niet... ik denk wat je onder if algoselect = 7 hebt, dat je het beter hierboven kan toevoegen eronder. Nu als je ieats anders op commandline doet geeft hij niet meer de goede errorS
+    # Loop for running the correct algorithms, split by SA and the others
     if algoselect == 4:
 
         best_quality_20 = 0
@@ -566,6 +477,7 @@ if __name__ == '__main__':
                 best_solution = train_dictionary
                 best_calc = wisselstoring.quality
 
+            # Appends the results to result files
             if algoselect == 1 or algoselect == 2:
                 results = open(f'../results/resultsformula{algoselect}.txt', 'a')
                 results.write(f'{wisselstoring.quality}')
@@ -592,11 +504,5 @@ if __name__ == '__main__':
     print(f'Best solution found: {best_calc}')
     print(f'Average solution: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
-    print(f'beste oplossing: {best_solution}')
+    print(f'Best Solution: {best_solution}')
 
-    # Optional code to add the best solution and average solution to the score sheets
-    # score = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
-    # score.write(f'Best solution found: {best_calc}')
-    # score.write('\n')
-    # score.write(str(f'Average solution: {mean_solution / num_of_runs}'))
-    # score.close()

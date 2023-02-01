@@ -7,6 +7,7 @@ import random
 # Rework data to useable format
 
 class Mapdrawer():
+    """Module to create and draw on a map of the Netherlands utilizing Geo-coordinates"""
     def __init__(self):
         """Initializes the mapdrawer, loads in the correct coordinates from the csv"""
 
@@ -51,8 +52,6 @@ class Mapdrawer():
         # Drawing points on the map
         for station in self.correctcoords:
             self.m.plot(self.correctcoords[station][0], self.correctcoords[station][1], '.', markersize = 10, color = 'b')
-
-        # plt.savefig('images/puntopkaart.png', bbox_inches='tight', pad_inches=0)
 
     def print_connections(self):
         """Prints all connections between the stations"""
@@ -120,11 +119,6 @@ class Mapdrawer():
         # Necessary to prevent map from being drawn into histogram
         plt.close()
 
-    def statsplot_routes(self):
-        """Plots most visited stations and most succesfull routes in the algorithms
-           Aims to discover patterns in generated data"""
-        pass
-
     def color_generator(self):
         """Generates random number combinations to get unique colors for trainroutes"""
         while True:
@@ -142,6 +136,7 @@ class Mapdrawer():
                 return False
 
 class Gifgenerator:
+    """Class which handles the GIF generation """
     def __init__(self):
         pass
 
@@ -154,5 +149,3 @@ class Gifgenerator:
             frames.append(new_frame)
 
         frames[0].save('../images/animatedroutes.gif', format = 'GIF', append_images=frames[1:], save_all = True, duration = 15, loop = 0)
-
-# TODO: Visualisaties van meest bezochte stations in histogram etc

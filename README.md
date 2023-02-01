@@ -33,11 +33,9 @@ The following algorithms are used:
 4. Simulated Annealing Algorithm
 5. Dijkstra Algorithm
 
-A detailed explanations about the algorithms can be found [here](/code/algorithms/README.md).
+A detailed explanations about the algorithms can be found [here](/Code/algorithms/README.md).
 
 ### Usage:
-(for all instructions to run this program, make sure you are in the code file)
-
 By default the program is run with the following command:
 
 ```python3 main.py```
@@ -66,7 +64,7 @@ This program is also able to utilize the following heuristics:
 3. Shortest move heuristic
 4. Preference shortest move heuristic
 
-A detailed explanations about the heuristics you can find [here](/code/heuristics/README.md).
+A detailed explanations about the heuristics you can find [here](/Code/heuristics/README.md).
 
 ## Usage
 
@@ -110,11 +108,7 @@ In theory, the highest possible score is 7549. It requires 1551 minutes to visit
 This yields the following formula: K = p * 10000 - (T * 100 + Min) =  1 * 10000 - (9 * 100 + 1551) = 7549.  
 Using a complete random algorithm, we found that the mean score produced was 1981. The algorithms we created produce scores somewhere between the values above, with a top score of 7020. This is approaching the maximum score. Thus far it seems maximizing the value of p is worth more than driving less trains/less minutes. This because for every % loss of p already means -100 which is equal to the starting costs of a single train line.
 
-It seems heuristics paying attention to undriven routes with the least amount of time outperform the other options. Interestingly, clearly visited random station had the preference of move heurstic, consistently outperforming other move heursitics. We theorize this is possible due to the fact that with random, a higher variety of different routes can be experimented with, whereas always choosing the shortest route leaves less options. Especially since this heuristic does take the status of the connection into account, it will always choose the unused connection over an used connection.
-
-It is interesting to see how for both the Heuristic and Dijsktra algorithm, the same combination yields the highest scores. Despite making use of the same heuristics, Dijkstra does score lower than the Heuristic algorithm. From this we can substantiate the claim we made earlier; exchanging a higher 'P' for less connections is not the ultimate and best solution. 
-
-
+It seems heuristics paying attention to undriven routes with the least amount of time outperform the other options. Interestingly, clearly visited random station had the preference of move heurstic, consistently outperforming other move heursitics. We theorize this is possible due to 
 
 ## Replication
 
@@ -125,4 +119,3 @@ Which will run all algorithms and combinations 5000 times, after which you can c
 Which will prompt the user for the combination you wish to plot (For example, entering 322 will give the histogram for algorithm 3, start and move heuristic 2.)
 
 >Sidenote, not all combinations have to be run to get valid results. Manually calling the combinations with *python3 main.py 5000 2 3 3* is also possible for each combination, or changing the code in experiments.py to reflect the algorithm, start, or move heuristic combination you want are all possible.
-<!-- Fix merge -->
