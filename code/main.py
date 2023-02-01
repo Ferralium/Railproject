@@ -142,7 +142,7 @@ class Railsolver():
             # Checks if there are no more stations left to stop the loop
             if check_station == [None]:
                 total_time_each_train.popitem()
-                break   
+                break
             else:
                 # Adds the route to table of trains
                 wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
@@ -163,7 +163,7 @@ class Railsolver():
         # Initialize the train routes
         list_of_numbers, total_time_each_train = wisselstoring.take_a_ride()
 
-        # Calculates fraction of the driven routes 
+        # Calculates fraction of the driven routes
         fraction: float = wisselstoring.fraction_calc()
         quality_old, quality_written_old = self.algo.quality_calc(fraction, list_of_numbers)
         print(quality_old)
@@ -178,26 +178,14 @@ class Railsolver():
             change_in_time, train_dictionary_2 = self.algo.mutation_small(train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library)
             list_of_numbers[0] += change_in_time
 
-            # Ff the list of numbers is negative the whole run should be aborted as something is going wrong
-            if list_of_numbers[0] < 1488:
-                    print("         ER IS NU EEN BUG")
-                    print(f' train dictionary op dit moment: {train_dictionary}')
-                    print("print alles van visiting status:")
-
-                    for station_name in stations_library:
-                        temporary_station = stations_library[station_name]
-
-                        for connecties in temporary_station.connection_visited:
-                            print(temporary_station, connecties, temporary_station.connection_visited[connecties])
-
-                    break
-
-            if quality_old > 6800:
-                break
-
 
             fraction_new: float = self.algo.fraction_calc(stations_library)
             quality_2, quality_written_2 = self.algo.quality_calc(fraction_new, list_of_numbers)
+
+            # If the list of numbers is below 1551 and the fraction is above 0.99, the whole run should be aborted as something is going wrong
+            if list_of_numbers[0] < 1551 and fraction_new > 0.99:
+                    print("         There is a bug ")
+                    break
 
             # Compare these, if it is better or the chance of change requires it change the route
             short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, total_time_each_train, chosen_one)
@@ -359,7 +347,7 @@ if __name__ == '__main__':
         if len(sys.argv) == 4 or len(sys.argv) > 5:
             print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
             sys.exit()
-        
+
         # error if non numbers are provided in the command line
         if len(sys.argv) > 2:
             if not sys.argv[2].isnumeric():
@@ -434,7 +422,7 @@ if __name__ == '__main__':
                 best_score = quality_old
                 best_solution = train_dictionary
                 best_calc = quality_written_old
-            
+
             # adds calculation and result to file
             results = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             results.write(f'{quality_written_old}')
@@ -497,4 +485,3 @@ if __name__ == '__main__':
     print(f'Average solution: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
     print(f'Best Solution: {best_solution}')
-
