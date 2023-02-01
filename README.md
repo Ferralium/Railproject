@@ -66,6 +66,8 @@ This program is also able to utilize the following heuristics:
 
 The detailed explanations about the heuristics you can find [here](/Code/heuristics/README_HEURISTICS.md).
 
+### Usage
+
 For  algorithms 3-5 heuristics have to be selected. This can be done using the following command:
 
 ``` python3 main.py a n s m (Example: python3 main.py 500 1 3 3) ```
