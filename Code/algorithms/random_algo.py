@@ -8,11 +8,12 @@ class RandomAlgorithm:
         pass
 
     def starting_station(self, station_dictionary, statnames):
-        """"Picks a purely random starting station from the list of all possible stations"""
+        """Picks a purely random starting station from the list of all possible stations"""
         current_station = random.choice(list(station_dictionary.values()))
         return current_station
 
     def move(self, current_station, train_stations, stations_dictionary):
+        """chooses a random station the train will move to"""
         time = 0
 
         # Adds the current station to the list
@@ -24,7 +25,7 @@ class RandomAlgorithm:
             possible_next_station: Station = random.choice(list(current_station.connections.keys()))
             next_station: Station = stations_dictionary.get(possible_next_station)
 
-
+            # Keeps track of the time the trajectory takes
             all_time: int = time + current_station.connections.get(str(next_station))
 
             # Stops if time is more than 3 hours

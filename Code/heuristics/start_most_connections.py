@@ -23,12 +23,12 @@ def most_connection_start_heuristic(stations: dict[str, Station]) -> Optional[St
             for connections in possible_current_station.connection_visited.values():
                 if connections == False:
                     unused_connections += 1
-
+            # sets station as current station if the station has the highest number of unused connections
             if unused_connections > highest_unused_connections:
                 highest_unused_connections = unused_connections
                 current_station = stations.get(str(station))
 
-    # if all connections are used, a random starting station is chosen
+    # returns None if all connections have been visited
     if all_stations_true is len(stations):
         current_station = None
     
