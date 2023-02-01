@@ -31,9 +31,9 @@ The following algorithms are used:
 | Number | Algorithm |
 | ------ | --------- |
 | 1.     | Random    |
-| 2.     | Greedy    | 
+| 2.     | Greedy    |
 | 3.     | Heuristic |
-| 4.     | Simulated Annealing | 
+| 4.     | Simulated Annealing |
 | 5.     | Dijkstra |
 
 A detailed explanations about the algorithms can be found [here](/code/algorithms/README.md).
@@ -59,7 +59,7 @@ This program is also able to utilize the following heuristics:
 | Number | **Start heuristics** | **Move heuristics:** |
 | ------ | -------------------- | -------------------- |
 | 1.     | Random Start | Random Move |
-| 2.     | Least Connections | Visited Random | 
+| 2.     | Least Connections | Visited Random |
 | 3.     | Most connections  | Shortest move |
 | 4.     | Seven bridges     | Preference shortest |
 
@@ -98,7 +98,7 @@ For our experiments we ran each algorithm (In combination with heuristics where 
 | Random Algorithm | Not applicable | Not applicable | 1981 | 2741 | n 1 |
 | Greedy Algorithm | Not applicable | Not applicable | 4455 | 4655 | n 2 |
 | Heuristic Algorithm | Least connections | Visited random | 6108 | 7020 | n 3 2 2 |
-| Simulated Annealing | Seven bridges | Visited random | 5864 | 6956 | n 4 4 2 |
+| Simulated Annealing | Least connections | Shortest move | 5743 | 6086 | n 4 2 3 |
 | Dijkstra Algorithm | Least connections | Visited random |3508 | 4276 | n 5 2 2 |
 
 ## Discussion:
