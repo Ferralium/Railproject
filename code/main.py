@@ -9,6 +9,7 @@
 """
 # TYPEHINTS!!! DOCSTRINGS!! COMMENTS!!!
 
+import copy
 import time
 import random
 from algorithm import Algorithm
@@ -210,22 +211,22 @@ class Railsolver():
 
 
         # loop met opgedeelde mutation functies
-        for i in range(20000):
+        for i in range(2000):
 
             #check
             # quality_written_old = quality_written_old_temp
             # kondig nieuwe loop aan:
-            # print()
-            # print("make a mutation: ")
+            print()
+            print("make a mutation: ")
             # print()
 
-            train_dictionary_2 = train_dictionary
+            train_dictionary_2 = copy.deepcopy(train_dictionary)
             stations_library = wisselstoring.stations
 
             switching_stations, chosen_one = self.algo.stations_to_be_switched(train_dictionary_2, stations_library, total_time_each_train)
 
-            change_in_time = self.algo.mutation_small(train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library)
-
+            change_in_time, train_dictionary_2 = self.algo.mutation_small(train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library)
+            # print(f'train_dictionary_2 in de main: {train_dictionary_2}')
             # bereken nu opnieuw de totale tijd voor de treinen
 
             # print(f'min oud: {list_of_numbers[0]}')
@@ -274,11 +275,13 @@ class Railsolver():
             # print(f'min update: {list_of_numbers[0]}')
               # bereken de fractie van de bereden routes
             # fraction: float = wisselstoring.fraction_calc()
-            fraction: float = self.algo.fraction_calc(stations_library)
-            quality_2, quality_written_2 = self.algo.quality_calc(fraction, list_of_numbers)
+            print(f'fractie oud: {fraction}')
+            fraction_new: float = self.algo.fraction_calc(stations_library)
+            print(f'fractie nieuw: {fraction_new}')
+            quality_2, quality_written_2 = self.algo.quality_calc(fraction_new, list_of_numbers)
             # print(f'nieuwe quality: {quality_written}')
-            # print(f'quality oud: {quality_old}')
-            # print(f'quality 2: {quality_2}')
+            print(f'quality oud: {quality_old}')
+            print(f'quality 2: {quality_2}')
 
             # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
             short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, total_time_each_train, chosen_one)
@@ -288,17 +291,19 @@ class Railsolver():
 
             if mutated == False:
                 # zet dan ook de connection visits weer terug
+                print("mutatie gaat niet door")
                 self.algo.reset_visiting_status(switching_stations, stations_library) # 31change
                 list_of_numbers[0] -= change_in_time
 
             if mutated == True:
 
                 # zet de nieuwe quality written new op old
-                # print("Er is een mutatie gemaakt")
+                print("Er is een mutatie gemaakt")
                 # print(f' Quality voor verandering: {quality_written_old}')
                 # print(f' mutatie quality written {quality_written_2}')
+                fraction = fraction_new
                 quality_written_old = quality_written_2
-                # print(f' Quality na verandering: {quality_written_old}')
+                print(f' Quality na verandering: {quality_written_old}')
 
 
 
@@ -368,6 +373,17 @@ class Railsolver():
                 else:
                     print("checkpoint failed, abort")
                     return quality_old, quality_written_old, best_qualities_checkpoints
+
+
+        # print welke stations bezocht zijn:
+        print("welke connecties zijn bezocht? ")
+        for station_name in stations_library:
+
+            temporary_station = stations_library[station_name]
+
+            for connecties in temporary_station.connection_visited:
+
+                print(temporary_station, connecties, temporary_station.connection_visited[connecties])
 
 
         return quality_old, quality_written_old, best_qualities_checkpoints
@@ -616,7 +632,7 @@ if __name__ == '__main__':
     print(f'Runtime: {time.time() - start_time}')
     print(f'beste oplossing: {best_solution}')
 
-    # Optional code to add the best solution and average solution to the score sheets 
+    # Optional code to add the best solution and average solution to the score sheets
     # score = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
     # score.write(f'Best solution found: {best_calc}')
     # score.write('\n')
