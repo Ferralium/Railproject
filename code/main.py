@@ -211,7 +211,7 @@ class Railsolver():
 
 
         # loop met opgedeelde mutation functies
-        for i in range(2000):
+        for i in range(20000):
 
             #check
             # quality_written_old = quality_written_old_temp
@@ -275,13 +275,13 @@ class Railsolver():
             # print(f'min update: {list_of_numbers[0]}')
               # bereken de fractie van de bereden routes
             # fraction: float = wisselstoring.fraction_calc()
-            print(f'fractie oud: {fraction}')
+            # print(f'fractie oud: {fraction}') DEBUGPRINT UIT
             fraction_new: float = self.algo.fraction_calc(stations_library)
-            print(f'fractie nieuw: {fraction_new}')
+            # print(f'fractie nieuw: {fraction_new}')DEBUGPRINT UIT
             quality_2, quality_written_2 = self.algo.quality_calc(fraction_new, list_of_numbers)
             # print(f'nieuwe quality: {quality_written}')
-            print(f'quality oud: {quality_old}')
-            print(f'quality 2: {quality_2}')
+            # print(f'quality oud: {quality_old}')DEBUGPRINT UIT
+            # print(f'quality 2: {quality_2}')DEBUGPRINT UIT
 
             # vergelijk nu deze met elkaar, en is het beter of de kans zegt dat het moet, verander hem dan
             short_tuple, mutated = self.algo.make_or_break_change(quality_old, quality_2, train_dictionary, train_dictionary_2, change_in_time, total_time_each_train, chosen_one)
@@ -291,19 +291,19 @@ class Railsolver():
 
             if mutated == False:
                 # zet dan ook de connection visits weer terug
-                print("mutatie gaat niet door")
+                # print("mutatie gaat niet door")DEBUGPRINT UIT
                 self.algo.reset_visiting_status(switching_stations, stations_library) # 31change
                 list_of_numbers[0] -= change_in_time
 
             if mutated == True:
 
                 # zet de nieuwe quality written new op old
-                print("Er is een mutatie gemaakt")
+                # print("Er is een mutatie gemaakt")DEBUGPRINT UIT
                 # print(f' Quality voor verandering: {quality_written_old}')
                 # print(f' mutatie quality written {quality_written_2}')
                 fraction = fraction_new
                 quality_written_old = quality_written_2
-                print(f' Quality na verandering: {quality_written_old}')
+                # print(f' Quality na verandering: {quality_written_old}')DEBUGPRINT UIT
 
 
 
@@ -387,44 +387,6 @@ class Railsolver():
 
 
         return quality_old, quality_written_old, best_qualities_checkpoints
-
-    # def reset_visiting_status(self, switching_stations, stations_library):
-    #     """ Function that resets the visited-status of connections, in case a mutation is not persued after all. """
-    #
-    #     # zet de nieuwe route die niet doorgaat op unvisited, maar alleen als er maar 1 visit is
-    #     # print("     reset visiting status")UITGEZET
-    #     # print()UITGEZET
-    #
-    #     # maak eerst even string objecten van
-    #     string_knooppunt = str(switching_stations[2])
-    #     string_oud_end = str(switching_stations[0])
-    #     strin_oud_middle = str(switching_stations[1])
-    #     string_new_middle = str(switching_stations[3])
-    #
-    #     # zet oude route op visited
-    #     switching_stations[0].stationvisit(str(switching_stations[1]))
-    #     switching_stations[1].stationvisit(str(switching_stations[0]))
-    #     switching_stations[1].stationvisit(str(switching_stations[2]))
-    #     switching_stations[2].stationvisit(str(switching_stations[1]))
-    #
-    #     # zet de nieuwe route op unvisited (alleen als daar geen andere treinen meer rijden)
-    #     # eerst van knooppunt naar middle
-    #     if switching_stations[3].check_number_visits(string_knooppunt) <= 1:
-    #         switching_stations[2].station_unvisit(str(switching_stations[3]))
-    #         switching_stations[3].station_unvisit(str(switching_stations[2]))
-    #
-    #     else:
-    #         switching_stations[2].one_less_visit(str(switching_stations[3]))
-    #         switching_stations[3].one_less_visit(str(switching_stations[2]))
-    #
-    #     # nu van new_middle naar new_end
-    #     if switching_stations[4].check_number_visits(string_new_middle) <= 1:
-    #         switching_stations[3].station_unvisit(str(switching_stations[4]))
-    #         switching_stations[4].station_unvisit(str(switching_stations[3]))
-    #
-    #     else:
-    #         switching_stations[4].one_less_visit(str(switching_stations[3]))
-    #         switching_stations[3].one_less_visit(str(switching_stations[4]))
 
 
     def visualise(self, routes):

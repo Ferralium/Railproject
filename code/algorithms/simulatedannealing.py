@@ -110,9 +110,9 @@ class SimulatedAnnealing:
 
         # bug bij train dictionary veranderen:
         # print ze allebij!
-        print("bug fixen: hoe zien train dictionary en train dictionary 2 eruit?")
-        print(f'train_dictionary:  {train_dictionary[chosen_one[0]]}')
-        print(f'train_dictionary_2: {train_dictionary_2[chosen_one[0]]}')
+        # print("bug fixen: hoe zien train dictionary en train dictionary 2 eruit?")
+        # print(f'train_dictionary:  {train_dictionary[chosen_one[0]]}')
+        # print(f'train_dictionary_2: {train_dictionary_2[chosen_one[0]]}')
 
         mutated: Bool = True
         delta = quality_2 - quality_old
@@ -159,7 +159,7 @@ class SimulatedAnnealing:
                 # zet changed op False
                 mutated = False
 
-        print(f'De train_dictionary na eventuele verandering: {train_dictionary[chosen_one[0]]}')
+        # print(f'De train_dictionary na eventuele verandering: {train_dictionary[chosen_one[0]]}')
 
         delta = 0
         short_tuple = [train_dictionary, quality_old]
@@ -211,11 +211,11 @@ class SimulatedAnnealing:
             switching_stations[4].one_less_visit(str(switching_stations[3]))
             switching_stations[3].one_less_visit(str(switching_stations[4]))
 
-        print("As it was: ")
-        print(f'oud eind - middden: {switching_stations[0]}, {switching_stations[1]}, {switching_stations[0].connection_visited[switching_stations_1_str]}, {switching_stations[1].connection_visited[switching_stations_0_str]}, {switching_stations[1].visits_counter[switching_stations_0_str]}, {switching_stations[0].visits_counter[switching_stations_1_str]}')
-        print(f'oud midden - knooppunt: {switching_stations[1]}, {switching_stations[2]}, {switching_stations[1].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_1_str]}, {switching_stations[1].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_1_str]}')
-        print(f'nieuw eind - middden: {switching_stations[4]}, {switching_stations[3]}, {switching_stations[4].connection_visited[switching_stations_3_str]}, {switching_stations[3].connection_visited[switching_stations_4_str]}, {switching_stations[4].visits_counter[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_4_str]}')
-        print(f'nieuw midden - knooppunt: {switching_stations[3]}, {switching_stations[2]}, {switching_stations[3].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_3_str]}')
+        # print("As it was: ") DEBUGPRINT UIT
+        # print(f'oud eind - middden: {switching_stations[0]}, {switching_stations[1]}, {switching_stations[0].connection_visited[switching_stations_1_str]}, {switching_stations[1].connection_visited[switching_stations_0_str]}, {switching_stations[1].visits_counter[switching_stations_0_str]}, {switching_stations[0].visits_counter[switching_stations_1_str]}')
+        # print(f'oud midden - knooppunt: {switching_stations[1]}, {switching_stations[2]}, {switching_stations[1].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_1_str]}, {switching_stations[1].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_1_str]}')
+        # print(f'nieuw eind - middden: {switching_stations[4]}, {switching_stations[3]}, {switching_stations[4].connection_visited[switching_stations_3_str]}, {switching_stations[3].connection_visited[switching_stations_4_str]}, {switching_stations[4].visits_counter[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_4_str]}')
+        # print(f'nieuw midden - knooppunt: {switching_stations[3]}, {switching_stations[2]}, {switching_stations[3].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_3_str]}')
 
 
 
@@ -371,9 +371,9 @@ class SimulatedAnnealing:
         # return uiteindelijk de stations
         switching_stations = [old_station_for_mutation_end, old_station_for_mutation_middle, station_for_mutation, new_station_for_mutation_middle, new_station_for_mutation_end]
 
-        print(f'trein die gemuteerd wordt: {pick_train}, {train_dictionary_2[pick_train]}')
-        print(f'oude stations: {switching_stations[0], switching_stations[1]} nieuwe stations {switching_stations[3], switching_stations[4]}')
-        print(f'knooppunt: {switching_stations[2]}')
+        # print(f'trein die gemuteerd wordt: {pick_train}, {train_dictionary_2[pick_train]}')
+        # print(f'oude stations: {switching_stations[0], switching_stations[1]} nieuwe stations {switching_stations[3], switching_stations[4]}')
+        # print(f'knooppunt: {switching_stations[2]}') DEBUGPRINT UIT
 
         # check of het nieuwe midden station niet het knooppunt station is:
         if switching_stations[2] == switching_stations[3]:
@@ -391,12 +391,12 @@ class SimulatedAnnealing:
         switching_stations_3_str = str(switching_stations[3])
         switching_stations_4_str = str(switching_stations[4])
 
-        print("visiting status veranderen:")
-        print(f'visiting status voor verandering:')
-        print(f'oud eind - middden: {switching_stations[0]}, {switching_stations[1]}, {switching_stations[0].connection_visited[switching_stations_1_str]}, {switching_stations[1].connection_visited[switching_stations_0_str]}, {switching_stations[1].visits_counter[switching_stations_0_str]}, {switching_stations[0].visits_counter[switching_stations_1_str]}')
-        print(f'oud midden - knooppunt: {switching_stations[1]}, {switching_stations[2]}, {switching_stations[1].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_1_str]}, {switching_stations[1].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_1_str]}')
-        print(f'nieuw eind - middden: {switching_stations[4]}, {switching_stations[3]}, {switching_stations[4].connection_visited[switching_stations_3_str]}, {switching_stations[3].connection_visited[switching_stations_4_str]}, {switching_stations[4].visits_counter[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_4_str]}')
-        print(f'nieuw midden - knooppunt: {switching_stations[3]}, {switching_stations[2]}, {switching_stations[3].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_3_str]}')
+        # print("visiting status veranderen:") DEBUGPRINT UIT
+        # print(f'visiting status voor verandering:')
+        # print(f'oud eind - middden: {switching_stations[0]}, {switching_stations[1]}, {switching_stations[0].connection_visited[switching_stations_1_str]}, {switching_stations[1].connection_visited[switching_stations_0_str]}, {switching_stations[1].visits_counter[switching_stations_0_str]}, {switching_stations[0].visits_counter[switching_stations_1_str]}')
+        # print(f'oud midden - knooppunt: {switching_stations[1]}, {switching_stations[2]}, {switching_stations[1].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_1_str]}, {switching_stations[1].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_1_str]}')
+        # print(f'nieuw eind - middden: {switching_stations[4]}, {switching_stations[3]}, {switching_stations[4].connection_visited[switching_stations_3_str]}, {switching_stations[3].connection_visited[switching_stations_4_str]}, {switching_stations[4].visits_counter[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_4_str]}')
+        # print(f'nieuw midden - knooppunt: {switching_stations[3]}, {switching_stations[2]}, {switching_stations[3].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_3_str]}')
 
         # Zet de nieuwe route op visited
         switching_stations[2].stationvisit(switching_stations_3_str)
@@ -442,16 +442,16 @@ class SimulatedAnnealing:
             switching_stations[1].one_less_visit(switching_stations_0_str)
 
         # checken of de switch geslaagd is:
-        print(f'visiting status na verandering:')
-        print(f'oud eind - middden: {switching_stations[0]}, {switching_stations[1]}, {switching_stations[0].connection_visited[switching_stations_1_str]}, {switching_stations[1].connection_visited[switching_stations_0_str]}, {switching_stations[1].visits_counter[switching_stations_0_str]}, {switching_stations[0].visits_counter[switching_stations_1_str]}')
-        print(f'oud midden - knooppunt: {switching_stations[1]}, {switching_stations[2]}, {switching_stations[1].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_1_str]}, {switching_stations[1].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_1_str]}')
-        print(f'nieuw eind - middden: {switching_stations[4]}, {switching_stations[3]}, {switching_stations[4].connection_visited[switching_stations_3_str]}, {switching_stations[3].connection_visited[switching_stations_4_str]}, {switching_stations[4].visits_counter[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_4_str]}')
-        print(f'nieuw midden - knooppunt: {switching_stations[3]}, {switching_stations[2]}, {switching_stations[3].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_3_str]}')
-
-        print("Aanpassen train dictionary 2 ")
-        print("voor aanpassen:")
-        print(f'train_dictionary:  {train_dictionary[chosen_one[0]]}')
-        print(f'train_dictionary_2: {train_dictionary_2[chosen_one[0]]}')
+        # print(f'visiting status na verandering:') DEBUGPRINT UIT
+        # print(f'oud eind - middden: {switching_stations[0]}, {switching_stations[1]}, {switching_stations[0].connection_visited[switching_stations_1_str]}, {switching_stations[1].connection_visited[switching_stations_0_str]}, {switching_stations[1].visits_counter[switching_stations_0_str]}, {switching_stations[0].visits_counter[switching_stations_1_str]}')
+        # print(f'oud midden - knooppunt: {switching_stations[1]}, {switching_stations[2]}, {switching_stations[1].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_1_str]}, {switching_stations[1].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_1_str]}')
+        # print(f'nieuw eind - middden: {switching_stations[4]}, {switching_stations[3]}, {switching_stations[4].connection_visited[switching_stations_3_str]}, {switching_stations[3].connection_visited[switching_stations_4_str]}, {switching_stations[4].visits_counter[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_4_str]}')
+        # print(f'nieuw midden - knooppunt: {switching_stations[3]}, {switching_stations[2]}, {switching_stations[3].connection_visited[switching_stations_2_str]}, {switching_stations[2].connection_visited[switching_stations_3_str]}, {switching_stations[3].visits_counter[switching_stations_2_str]}, {switching_stations[2].visits_counter[switching_stations_3_str]}')
+        #
+        # print("Aanpassen train dictionary 2 ")
+        # print("voor aanpassen:")
+        # print(f'train_dictionary:  {train_dictionary[chosen_one[0]]}')
+        # print(f'train_dictionary_2: {train_dictionary_2[chosen_one[0]]}')
 
         # verander het in de train_dictionary_2, die alleen wordt ingevoerd als het daadwerkelijk muteert!
         if chosen_one[1] == 1:
@@ -474,9 +474,9 @@ class SimulatedAnnealing:
 
             train_dictionary_2[chosen_one[0]] = list_of_stations_for_mutation
 
-        print("Is het aanpassen van train dictionary 2 goed gegaan?")
-        print(f'train_dictionary:  {train_dictionary[chosen_one[0]]}')
-        print(f'train_dictionary_2: {train_dictionary_2[chosen_one[0]]}')
+        # print("Is het aanpassen van train dictionary 2 goed gegaan?") DEBUGPRINT UIT
+        # print(f'train_dictionary:  {train_dictionary[chosen_one[0]]}')
+        # print(f'train_dictionary_2: {train_dictionary_2[chosen_one[0]]}')
 
         # # verander ook de tijd:
         change_in_time: float = 0
