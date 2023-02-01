@@ -11,12 +11,12 @@ To get started, some actions are required. First, multiple python packages are r
 ```pip install -r requirements.txt```
 
 # Outline:
-After downloading the code, you will find the files divided into multiple folders.
-* Wisselstoring: this is the main folder where you can navigate to other folders and read the text files.
-* Code: this is the main folder containing all the python code files, including the main.py. In the code folder you can find the following 2 folders as well:
-    * algorithms: containing all the different algorithms.
-    * heuristics: containg the heuristics in different files.
-* Data: this folder contains the important csv files with the data about the trains station and connections.
+After downloading the code, you will find the files divided into multiple folders:
+* Wisselstoring: This is the main folder where you can navigate to other folders and read the text files.
+* Code: This is the main folder containing all the python code files, including the main.py. In the code folder you can find the following 2 folders as well:
+    * algorithms: Containing all the different algorithms.
+    * heuristics: Containg the heuristics in different files.
+* Data: This folder contains csv files with data about the train stations and connections.
 * Gifgen: This folder will hold images of all the seperate routes, after running the code.
 * Images: After running the code, this folder contains the maps with the train stations and the connections. Moreover, it has a gif that has the routes of the trajectories animated.
 * Results: The results of the trajectories will be exported to csv files, that will show up in this folder after running the code.
@@ -33,7 +33,7 @@ The following algorithms are used:
 4. Simulated Annealing Algorithm
 5. Dijkstra Algorithm
 
-The detailed explanations about the algorithms you can find [here](/Code/algorithms/README_ALGORITHMS.md).
+A detailed explanations about the algorithms can be found [here](/Code/algorithms/README.md).
 
 ### Usage:
 By default the program is run with the following command:
@@ -49,7 +49,7 @@ To run this program for multiple runs please use the following command:
 Where a is the amount of runs (1 - ∞) and n is the algorithm selector (1 - 5, as seen in types of algorithms)
 
 # Heuristics:
-The algorithms 'Dijkstra', 'Simulated Annealing' and 'Heuristics' can be combined with the following start and move functions, of which some include a heuristic.
+The algorithms 'Dijkstra', 'Simulated Annealing' and 'Heuristics' can be combined with the following start and move functions, of which some include a heuristic.  
 This program is also able to utilize the following heuristics:
 
 **Start heuristics:**
@@ -64,9 +64,9 @@ This program is also able to utilize the following heuristics:
 3. Shortest move heuristic
 4. Preference shortest move heuristic
 
-The detailed explanations about the heuristics you can find [here](/Code/heuristics/README_HEURISTICS.md).
+A detailed explanations about the heuristics you can find [here](/Code/heuristics/README.md).
 
-### Usage
+## Usage
 
 For  algorithms 3-5 heuristics have to be selected. This can be done using the following command:
 
@@ -79,50 +79,43 @@ Automatically when running the program, the quality of every run is being saved 
 
 ```python3 histogram.py```
 
-The question "which score?" will pop up. The user can fill in the combination of numbers of the result file they wish to use for the histogram.
-
+The question "which score?" will pop up. The user can fill in the combination of numbers of the result file they wish to use for the histogram.  
 For instance for the following combination, a resultsfile named "score322.txt" will be created.
 
 ``` python3 main.py 1 3 2 2 ```
 
-The user can call the histogram.py and answer the question with "322", and a histogram based on the information in the score322 file will be created.
-
+The user can call  histogram.py and input "322", after which a histogram based on the information in the score322 file will be created.  
 By entering "stop" the program will stop running, until then the user can request as many histograms as there are result files.
 
-![Example Histogram](images/examplehisto1.png)
+<!-- ![Example Histogram](images/examplehisto1.png) -->
 
 # Experiments:
-For our experiments we ran each algorithm (In combination with heuristics where applicable) 5000 times. As there are 50 possible combinations we will simply summarize the best findings for each algorithm. To perform your own tests, please see replication
+For our experiments we ran each algorithm (In combination with heuristics where applicable) 5000 times. As there are 50 possible combinations we will simply summarize the best findings for each algorithm. To perform your own tests, please see the "Replication".
 
 **Best combinations:**
 
-Random algorithm(1): Mean 1981 Highest 2741
+| Algorithm  | Start Heuristic | Move Heuristic | Mean  | Highest  | Combination code |
+| ---------- | --------------- | -------------- | ----- | -------- | ---------------- |
+| Random Algorithm | Not applicable | Not applicable | 1981 | 2741 | n 1 |
+| Greedy Algorithm | Not applicable | Not applicable | 4455 | 4655 | n 2 |
+| Heuristic Algorithm | Least connections | Visited random | 6108 | 7020 | n 3 2 2 |
+| Simulated Annealing | Seven bridges | Visited random | 5864 | 6956 | n 4 4 2 |
+| Dijkstra Algorithm | Least connections | Visited random |3508 | 4276 | n 5 2 2 |
 
-Greedy algorithm(2): Mean 4455 Highest 4655
+## Discussion:
 
-Heurisitc algorithm, Least connections start, Visited random move (322): Mean 6108 Highest 7020
+In theory, the highest possible score is 7549. It requires 1551 minutes to visit all connections. For this, you need 9 trains (1551 / 180 = 8.6)  
+This yields the following formula: K = p * 10000 - (T * 100 + Min) =  1 * 10000 - (9 * 100 + 1551) = 7549.  
+Using a complete random algorithm, we found that the mean score produced was 1981. The algorithms we created produce scores somewhere between the values above, with a top score of 7020. This is approaching the maximum score. Thus far it seems maximizing the value of p is worth more than driving less trains/less minutes. This because for every % loss of p already means -100 which is equal to the starting costs of a single train line.
 
-Simulated Annealing, Seven bridges start Heuristic, Preference shortest move heuristic (442): Mean 5867
-
-Dijkstra algorithm, Least connections start, Visited random move (522): Mean 3508 Highest 4276
+It seems heuristics paying attention to undriven routes with the least amount of time outperform the other options. Interestingly, clearly visited random station had the preference of move heurstic, consistently outperforming other move heursitics. We theorize this is possible due to 
 
 ## Replication
 
-To replicate these all of these findings please run the following code:
-
-``` python3 experiments.py ```
-
-Which will run all algorithms and combinations 5000 times, after which you can create histograms by running 
-
-``` python3 histogram.py ```
-
+To replicate these all of these findings please run the following code:  
+``` python3 experiments.py ```  
+Which will run all algorithms and combinations 5000 times, after which you can create histograms by running:  
+``` python3 histogram.py ```  
 Which will prompt the user for the combination you wish to plot (For example, entering 322 will give the histogram for algorithm 3, start and move heuristic 2.)
 
-Sidenote, not all combinations have to be run to get valid results. Manually calling the combinations with *python3 main.py 5000 2 3 3* is also possible for each combination, or changing the code in experiments.py to reflect the algorithm, start, or move heuristic combination you want are all possible.
-
-# Discussion:
-
-In theory, the highest possible score is 7549. It requires 1551 minutes to visit all connections. For this, you need 9 trains.
-This yields the formula: K = p*10000 - (T*100 + Min) =  1 * 10000 - (9 * 100 + 1551) = 7549.
-
-Using a complete random algorithm, we found that the mean score produced was 1981. The algorithms we created produce scores somewhere between the values above, with a top score of 7020. This is approaching the maximum score. Thus far it seems maximizing the value of p is worth more than driving less trains/less minutes. This because for every % loss of p already means -100 which is equal to the starting costs of a single train line. It seems heuristics paying attention to undriven routes with the least amount of time outperform the other options. 
+>Sidenote, not all combinations have to be run to get valid results. Manually calling the combinations with *python3 main.py 5000 2 3 3* is also possible for each combination, or changing the code in experiments.py to reflect the algorithm, start, or move heuristic combination you want are all possible.
