@@ -8,7 +8,7 @@
     Attempts to solve heuristic problem with train stations.
 """
 
-
+import csv
 import copy
 import time
 import random
@@ -296,18 +296,6 @@ class Railsolver():
         # Initializes gif generator
         self.gifmod = Gifgenerator()
 
-    def final_csv(self, solution, bestscore):
-        """Write score to CSV file"""
-        header = ['train', 'stations']
-        score = ['score']
-        file1 = open(f'../results/output.csv', 'w')
-        file1.write(header)
-        for train in solution:
-            file1.write(train)
-        score.append(bestscore)
-        file1.write(score)
-        file1.close()
-
 
 def select_heuristic(start_heurselect, move_heurselect):
     """Selects the heuristics with which the algorithms will perform their functions"""
@@ -494,7 +482,6 @@ if __name__ == '__main__':
 
     wisselstoring.visualise(best_solution)
     wisselstoring.gifmod.map_to_gif()
-    wisselstoring.final_csv(best_solution, best_calc)
     print(f'Best solution found: {best_calc}')
     print(f'Average solution: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
