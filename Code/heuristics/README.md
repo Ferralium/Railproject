@@ -1,7 +1,7 @@
 # Heuristics
 
 The algorithms 'Dijkstra', 'Simulated Annealing' and 'Heuristics' can be combined with the following start and move functions, of which some include a heuristic.
-This program is also able to utilize the following heuristics:
+This program is also able to utilize the following combinations:
 
 **Start heuristics:**
 
