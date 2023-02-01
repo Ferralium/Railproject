@@ -183,7 +183,7 @@ class Railsolver():
             quality_2, quality_written_2 = self.algo.quality_calc(fraction_new, list_of_numbers)
 
             # If the list of numbers is below 1551 and the fraction is above 0.99, the whole run should be aborted as something is going wrong
-            if list_of_numbers[0] < 1551 and fraction_new > 0.99:
+            if list_of_numbers[0] < 1552 and fraction_new > 0.99:
                     print("         There is a bug ")
                     break
 
