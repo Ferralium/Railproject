@@ -36,7 +36,7 @@ The following algorithms are used:
 | 4.     | Simulated Annealing | 
 | 5.     | Dijkstra |
 
-A detailed explanations about the algorithms can be found [here](/Code/algorithms/README.md).
+A detailed explanations about the algorithms can be found [here](/code/algorithms/README.md).
 
 ### Usage:
 By default the program is run with the following command:
@@ -63,7 +63,7 @@ This program is also able to utilize the following heuristics:
 | 3.     | Most connections  | Shortest move |
 | 4.     | Seven bridges     | Preference shortest |
 
-A detailed explanations about the heuristics you can find [here](/Code/heuristics/README.md).
+A detailed explanations about the heuristics you can find [here](/code/heuristics/README.md).
 
 ## Usage
 
