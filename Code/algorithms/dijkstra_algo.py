@@ -46,7 +46,14 @@ class DijkstraAlgorithm:
         while True:
             counter += 1
             visited.append(current_station.name)
-            tempkeys = current_station.connections.keys()
+            tempkeys = list(current_station.connections.keys())
+
+            # Ensures starting station with singular connection does not break the loop
+            if len(tempkeys) == 1:
+                current_station = self.oldroutes[tempkeys[0]]
+                if counter == 1:
+                    self.newroute[str(current_station)].append(starting_station)
+                continue
 
             # Queues station outward
             for station in tempkeys:
@@ -106,7 +113,6 @@ class DijkstraAlgorithm:
             for station in self.oldroutes:
                 self.distance_to[station] = float('inf')
                 self.newroute[station] = []
-            # self.map_shortest('Utrecht Centraal')
             self.map_shortest(str(random_start_heuristic(station_dictionary)))
             self.gencount += 1 
             
