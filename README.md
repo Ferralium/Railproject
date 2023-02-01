@@ -110,7 +110,11 @@ In theory, the highest possible score is 7549. It requires 1551 minutes to visit
 This yields the following formula: K = p * 10000 - (T * 100 + Min) =  1 * 10000 - (9 * 100 + 1551) = 7549.  
 Using a complete random algorithm, we found that the mean score produced was 1981. The algorithms we created produce scores somewhere between the values above, with a top score of 7020. This is approaching the maximum score. Thus far it seems maximizing the value of p is worth more than driving less trains/less minutes. This because for every % loss of p already means -100 which is equal to the starting costs of a single train line.
 
-It seems heuristics paying attention to undriven routes with the least amount of time outperform the other options. Interestingly, clearly visited random station had the preference of move heurstic, consistently outperforming other move heursitics. We theorize this is possible due to 
+It seems heuristics paying attention to undriven routes with the least amount of time outperform the other options. Interestingly, clearly visited random station had the preference of move heurstic, consistently outperforming other move heursitics. We theorize this is possible due to the fact that with random, a higher variety of different routes can be experimented with, whereas always choosing the shortest route leaves less options. Especially since this heuristic does take the status of the connection into account, it will always choose the unused connection over an used connection.
+
+It is interesting to see how for both the Heuristic and Dijsktra algorithm, the same combination yields the highest scores. Despite making use of the same heuristics, Dijkstra does score lower than the Heuristic algorithm. From this we can substantiate the claim we made earlier; exchanging a higher 'P' for less connections is not the ultimate and best solution. 
+
+
 
 ## Replication
 
