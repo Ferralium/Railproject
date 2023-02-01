@@ -63,8 +63,8 @@ class SimulatedAnnealing:
         Min: int = list_of_numbers[0]
         self.K: float = fraction*10000 - (T*100 + Min)
         quality_written = f'Quality: {self.K} = {fraction}*10000 - ({T}*100 + {Min})'
-        print("in quality calc")
-        print(quality_written)
+        # print("in quality calc")
+        # print(quality_written)
 
 
         return self.K, quality_written

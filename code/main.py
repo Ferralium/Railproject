@@ -216,8 +216,8 @@ class Railsolver():
             #check
             # quality_written_old = quality_written_old_temp
             # kondig nieuwe loop aan:
-            print()
-            print("make a mutation: ")
+            # print()
+            # print("make a mutation: ")
             # print()
 
             train_dictionary_2 = copy.deepcopy(train_dictionary)
