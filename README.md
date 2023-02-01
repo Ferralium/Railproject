@@ -27,11 +27,14 @@ These algorithms can be found in the folder Algorithms (Wisselstoring/Code/algor
 
 ### Types of algorithms:
 The following algorithms are used:
-1. Random Algorithm
-2. Greedy Algorithm
-3. Heuristic Algorithm
-4. Simulated Annealing Algorithm
-5. Dijkstra Algorithm
+
+| Number | Algorithm |
+| ------ | --------- |
+| 1.     | Random    |
+| 2.     | Greedy    | 
+| 3.     | Heuristic |
+| 4.     | Simulated Annealing | 
+| 5.     | Dijkstra |
 
 A detailed explanations about the algorithms can be found [here](/Code/algorithms/README.md).
 
@@ -52,17 +55,13 @@ Where a is the amount of runs (1 - ∞) and n is the algorithm selector (1 - 5, 
 The algorithms 'Dijkstra', 'Simulated Annealing' and 'Heuristics' can be combined with the following start and move functions, of which some include a heuristic.  
 This program is also able to utilize the following heuristics:
 
-**Start heuristics:**
-1. Random start heuristic
-2. Least connections start heuristic
-3. Most connections start heuristic
-4. Seven bridges start heuristic
 
-**Move heuristics:**
-1. Random move heuristic
-2. Visited random move heuristic
-3. Shortest move heuristic
-4. Preference shortest move heuristic
+| Number | **Start heuristics** | **Move heuristics:** |
+| ------ | -------------------- | -------------------- |
+| 1.     | Random Start | Random Move |
+| 2.     | Least Connections | Visited Random | 
+| 3.     | Most connections  | Shortest move |
+| 4.     | Seven bridges     | Preference shortest |
 
 A detailed explanations about the heuristics you can find [here](/Code/heuristics/README.md).
 
