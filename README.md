@@ -33,7 +33,7 @@ The following algorithms are used:
 4. Simulated Annealing Algorithm
 5. Dijkstra Algorithm
 
-A detailed explanations about the algorithms can be found [here](/Code/algorithms/README.md).
+A detailed explanations about the algorithms can be found [here](/code/algorithms/README.md).
 
 ### Usage:
 (for all instructions to run this program, make sure you are in the code file)
@@ -66,7 +66,7 @@ This program is also able to utilize the following heuristics:
 3. Shortest move heuristic
 4. Preference shortest move heuristic
 
-A detailed explanations about the heuristics you can find [here](/Code/heuristics/README.md).
+A detailed explanations about the heuristics you can find [here](/code/heuristics/README.md).
 
 ## Usage
 
