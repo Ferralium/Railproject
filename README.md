@@ -36,6 +36,8 @@ The following algorithms are used:
 A detailed explanations about the algorithms can be found [here](/Code/algorithms/README.md).
 
 ### Usage:
+(for all instructions to run this program, make sure you are in the code file)
+
 By default the program is run with the following command:
 
 ```python3 main.py```
