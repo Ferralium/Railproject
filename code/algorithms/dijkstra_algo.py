@@ -1,9 +1,8 @@
 from station import Station
 from heuristics.start_random import random_start_heuristic
 
-
-# Head fix
 class DijkstraAlgorithm:
+    """Initializes the Dijkstra Algorithm class to use in optimizing the RailNL case"""
     def __init__(self, start_heuristic, move_heuristic):
         """Dijkstra Algorithm aims to create a minimum spanning tree with the lowest cost distances
            to all points in the map from a single source station"""
@@ -141,7 +140,7 @@ class DijkstraAlgorithm:
             # Keeps track of the time the trajectory takes
             all_time: int = time + current_station.connections.get(str(next_station))
 
-              # stops if time is more than 3 hours
+              # Stops if time is more than 3 hours
             if all_time > 180:
                 return train_stations, time
             else:
@@ -157,5 +156,4 @@ class DijkstraAlgorithm:
 
             current_station = next_station
             train_stations.append(current_station)
-
-# Fix dit
+            

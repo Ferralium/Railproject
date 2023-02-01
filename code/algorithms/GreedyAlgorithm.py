@@ -21,12 +21,12 @@ class GreedyAlgorithm:
             if check_startingpoint is True:
                 all_stations_true += 1
 
-            # prioritises stations with only one conenction
+            # Prioritises stations with only one conenction
             if check_connections.connection_count == 1:
                     if check_startingpoint is False:
                         current_station: Station = station_dictionary.get(str(possible_current_station))
                         break
-            # checks the station with the least connection 
+            # Checks the station with the least connection 
             elif check_connections.connection_count != 1 or check_startingpoint == False:
                 unused_connections: int = 0
                 for connections in possible_current_station.connection_visited.values():
@@ -36,7 +36,7 @@ class GreedyAlgorithm:
                     highest_unused_connections = unused_connections
                     current_station = station_dictionary.get(str(possible_current_station))
 
-        # returns None if all connections have been visited
+        # Returns None if all connections have been visited
         if all_stations_true is len(station_dictionary):
             current_station = None
 
@@ -57,7 +57,7 @@ class GreedyAlgorithm:
             shortest_connection = 100
             check_stations: bool = all(station is True for station in current_station.connection_visited.values())
 
-            # if all connections are used, the shortest one is chosen
+            # If all connections are used, the shortest one is chosen
             if check_stations is True:
                 for station in stations_dictionary:
                     if all_stations_true == len(stations_dictionary):
@@ -70,7 +70,7 @@ class GreedyAlgorithm:
                                     shortest_connection = value
                                     next_station = stations_dictionary.get(connections)
             else:
-                # the shortest connection that has not been used is chosen
+                # The shortest connection that has not been used is chosen
                 for connections in current_station.connections:
                     check_connections = stations_dictionary.get(connections)
                     if current_station.connections[connections] < shortest_connection and current_station.connection_visited[connections] is False:
@@ -86,7 +86,7 @@ class GreedyAlgorithm:
             else:
                 time = time + current_station.connections.get(str(next_station))
 
-            # sets the connection as visited
+            # Sets the connection as visited
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
             current_station = stations_dictionary.get(str(next_station))

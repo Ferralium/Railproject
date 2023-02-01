@@ -36,29 +36,29 @@ class SimulatedAnnealing:
 
 
     def move(self, current_station, train_stations, stations_dictionary):
-        """ Moves to a smart next station """
+        """Moves to a smart next station"""
         time: float = 0
         train_stations.append(current_station)
 
         if current_station == None:
             return train_stations, time
 
-        # one loop is a move from station A to station B
+        # One loop is a move from station A to station B
         while True:
             next_station: Station = self.move_heuristic(current_station, train_stations, stations_dictionary)
             if next_station is None:
                 return train_stations, time
 
-            # keeps track of the time the trajectory takes
+            # Keeps track of the time the trajectory takes
             all_time: float = time + current_station.connections.get(str(next_station))
 
-            # stops if time is more than 3 hours
+            # Stops if time is more than 3 hours
             if all_time > 180:
                 return train_stations, time
             else:
                 time = all_time
 
-            # sets connections to and from to visited
+            # Sets connections to and from to visited
             current_station.stationvisit(str(next_station))
             next_station.stationvisit(str(current_station))
 
@@ -67,11 +67,7 @@ class SimulatedAnnealing:
 
 
     def make_or_break_change(self, quality_old: float, quality_2: float, train_dictionary, train_dictionary_2, change_in_time, list_of_numbers, total_time_each_train, chosen_one):
-        """ Function that makes or breaks the mutation """
-
-        # Quality old was de kwaliteit van de vorige loop. Als Quality_2 beter is of de kans het zegt,
-        # veranderen we Quality_old in Quality_2. Anders blijft het hetzelfde
-        # Quality_old returnen we vervolgens.
+        """Function that makes or breaks the mutation"""
 
         mutated: Bool = True
         delta = quality_2 - quality_old
@@ -79,10 +75,11 @@ class SimulatedAnnealing:
 
         if delta >= 0:
 
-            # voer nieuwe state sowieso in
+            # Use the new state
             train_dictionary = train_dictionary_2
             quality_old = quality_2
-            # voer de change in time ook in in de dictionary v
+
+            # Add the change of time to the dictionary
             total_time_each_train[chosen_one[0]] += change_in_time
             print("mutation accepted, verbetering of gelijk")
             print(f'the train has now ridden {total_time_each_train[chosen_one[0]]} min')
@@ -93,19 +90,19 @@ class SimulatedAnnealing:
             chance = 2**delta
             print(f'chance to be accepted: {chance}')
 
-            # als kans groter dan 1 is, voer het in
+            # If chance is bigger than 1, use the change
             if chance >= 1:
 
-                # voer nieuwe state in
+                # Use the new state
                 train_dictionary = train_dictionary_2
                 quality_old = quality_2
                 total_time_each_train[chosen_one[0]] += change_in_time
                 print("mutation accepted, want dat moest via de kans")
 
-            # als kans tussen nul en 1 is, maak een gok of je het moet invoeren
+            # If chance is between 0 and 1, gamble if the change needs to be made
             elif chance > 0 and chance < 1:
 
-                # afhankelijk van de kans, voer hem in:
+                # Depending on the guess change it
                 guess = random.uniform(0, 1)
 
                 print(f'guess: {guess}')

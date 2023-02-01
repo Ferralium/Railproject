@@ -13,7 +13,7 @@ class RandomAlgorithm:
         return current_station
 
     def move(self, current_station, train_stations, stations_dictionary):
-        """chooses a random station the train will move to"""
+        """Chooses a random station the train will move to"""
         time = 0
 
         # Adds the current station to the list

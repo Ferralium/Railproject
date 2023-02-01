@@ -7,7 +7,7 @@ def shortest_move_heuristic(curr: Station, visited: list[Station], stations: dic
     shortest_connection: int = 100
     check_stations: bool = all(station is True for station in curr.connection_visited.values())
 
-    # if all connections are used, the shortest one is chosen
+    # If all connections are used, the shortest one is chosen
     if check_stations is True:
         for connections in curr.connections:
             check_connections: Optional[Station] = stations.get(connections)
@@ -16,7 +16,7 @@ def shortest_move_heuristic(curr: Station, visited: list[Station], stations: dic
                     shortest_connection = value
                     next_station: Optional[Station] = stations.get(connections)
     else:
-        # the shortest connection that has not been used is chosen
+        # The shortest connection that has not been used is chosen
         for connections in curr.connections:
             check_connections = stations.get(connections)
             if curr.connections[connections] < shortest_connection and curr.connection_visited[connections] is False:

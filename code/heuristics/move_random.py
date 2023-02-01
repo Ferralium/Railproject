@@ -4,5 +4,5 @@ from station import Station
 
 
 def random_move_heuristic(curr: Station, visited: list[Station], stations: dict[str, Station]) -> Optional[Station]:
-    """chooses and returns a random station the train will move to"""
+    """Chooses and returns a random station the train will move to"""
     return stations.get(random.choice(list(curr.connections.keys())))
