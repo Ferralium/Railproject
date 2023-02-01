@@ -41,6 +41,7 @@ class Mapdrawer():
                 tempconnect.append(templine[1])
                 self.connections.append(tempconnect)
 
+
     def print_to_image(self):
         """Prints all the stations on a map made with Miller Cylindrical projection and saves the map as .PNG"""
         # Miller cylindrical projection
@@ -52,6 +53,7 @@ class Mapdrawer():
         # Drawing points on the map
         for station in self.correctcoords:
             self.m.plot(self.correctcoords[station][0], self.correctcoords[station][1], '.', markersize = 10, color = 'b')
+
 
     def print_connections(self):
         """Prints all connections between the stations"""
@@ -75,6 +77,7 @@ class Mapdrawer():
             self.m.plot(x_points, y_points, color = 'k', linewidth = 1)
 
         plt.savefig('../images/lijnenopkaart.png', bbox_inches = 'tight', pad_inches = 0, dpi = 1200)
+
 
     def print_driven_routes(self, routes):
         """Takes the trainroutes and prints them on the map with colors for each different route"""
@@ -119,6 +122,7 @@ class Mapdrawer():
         # Necessary to prevent map from being drawn into histogram
         plt.close()
 
+
     def color_generator(self):
         """Generates random number combinations to get unique colors for trainroutes"""
         while True:
@@ -134,6 +138,7 @@ class Mapdrawer():
             if colorlist not in self.colormap:
                 self.colormap.append(colorlist)
                 return False
+
 
 class Gifgenerator:
     """Class which handles the GIF generation """

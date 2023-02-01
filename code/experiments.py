@@ -5,6 +5,7 @@ of the algorithms and heuristics in terms of score performance
 
 import os
 
+
 os.system(f'python3 main.py 5000 1')
 os.system(f'python3 main.py 5000 2')
 

@@ -7,10 +7,12 @@ class RandomAlgorithm:
     def __init__(self):
         pass
 
+
     def starting_station(self, station_dictionary, statnames):
         """Picks a purely random starting station from the list of all possible stations"""
         current_station = random.choice(list(station_dictionary.values()))
         return current_station
+
 
     def move(self, current_station, train_stations, stations_dictionary):
         """Chooses a random station the train will move to"""

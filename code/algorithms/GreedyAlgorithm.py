@@ -6,6 +6,7 @@ class GreedyAlgorithm:
     def __init__(self):
         pass
 
+
     def starting_station(self, station_dictionary, _):
         """Picks a starting station which has the least connections to move from outside to inside of connections"""
         first_number_connections = list(station_dictionary.values())[0]
@@ -41,6 +42,7 @@ class GreedyAlgorithm:
             current_station = None
 
         return current_station
+
 
     def move(self, current_station, train_stations, stations_dictionary):
         """Moves to the next connection with the least travel time"""

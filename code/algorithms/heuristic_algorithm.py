@@ -5,15 +5,16 @@ from station import Station
 
 class HeuristicAlgorithm(Algorithm):
     """Creates an Algorithm that can call and use different heuritics"""
-
     def __init__(self, start_heuristic: Callable[[dict[str, Station]], Station], move_heuristic: Callable[[Station, list[Station], dict[str, Station]], Station]) -> None:
         """Object has a start heuristic and a move heuristic"""
         self.start_heuristic: Callable[[dict[str, Station]], Station] = start_heuristic
         self.move_heuristic: Callable[[Station, list[Station], dict[str, Station]]] = move_heuristic
 
+
     def starting_station(self, station_dictionary: dict[str, Station], _) -> Station:
         """returns the starting station chosen by the start_heuristic"""
         return self.start_heuristic(station_dictionary)
+    
     
     def move(self, current_station: Station, train_stations: list[Station], station_dictionary: dict[str, Station]) -> (tuple[list[Station], Literal[0]] | tuple[list[Station], float]):
         """Moves to the next connections based on the move_heuristic"""

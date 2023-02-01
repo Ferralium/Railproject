@@ -10,6 +10,7 @@ class StatsDrawer:
             for line in f:
                 self.scorenumbers.append(float(line))
 
+
     def draw_hist(self, x):
         """Creates a histogram using matplotlib with the data that is supplied"""
         plt.hist(self.scorenumbers, bins = 20, edgecolor = 'black')
@@ -18,6 +19,7 @@ class StatsDrawer:
         plt.grid(True, linewidth=0.5, color='#757b82', linestyle='-')
         plt.savefig(f'../results/resultshistogram{x}.png', bbox_inches = 'tight', pad_inches = 0, dpi = 800)
         plt.close()
+
 
 while True:
     x = input('Which score? ')

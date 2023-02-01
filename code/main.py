@@ -7,14 +7,13 @@
     Minor Programmeren - Algoritmen en Heuristieken
     Attempts to solve heuristic problem with train stations.
 """
-# TYPEHINTS!!! DOCSTRINGS!! COMMENTS!!!
+
 
 import copy
 import time
 import random
 from algorithm import Algorithm
 from station import Station
-# from train import Train
 import pandas as pd
 from typing import Any
 from representatie import Mapdrawer, Gifgenerator
@@ -45,7 +44,7 @@ class Railsolver():
         self.load_stations()
         self.algo = algorithm
 
-        # Trein nummer voor trein klasse die route pakt en de afstand bijhoudt
+        # train number
         self.traincount: int = 1
 
     def load_stations(self) -> None:
@@ -59,15 +58,12 @@ class Railsolver():
             # For loop iterates over the lines in the csv and modifies them to usable format
             for line in f:
                 templine: str = line
-                # ik denk dat we deze een andere variabele naam moeten geven, anders werkt de typehint niet.
                 templine = templine.strip().split(',')
 
                 # Adds unique station names to list to select random point later
                 for i in range(2):
                     if templine[i] not in self.statnames:
                         self.statnames.append(templine[i])
-
-                # !!!Samenvoegen in enkele for loop, die zowel source als destination station checkt?!!!
 
                 # Checks if station already exists, if so adds connection
                 if templine[0] in self.stations:
@@ -86,6 +82,7 @@ class Railsolver():
                 elif templine[1] in self.stations:
                     self.stations[templine[1]].add_station(templine[0], float(templine[2]))
 
+
     def quality_calc(self, fraction: float, list_of_numbers) -> None:
         """Calculates the quality of the driven routes"""
         T: int = list_of_numbers[1]
@@ -100,8 +97,8 @@ class Railsolver():
         connected = 0
         total = 0
 
+        # counts the number of used connections
         for station_name in self.stations:
-
             temporary_station = self.stations[station_name]
             number_of_connections = len(temporary_station.connections)
             total += number_of_connections
@@ -110,15 +107,18 @@ class Railsolver():
                 if temporary_station.connection_visited[connecties] == True:
                     connected += 1
 
+    	# calculates fraction used conenctions of all conenctions
         fraction: float = round(connected / total, 2)
 
         return fraction
+
 
     def table_of_trains(self, train_number, list_of_stations, time, train_dictionary):
         """Function that keeps track of all the train routes that have been made"""
 
         # Adds trains to the dictionary in the appropriate place
         train_dictionary[train_number] = list_of_stations
+
 
     def take_a_ride(self):
         """ Function that keeps the order of everything that must be done for the algorithm"""
@@ -135,35 +135,26 @@ class Railsolver():
             train_stations: list[Station] = []
 
             current_station: Station = self.algo.starting_station(self.stations, self.statnames)
-
             list_of_stations_and_time: tuple[list[Station], int] = self.algo.move(current_station, train_stations, self.stations)
-
             total_time_each_train[train_number] = list_of_stations_and_time[1]
-
             check_station = list_of_stations_and_time[0]
 
             # Checks if there are no more stations left to stop the loop
             if check_station == [None]:
                 total_time_each_train.popitem()
-                break
-
+                break   
             else:
-
                 # Adds the route to table of trains
                 wisselstoring.table_of_trains(train_number, *list_of_stations_and_time, train_dictionary)
-
                 time_trajectory: int = list_of_stations_and_time[1]
 
                 # Add total time of all trajectories
                 total_time += time_trajectory
-
                 number_of_routes += 1
 
         list_of_numbers: list[int] = [total_time, number_of_routes]
 
         return list_of_numbers, total_time_each_train
-
-
 
 
     def loop_simulated_annealing(self, train_dictionary, best_qualities_checkpoints):
@@ -183,26 +174,20 @@ class Railsolver():
 
             train_dictionary_2 = copy.deepcopy(train_dictionary)
             stations_library = wisselstoring.stations
-
             switching_stations, chosen_one = self.algo.stations_to_be_switched(train_dictionary_2, stations_library, total_time_each_train)
-
             change_in_time, train_dictionary_2 = self.algo.mutation_small(train_dictionary_2, train_dictionary, switching_stations, chosen_one, stations_library)
-
             list_of_numbers[0] += change_in_time
 
             # Ff the list of numbers is negative the whole run should be aborted as something is going wrong
             if list_of_numbers[0] < 1488:
-
                     print("         ER IS NU EEN BUG")
                     print(f' train dictionary op dit moment: {train_dictionary}')
                     print("print alles van visiting status:")
 
                     for station_name in stations_library:
-
                         temporary_station = stations_library[station_name]
 
                         for connecties in temporary_station.connection_visited:
-
                             print(temporary_station, connecties, temporary_station.connection_visited[connecties])
 
                     break
@@ -370,27 +355,32 @@ if __name__ == '__main__':
             print('Number of runs must be 1 or higher')
             sys.exit()
 
+        # error if wrong number of command line arguments has been given
         if len(sys.argv) == 4 or len(sys.argv) > 5:
             print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
             sys.exit()
-
+        
+        # error if non numbers are provided in the command line
         if len(sys.argv) > 2:
             if not sys.argv[2].isnumeric():
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
                 sys.exit()
             algoselect = int(sys.argv[2])
 
+            # error if number given is not valid
             if algoselect < 1 or algoselect > 5:
                 print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm')
                 print('Algorithm must be between 1 and 8')
                 sys.exit()
 
+            # different files if algorithm 1 or 2 is chosen
             if algoselect == 1 or algoselect == 2:
                 file1 = open(f'../results/resultsformula{algoselect}.txt', 'w')
                 file1.close()
                 file2 = open(f'../results/score{algoselect}.txt', 'w')
                 file2.close()
 
+            # different files are created if algorithm 3, 4 or 5 are chosen
             if algoselect == 3 or algoselect == 5 or algoselect == 4:
                 if len(sys.argv) < 5 or not sys.argv[3].isnumeric() or not sys.argv[4].isnumeric():
                     print('Usage: python3 main.py (1 -> n) n (1 -> x) algorithm (1 -> x) start_heuristic move_heuristic')
@@ -444,12 +434,14 @@ if __name__ == '__main__':
                 best_score = quality_old
                 best_solution = train_dictionary
                 best_calc = quality_written_old
-
+            
+            # adds calculation and result to file
             results = open(f'../results/resultsformula{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             results.write(f'{quality_written_old}')
             results.write('\n')
             results.close()
 
+            # adds score to seperate file
             score = open(f'../results/score{algoselect}{start_heurselect}{move_heurselect}.txt', 'a')
             score.write(str(quality_old))
             score.write('\n')
