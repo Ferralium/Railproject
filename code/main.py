@@ -296,6 +296,22 @@ class Railsolver():
         # Initializes gif generator
         self.gifmod = Gifgenerator()
 
+    def final_csv(self, solution, bestscore):
+       """Write score to CSV file"""
+       header = ['train', 'stations']
+       score = ['score']
+
+       file1 = open(f'../results/output.csv', 'w')
+       csvwriter = csv.writer(file1)
+       csvwriter.writerow(header)
+       for key, value in solution.items():
+           csvwriter.writerow([key, value])
+       score.append(bestscore)
+       csvwriter.writerow(score)
+       file1.close()
+
+
+
 
 def select_heuristic(start_heurselect, move_heurselect):
     """Selects the heuristics with which the algorithms will perform their functions"""
@@ -480,8 +496,10 @@ if __name__ == '__main__':
                 score.write('\n')
                 score.close()
 
-    wisselstoring.visualise(best_solution)
-    wisselstoring.gifmod.map_to_gif()
+    # wisselstoring.visualise(best_solution)
+    # wisselstoring.gifmod.map_to_gif()
+    # wisselstoring.final_csv(best_solution, wisselstoring.K)
+
     print(f'Best solution found: {best_calc}')
     print(f'Average solution: {mean_solution / num_of_runs}')
     print(f'Runtime: {time.time() - start_time}')
