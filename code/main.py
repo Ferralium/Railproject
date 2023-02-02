@@ -496,8 +496,8 @@ if __name__ == '__main__':
                 score.write('\n')
                 score.close()
 
-    # wisselstoring.visualise(best_solution)
-    # wisselstoring.gifmod.map_to_gif()
+    wisselstoring.visualise(best_solution)
+    wisselstoring.gifmod.map_to_gif()
     # wisselstoring.final_csv(best_solution, wisselstoring.K)
 
     print(f'Best solution found: {best_calc}')
